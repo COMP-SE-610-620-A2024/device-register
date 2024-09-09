@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
@@ -26,7 +26,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -40,7 +40,7 @@ jobs:
       - name: Run backend tests with coverage
         run: |
           source venv/bin/activate
-          pytest --cov=backend --cov-report=term-missing --cov-omit 'backend/tests/*'
+          pytest --cov=backend --cov-report=term-missing -v
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v2
