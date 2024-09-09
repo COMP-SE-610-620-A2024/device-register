@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import joinedload
 
 
+
 class Device(db.Model):
     __tablename__ = 'devices'
 
