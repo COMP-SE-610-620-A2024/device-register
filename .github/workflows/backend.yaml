@@ -40,7 +40,7 @@ jobs:
       - name: Run backend tests with coverage
         run: |
           source venv/bin/activate
-          pytest --cov=backend --cov-report=xml  # Generates code coverage report in XML format
+          pytest --cov=backend --cov-report=term-missing --cov-report=xml  # Both terminal output and coverage.xml
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v2
