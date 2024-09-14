@@ -6,11 +6,9 @@
       "dev_type": "Emitter",
       "dev_serial": "001",
       "optional_info":[
-        {
-          "opt1":"", 
-          "opt2":"", 
-          "opt3":""
-        }
+          "opt1", 
+          "opt2", 
+          "opt3"
       ]
     },
     {
@@ -19,11 +17,9 @@
       "dev_type": "Laser",
       "dev_serial": "002",
       "optional_info":[
-        {
-          "opt1":"", 
-          "opt2":"", 
-          "opt3":""
-        }
+          "opt1", 
+          "opt2", 
+          "opt3"
       ]
     }
   ],
@@ -39,11 +35,9 @@
           "loc_name":"S231",
           "loc_info":"Hervanta Campus Sähkötalo 2nd. floor",
           "optional_info":[
-            {
-              "opt1":"", 
-              "opt2":"", 
-              "opt3":""
-            }
+          "opt1", 
+          "opt2", 
+          "opt3"
           ]
         }
       ]
@@ -59,12 +53,10 @@
           "loc_name":"Guildroom",
           "loc_info":"Hervanta Campus main building",
           "optional_info":[
-            {
-              "opt1":"", 
-              "opt2":"", 
-              "opt3":""
-            }
-          ]
+          "opt1", 
+          "opt2", 
+          "opt3"
+         ]
         }
       ]
     }
@@ -75,11 +67,9 @@
       "user_name":"Pedro",
       "user_email":"pedro@into.org",
       "optional_info":[
-        {
-          "opt1":"", 
-          "opt2":"", 
-          "opt3":""
-        }
+          "opt1", 
+          "opt2", 
+          "opt3"
       ]
     },
     {
@@ -87,11 +77,9 @@
       "user_name":"Peter",
       "user_email":"peter.daman@hotmail.com",
       "optional_info":[
-        {
-          "opt1":"", 
-          "opt2":"", 
-          "opt3":""
-        }
+          "opt1", 
+          "opt2", 
+          "opt3"
       ]
     }
   ]
