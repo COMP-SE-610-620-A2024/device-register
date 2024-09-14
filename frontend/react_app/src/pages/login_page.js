@@ -108,6 +108,9 @@ function LoginPage(props) {
       .catch((error) => console.error('Error fetching devices:', error));
   }, []);
 
+  // Value will eventually be imported from the QR Code
+  const deviceNumber = Math.floor(Math.random()*devices.length);
+
   return (
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined" sx={{ 
@@ -208,7 +211,7 @@ function LoginPage(props) {
                     
                   }}
                 >
-                  {devices[0].dev_name}
+                  {devices[deviceNumber].dev_name}
                 </Typography>
 
                 <Typography
@@ -220,7 +223,7 @@ function LoginPage(props) {
                     textAlign: 'center',
                   }}
                 >
-                  {devices[0].dev_id}
+                  {devices[deviceNumber].dev_id}
                 </Typography>
               </>
             ) : (
