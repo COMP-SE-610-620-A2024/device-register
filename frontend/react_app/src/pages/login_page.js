@@ -16,6 +16,9 @@ function LoginPage() {
   const deviceNumber =  !devicesLoading ?
   Math.floor(Math.random()*devices.length) : 0;;
 
+  // Value will eventually be imported from the QR Code
+  const deviceNumber = Math.floor(Math.random()*devices.length);
+
   return (
       <SignInContainer direction="column" justifyContent="space-between">
         <SignInCard variant="outlined" sx={{ 
