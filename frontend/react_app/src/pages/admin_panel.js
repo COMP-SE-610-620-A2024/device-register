@@ -1,6 +1,11 @@
 import Box from '@mui/material/Box';
+import { useFetchData } from '../services/fetch_data';
+import UsersDataGrid from '../components/users_data_grid_searchable';
 
 function AdminPage() {
+  const { data: users, loading: usersLoading, error: usersError } 
+  = useFetchData('http://localhost:5000/users');
+
     return (
 
       <div>
@@ -29,7 +34,11 @@ function AdminPage() {
           >
             Device History
           </a>
-          </Box>
+        </Box>
+        <UsersDataGrid 
+          users={users} 
+          usersLoading={usersLoading} 
+        />
       </div>
     )
   }
