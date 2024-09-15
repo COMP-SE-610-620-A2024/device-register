@@ -79,7 +79,7 @@ function LoginPage() {
             mt: 2, 
             maxWidth: '100%'
             }}>
-            {devices.length > 0 ? (
+            {!devicesLoading? (
               <>
                 <Typography
                   component="h1"
