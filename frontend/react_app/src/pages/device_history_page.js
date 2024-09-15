@@ -7,8 +7,6 @@ import { useFetchData } from '../services/fetch_data/fetch_data';
 import InfoBox from '../components/text_box/text_box';
 
 function DeviceHistoryPage() {
-  const { data: devices, loading: devicesLoading, error: devicesError }
-    = useFetchData('http://localhost:5000/devices');
   const { data: events, loading: eventsLoading, error: eventsError } 
     = useFetchData('http://localhost:5000/event_history');
   const { data: users, loading: usersLoading, error: usersError } 
