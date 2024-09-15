@@ -1,65 +1,24 @@
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid2 from '@mui/material/Grid2';
-import IconButton from '@mui/material/IconButton';
-import { Home, List, Lock} from '@mui/icons-material';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import MuiCard from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import SignInContainer from '../components/page_container'
+import SignInCard from '../components/card'
+import TopMenu from '../components/top_menu'
+import { useFetchData } from '../services/fetch_data';
 
-
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignSelf: 'center',
-  width: '100%',
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: 'auto',
-  [theme.breakpoints.up('sm')]: {
-    maxWidth: '450px',
-  },
-  boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
-}));
-
-const SignInContainer = styled(Stack)(({ theme }) => ({
-  padding: 20,
-  marginTop: '10vh',
-  '&::before': {
-    content: '""',
-    display: 'block',
-    position: 'absolute',
-    zIndex: -1,
-    inset: 0,
-    backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-    backgroundRepeat: 'no-repeat',
-    ...theme.applyStyles('dark', {
-      backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-    }),
-  },
-}));
-
-function LoginPage(props) {
+function LoginPage() {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [roomError, setroomError] = React.useState(false);
   const [roomErrorMessage, setroomErrorMessage] = React.useState('');
-  const [devices, setDevices] = useState([]);
+  const { data: devices, loading: devicesLoading, error: devicesError }
+    = useFetchData('http://localhost:5000/devices');
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -100,84 +59,18 @@ function LoginPage(props) {
     return isValid;
   };
 
-  // Fetch devices
-  useEffect(() => {
-    fetch('http://localhost:5000/devices')
-      .then((response) => response.json())
-      .then((data) => setDevices(data))
-      .catch((error) => console.error('Error fetching devices:', error));
-  }, []);
-
   // Value will eventually be imported from the QR Code
   const deviceNumber = Math.floor(Math.random()*devices.length);
 
   return (
       <SignInContainer direction="column" justifyContent="space-between">
-        <Card variant="outlined" sx={{ 
+        <SignInCard variant="outlined" sx={{ 
           display: 'flex',
           position: 'relative', 
           alignItems: 'center', 
           height: '100%',
         }}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              borderRadius: '16px',
-              overflow: 'hidden',           
-              boxShadow: 2,                
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: 'auto',
-              height:'auto',       
-            }}
-          >
-            <Grid2
-              container
-              direction="row"          
-              justifyContent="center" 
-              alignItems="center"    
-              spacing={2}   
-            >
-              <Grid2 item>
-                <a
-                  className="App-link"
-                  href="/device_history"
-                  target="_self"
-                  rel="noopener noreferrer"
-                >
-                  <IconButton>
-                    <List />
-                  </IconButton>
-                </a>
-              </Grid2>
-              <Grid2 item>
-                <a
-                  className="App-link"
-                  href="/home"
-                  target="_self"
-                  rel="noopener noreferrer"
-                >
-                  <IconButton>
-                    <Home />
-                  </IconButton>
-                </a>
-              </Grid2>
-              <Grid2 item>
-              <a
-                  className="App-link"
-                  href="/admin"
-                  target="_self"
-                  rel="noopener noreferrer"
-                >
-                  <IconButton>
-                  <Lock />
-                </IconButton>
-                </a>
-              </Grid2>
-            </Grid2>
-          </Box>
+          <TopMenu></TopMenu>
           <Box sx={{ 
             display: 'flex', 
             flexDirection: 'column', 
@@ -289,7 +182,7 @@ function LoginPage(props) {
               Submit
             </Button>
           </Box>
-        </Card>
+        </SignInCard>
       </SignInContainer>
   );
 }
