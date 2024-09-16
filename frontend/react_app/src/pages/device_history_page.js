@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TopMenu from '../components/top_menu/top_menu';
+import NavigationBar from '../components/top_menu/navigation_bar';
 import DeviceHistoryCard from '../components/card/card';
 import DeviceHistoryContainer from'../components/page_container/page_container';
 import EventsDataGrid from '../components/events_data_grid_searchable/events_data_grid_searchable';
@@ -20,7 +20,7 @@ function DeviceHistoryPage() {
         alignItems: 'center', 
         height: '100%',
       }}>
-        <TopMenu></TopMenu>
+        <NavigationBar></NavigationBar>
         <Box sx={{ 
           display: 'flex',             
           flexDirection: 'column',     
