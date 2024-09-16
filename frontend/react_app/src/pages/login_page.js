@@ -7,10 +7,10 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import SignInContainer from '../components/page_container';
-import SignInCard from '../components/card';
-import TopMenu from '../components/top_menu';
-import { useFetchData } from '../services/fetch_data';
+import SignInContainer from '../components/page_container/page_container';
+import SignInCard from '../components/card/card';
+import TopMenu from '../components/top_menu/top_menu';
+import { useFetchData } from '../services/fetch_data/fetch_data';
 
 function LoginPage() {
   const [emailError, setEmailError] = React.useState(false);
