@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TopMenu from '../components/top_menu/top_menu';
+import NavigationBar from '../components/top_menu/navigation_bar';
 import HomeCard from '../components/card/card';
 import HomeContainer from '../components/page_container/page_container';
 import { useFetchData } from '../services/fetch_data/fetch_data';
@@ -20,7 +20,7 @@ function HomePage() {
         alignItems: 'center', 
         height: '100%',
       }}>
-        <TopMenu></TopMenu>
+        <NavigationBar></NavigationBar>
         <Box sx={{ 
           display: 'flex',             
           flexDirection: 'column',     
