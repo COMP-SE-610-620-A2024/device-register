@@ -27,24 +27,20 @@ function DeviceHistoryPage() {
           justifyContent: 'center',    
           alignItems: 'center',
           mt: 2
-          }}>
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{    
+        }}>
+          <Typography sx={{    
               fontSize: 'clamp(1rem, 5vw, 1.9rem)', 
               paddingY: 4,
               textAlign: 'center',
               overflow: 'hidden',
-              }}
-          >
+          }}>
             Event History
           </Typography>
         </Box>
         <EventsDataGrid 
           events={events} 
           eventsLoading={eventsLoading} 
-       />
+        />
       </DeviceHistoryCard>
     </DeviceHistoryContainer>
   );

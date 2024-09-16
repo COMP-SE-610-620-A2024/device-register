@@ -7,9 +7,9 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import SignInContainer from '../components/page_container'
-import SignInCard from '../components/card'
-import TopMenu from '../components/top_menu'
+import SignInContainer from '../components/page_container';
+import SignInCard from '../components/card';
+import TopMenu from '../components/top_menu';
 import { useFetchData } from '../services/fetch_data';
 
 function LoginPage() {
@@ -78,44 +78,29 @@ function LoginPage() {
             alignItems: 'center', 
             mt: 2, 
             maxWidth: '100%'
-            }}>
+          }}>
             {!devicesLoading? (
               <>
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  sx={{ 
-                    fontSize: 'clamp(1.8rem, 10vw, 2rem)', 
-                    paddingY: 1,
-                    textAlign: 'center',
-                  }}
-                >
+                <Typography sx={{ 
+                  fontSize: 'clamp(1.8rem, 10vw, 2rem)', 
+                  paddingY: 1,
+                  textAlign: 'center',
+                }}>
                   Move device
                 </Typography>
-
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  sx={{ 
+                <Typography sx={{ 
                     fontSize: 'clamp(1rem, 5vw, 1.9rem)', 
                     paddingY: 1,
                     textAlign: 'center',
                     overflow: 'hidden',
-                    
-                  }}
-                >
+                }}>
                   {devices[deviceNumber].dev_name}
                 </Typography>
-
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  sx={{ 
+                <Typography sx={{ 
                     fontSize: 'clamp(1.6rem, 6vw, 1.8rem)', 
                     paddingY: 1,
                     textAlign: 'center',
-                  }}
-                >
+                }}>
                   {devices[deviceNumber].dev_id}
                 </Typography>
               </>
@@ -125,20 +110,19 @@ function LoginPage() {
               </Typography>
             )}
           </Box>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
+          <Box sx={{
               display: 'flex',
               flexDirection: 'column',
               width: '100%',
               gap: 2,
             }}
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
           >
             <FormControl>
               <FormLabel htmlFor="email">EMAIL</FormLabel>
-              <TextField
+              <TextField sx={{ ariaLabel: 'email' }}
                 error={emailError}
                 helperText={emailErrorMessage}
                 id="email"
@@ -150,30 +134,26 @@ function LoginPage() {
                 fullWidth
                 variant="outlined"
                 color={emailError ? 'error' : 'primary'}
-                sx={{ ariaLabel: 'email' }}
               />
             </FormControl>
             <FormControl>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <FormLabel htmlFor="room">LOCATION</FormLabel>
               </Box>
-              <TextField
+              <TextField sx={{ ariaLabel: 'room' }}
                 error={roomError}
                 helperText={roomErrorMessage}
                 name="room"
                 type="room"
                 id="room"
-                autoComplete="current-room"
                 autoFocus
                 required
                 fullWidth
                 variant="outlined"
                 color={roomError ? 'error' : 'primary'}
-                sx={{ ariaLabel: 'room' }}
               />
             </FormControl>    
-            <Button
-              sx={{mt: 2}}
+            <Button sx={{mt: 2}}
               type="submit"
               fullWidth
               variant="contained"
@@ -187,4 +167,4 @@ function LoginPage() {
   );
 }
 
-  export default LoginPage;
+export default LoginPage;
