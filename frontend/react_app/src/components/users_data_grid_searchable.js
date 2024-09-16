@@ -20,7 +20,6 @@ const DeviceDataGrid = ({ users, usersLoading}) => {
     ? users.filter((user) =>
         user.user_name.toLowerCase().includes(searchUsers.toLowerCase()) ||
         user.user_id.toLowerCase().includes(searchUsers.toLowerCase())
-        // Filter by location.
       )
     : [];
 
@@ -40,28 +39,28 @@ const DeviceDataGrid = ({ users, usersLoading}) => {
         width: '100%',
         gap: 2,
     }}>
-        {(!usersLoading) ? (
+      {(!usersLoading) ? (
         <>
-        <TextField
-        label="Search users"
-        variant="outlined"
-        value={searchUsers}
-        onChange={(e) => setSearchUsers(e.target.value)} 
-        sx={{ marginBottom: 2 }}
-        />
-        <DataGrid
-            rows={rows}
-            columns={columns}
-            autoHeight
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-        />
+          <TextField
+          label="Search users"
+          variant="outlined"
+          value={searchUsers}
+          onChange={(e) => setSearchUsers(e.target.value)} 
+          sx={{ marginBottom: 2 }}
+          />
+          <DataGrid
+              rows={rows}
+              columns={columns}
+              autoHeight
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+          />
         </>
-        ) : (
+      ) : (
         <Typography component="h1" variant="h4">
             Loading data...
         </Typography>
-        )}
+      )}
     </Box>
   );
 };
