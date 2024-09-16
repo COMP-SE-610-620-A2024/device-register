@@ -29,8 +29,8 @@ const EventDataGrid = ({ events, eventsLoading}) => {
   const rows = filteredEvents.map((event) => ({
     id: event.event_id,
     dev_id: event.dev_id,
-    t_start: event.t_start,
-    t_end: event.t_end,
+    t_start: event.time_start,
+    t_end: event.time_end,
     loc_name: event.loc[0].loc_name, 
     opt1: event.optional_info?.[0]?.opt1 || 'N/A',
     opt2: event.optional_info?.[0]?.opt2 || 'N/A',

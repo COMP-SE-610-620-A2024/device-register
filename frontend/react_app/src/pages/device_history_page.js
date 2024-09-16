@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TopMenu from '../components/top_menu';
-import DeviceHistoryCard from '../components/card';
-import DeviceHistoryContainer from '../components/page_container';
-import { useFetchData } from '../services/fetch_data';
-import EventsDataGrid from '../components/events_data_grid_searchable';
+import TopMenu from '../components/top_menu/top_menu';
+import DeviceHistoryCard from '../components/card/card';
+import DeviceHistoryContainer from'../components/page_container/page_container';
+import EventsDataGrid from '../components/events_data_grid_searchable/events_data_grid_searchable';
+import { useFetchData } from '../services/fetch_data/fetch_data';
 
 
 function DeviceHistoryPage() {
@@ -46,4 +46,4 @@ function DeviceHistoryPage() {
   );
 }
 
-  export default DeviceHistoryPage;
+export default DeviceHistoryPage;

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TopMenu from '../components/top_menu';
-import HomeCard from '../components/card';
-import HomeContainer from '../components/page_container';
-import { useFetchData } from '../services/fetch_data';
-import DevicesDataGrid from '../components/device_data_grid_searchable';
+import TopMenu from '../components/top_menu/top_menu';
+import HomeCard from '../components/card/card';
+import HomeContainer from '../components/page_container/page_container';
+import { useFetchData } from '../services/fetch_data/fetch_data';
+import DevicesDataGrid from '../components/device_data_grid_searchable/device_data_grid_searchable';
 
 
 function HomePage() {
@@ -46,4 +46,4 @@ function HomePage() {
   );
 }
 
-  export default HomePage;
+export default HomePage;
