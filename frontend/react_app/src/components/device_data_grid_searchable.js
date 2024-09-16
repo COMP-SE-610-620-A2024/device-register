@@ -10,8 +10,8 @@ const DeviceDataGrid = ({ devices, devicesLoading}) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 50, headerAlign: 'center' },
     { field: 'type', headerName: 'Type', width: 50, headerAlign: 'center' },
-    { field: 'deviceName', headerName: 'Device Name', width: 125, headerAlign: 'center' },
-    { field: 'location', headerName: 'Location', width: 125, headerAlign: 'center' },
+    { field:'dev_name',headerName:'Device Name',width:125,headerAlign:'center'},
+    { field: 'loc', headerName: 'Location',width: 125, headerAlign: 'center' },
     { field: 'opt1', headerName: 'Optional 1', width: 100 },
     { field: 'opt2', headerName: 'Optional 2', width: 100 },
     { field: 'opt3', headerName: 'Optional 3', width: 100 },
@@ -22,15 +22,15 @@ const DeviceDataGrid = ({ devices, devicesLoading}) => {
         device.dev_name.toLowerCase().includes(searchDevices.toLowerCase()) ||
         device.dev_type.toLowerCase().includes(searchDevices.toLowerCase()) ||
         device.dev_id.toLowerCase().includes(searchDevices.toLowerCase())
-        // Filter by location.
+        // Filter by loc.
       )
     : [];
 
   const rows = filteredDevices.map((device) => ({
     id: device.dev_id,
     type: device.dev_type,
-    deviceName: device.dev_name,
-    location: 'WIP', 
+    dev_name: device.dev_name,
+    loc: 'WIP', 
     opt1: device.optional_info?.[0]?.opt1 || 'N/A',
     opt2: device.optional_info?.[0]?.opt2 || 'N/A',
     opt3: device.optional_info?.[0]?.opt3 || 'N/A',
@@ -43,28 +43,28 @@ const DeviceDataGrid = ({ devices, devicesLoading}) => {
         width: '100%',
         gap: 2,
     }}>
-        {(!devicesLoading) ? (
+      {(!devicesLoading) ? (
         <>
-        <TextField
-        label="Search Devices"
-        variant="outlined"
-        value={searchDevices}
-        onChange={(e) => setSearchDevices(e.target.value)} 
-        sx={{ marginBottom: 2 }}
-        />
-        <DataGrid
-            rows={rows}
-            columns={columns}
-            autoHeight
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-        />
+          <TextField
+          label="Search Devices"
+          variant="outlined"
+          value={searchDevices}
+          onChange={(e) => setSearchDevices(e.target.value)} 
+          sx={{ marginBottom: 2 }}
+          />
+          <DataGrid
+              rows={rows}
+              columns={columns}
+              autoHeight
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+          />
         </>
-        ) : (
+      ) : (
         <Typography component="h1" variant="h4">
             Loading data...
         </Typography>
-        )}
+      )}
     </Box>
   );
 };

@@ -2,7 +2,6 @@
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 
-
 const PageContainer = styled(Stack)(({ theme }) => ({
     padding: 20,
     marginTop: '10vh',
@@ -21,6 +20,5 @@ const PageContainer = styled(Stack)(({ theme }) => ({
       }),
     },
   }));
-
 
 export default PageContainer;

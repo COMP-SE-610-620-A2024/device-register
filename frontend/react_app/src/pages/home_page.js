@@ -8,7 +8,7 @@ import { useFetchData } from '../services/fetch_data';
 import DevicesDataGrid from '../components/device_data_grid_searchable';
 
 
-function HomePage(props) {
+function HomePage() {
   const { data: devices, loading: devicesLoading, error: devicesError }
     = useFetchData('http://localhost:5000/devices');
 
@@ -27,17 +27,13 @@ function HomePage(props) {
           justifyContent: 'center',    
           alignItems: 'center',
           mt: 2
-          }}>
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{    
+        }}>
+          <Typography sx={{    
               fontSize: 'clamp(1rem, 5vw, 1.9rem)', 
               paddingY: 4,
               textAlign: 'center',
               overflow: 'hidden',
-              }}
-          >
+          }}>
             Device Register
           </Typography>
         </Box>

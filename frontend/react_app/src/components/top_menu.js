@@ -5,8 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import { Home, List, Lock} from '@mui/icons-material';
 
 const TopMenu = () => (
-    <Box
-        sx={{
+    <Box sx={{
             position: 'absolute',
             top: 0,
             borderRadius: '16px',
@@ -17,8 +16,7 @@ const TopMenu = () => (
             alignItems: 'center',
             width: 'auto',
             height:'auto',       
-        }}
-        >
+    }}>
         <Grid2
             container
             direction="row"          
@@ -27,40 +25,40 @@ const TopMenu = () => (
             spacing={2}   
         >
             <Grid2 item>
-            <a
-                className="App-link"
-                href="/device_history"
-                target="_self"
-                rel="noopener noreferrer"
-            >
-                <IconButton>
-                <List />
-                </IconButton>
-            </a>
+                <a
+                    className="App-link"
+                    href="/device_history"
+                    target="_self"
+                    rel="noopener noreferrer"
+                >
+                    <IconButton>
+                        <List />
+                    </IconButton>
+                </a>
             </Grid2>
             <Grid2 item>
-            <a
-                className="App-link"
-                href="/home"
-                target="_self"
-                rel="noopener noreferrer"
-            >
-                <IconButton>
-                <Home />
-                </IconButton>
-            </a>
+                <a
+                    className="App-link"
+                    href="/home"
+                    target="_self"
+                    rel="noopener noreferrer"
+                >
+                    <IconButton>
+                        <Home />
+                    </IconButton>
+                </a>
             </Grid2>
             <Grid2 item>
-            <a
-                className="App-link"
-                href="/admin"
-                target="_self"
-                rel="noopener noreferrer"
-            >
-                <IconButton>
-                <Lock />
-            </IconButton>
-            </a>
+                <a
+                    className="App-link"
+                    href="/admin"
+                    target="_self"
+                    rel="noopener noreferrer"
+                >
+                    <IconButton>
+                        <Lock />
+                    </IconButton>
+                </a>
             </Grid2>
         </Grid2>
     </Box>
