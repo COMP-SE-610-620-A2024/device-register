@@ -1,11 +1,10 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import NavigationBar from '../components/top_menu/navigation_bar';
+import NavigationBar from '../components/navigation_bar/navigation_bar';
 import DeviceHistoryCard from '../components/card/card';
 import DeviceHistoryContainer from'../components/page_container/page_container';
 import EventsDataGrid from '../components/events_data_grid_searchable/events_data_grid_searchable';
 import { useFetchData } from '../services/fetch_data/fetch_data';
+import InfoBox from '../components/text_box/text_box';
 
 
 function DeviceHistoryPage() {
@@ -21,22 +20,11 @@ function DeviceHistoryPage() {
         height: '100%',
       }}>
         <NavigationBar></NavigationBar>
-        <Box sx={{ 
-          display: 'flex',             
-          flexDirection: 'column',     
-          justifyContent: 'center',    
-          alignItems: 'center',
-          mt: 2
-        }}>
-          <Typography sx={{    
-              fontSize: 'clamp(1rem, 5vw, 1.9rem)', 
-              paddingY: 4,
-              textAlign: 'center',
-              overflow: 'hidden',
-          }}>
-            Event History
-          </Typography>
-        </Box>
+        <InfoBox
+                texts={[
+                  'Event History'
+                ]}
+              />
         <EventsDataGrid 
           events={events} 
           eventsLoading={eventsLoading} 
