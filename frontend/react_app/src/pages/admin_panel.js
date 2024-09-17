@@ -4,7 +4,7 @@ import UsersDataGrid from '../components/users_data_grid_searchable/users_data_g
 
 function AdminPage() {
   const { data: users, loading: usersLoading, error: usersError } 
-  = useFetchData('http://localhost:5000/users');
+  = useFetchData('users');
 
   return (
     <div>

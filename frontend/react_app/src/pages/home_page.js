@@ -8,7 +8,7 @@ import InfoBox from '../components/text_box/text_box';
 
 function HomePage() {
   const { data: devices, loading: devicesLoading, error: devicesError }
-    = useFetchData('http://localhost:5000/devices');
+    = useFetchData('devices');
 
   return (
     <HomeContainer direction="column" justifyContent="space-between">
