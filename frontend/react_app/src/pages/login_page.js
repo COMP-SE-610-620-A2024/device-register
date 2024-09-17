@@ -10,7 +10,7 @@ import InfoBox from '../components/text_box/text_box';
 
 function LoginPage() {
   const { data: devices, loading: devicesLoading, error: devicesError }
-  = useFetchData('http://localhost:5000/devices');
+  = useFetchData('devices');
 
   // Value will eventually be imported from the QR Code
   const deviceNumber =  !devicesLoading ?

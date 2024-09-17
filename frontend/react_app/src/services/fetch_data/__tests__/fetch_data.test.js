@@ -1,5 +1,5 @@
-import { renderHook, act } from '@testing-library/react';
-import fetchData from '../fetch_data';
+import { renderHook, waitFor } from '@testing-library/react';
+import { useFetchData } from '../fetch_data';
 
 {/* Testing fetchData with a mocked API call */}
 
@@ -11,34 +11,36 @@ describe('fetchData', () => {
   });
 
   test('return data successfully', async () => {
-    // Create mock data
-    const mockData = { name: 'John Doe' };
-    fetch.mockResolvedValueOnce({
-      json: async () => mockData,
-    });
-    // Start test
-    const { result, waitForNextUpdate } = renderHook(() => fetchData('/api/user'));
-    // Wait for response
+
+    const mockData = { name: 'Test User' };
+    fetch.mockResolvedValueOnce({json: async () => mockData,});
+
+    const { result } = renderHook(() => useFetchData('/test/'));
     expect(result.current.loading).toBe(true);
-    await waitForNextUpdate();
-    // Expected results
-    expect(result.current.loading).toBe(false);
+    expect(result.current.data).toEqual([]);
+    expect(result.current.error).toBeNull();
+
+    await waitFor(() => {expect(result.current.loading).toBe(false);});
+
     expect(result.current.data).toEqual(mockData);
+    expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
   });
 
   test('error in retreiving data', async () => {
-    // Create error
+
     const mockError = new Error('Failed to fetch');
-    fetch.mockRejectedValueOnce(mockError);
-    // Start test
-    const { result, waitForNextUpdate } = renderHook(() => fetchData('/api/user'));
-    // Wait for results
-    expect(result.current.loading).toBe(true);
-    await waitForNextUpdate(); // Wait for the hook to handle the error
-    // Expected results
+    fetch.mockRejectedValue(mockError);
+
+    const { result } = renderHook(() => useFetchData('/test/'));
+    expect(result.current.loading).toBe(true); 
+    expect(result.current.data).toEqual([]);   
+    expect(result.current.error).toBeNull();  
+
+    await waitFor(() => {expect(result.current.loading).toBe(false)}, {timeout: 5000});
+
+    expect(result.current.data).toStrictEqual([]); 
     expect(result.current.loading).toBe(false); 
-    expect(result.current.data).toBe([]); 
     expect(result.current.error).toBe(mockError);
-  });
+  }, 6000);
 });

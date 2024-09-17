@@ -9,7 +9,7 @@ import InfoBox from '../components/text_box/text_box';
 
 function DeviceHistoryPage() {
   const { data: events, loading: eventsLoading, error: eventsError } 
-    = useFetchData('http://localhost:5000/event_history');
+    = useFetchData('event_history');
 
   return (
     <DeviceHistoryContainer direction="column" justifyContent="space-between">
