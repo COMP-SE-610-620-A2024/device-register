@@ -25,7 +25,7 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: frontend/node_modules  # Path to cache
+          path: frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -34,7 +34,7 @@ jobs:
         run: npm install
         working-directory: frontend
 
-      - name: Run frontend tests
+      - name: Run frontend tests with covarage
         run: npm test -- --coverage
         working-directory: frontend
 
@@ -45,5 +45,5 @@ jobs:
           path: frontend/coverage
 
       - name: Lint frontend code
-        run: npm run lint
+        run: npx eslint .
         working-directory: frontend
