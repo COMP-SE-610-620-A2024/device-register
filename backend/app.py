@@ -19,7 +19,7 @@ def create_app() -> Flask:
         db.create_all()
 
         # Adding a test device, remove later
-        existing_device: Device | None= (
+        existing_device: Device | None = (
             Device.query.filter_by(dev_serial="123456").first()
         )
 
