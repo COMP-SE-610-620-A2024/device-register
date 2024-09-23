@@ -1,9 +1,9 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import { useFetchData } from '../fetch_data';
+import { useFetchData } from '../components/shared/fetch_data';
+import '@testing-library/jest-dom';
 
 {/* Testing fetchData with a mocked API call */}
-
-
+global.fetch = jest.fn();
 
 describe('fetchData', () => {
   afterEach(() => {
