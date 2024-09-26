@@ -28,7 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "mock-api": "json-server --watch ./src/__tests__/test_api.json --port 5000 --rewrites '{\"/api/*\": \"/$1\"}'"
+    "mock-api": "json-server --watch ./src/__tests__/test_api.json --port 5000"
   },
   "eslintConfig": {
     "extends": [
