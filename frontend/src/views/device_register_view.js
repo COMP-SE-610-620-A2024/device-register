@@ -10,7 +10,14 @@ function DeviceRegisterView() {
     = useFetchData('devices');
 
   return (
-    <Box direction="column" justifyContent="space-between">
+    <Box sx={{
+         display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',   // Ensure it spans the full width of the viewport
+        height: 'auto',  // Use auto height to allow the content to define the height
+    }}>
         <NavigationBar></NavigationBar>
         <TextBox
           texts={[

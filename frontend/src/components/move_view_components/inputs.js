@@ -12,7 +12,7 @@ const Inputs = ({emailError, emailErrorMessage, roomError, roomErrorMessage}) =>
       alignItems: 'center', 
     }}>
     <FormControl>
-      <FormLabel sx={{mt:2}}htmlFor="email">EMAIL</FormLabel>
+      <FormLabel htmlFor="email">EMAIL</FormLabel>
       <TextField sx={{ ariaLabel: 'email', mb:3, width: 'clamp(250px, 75vw, 800px)' }}
         error={emailError}
         helperText={emailErrorMessage}

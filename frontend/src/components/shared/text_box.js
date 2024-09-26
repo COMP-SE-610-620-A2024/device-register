@@ -9,7 +9,8 @@ const TextBox = ({texts}) => {
       flexDirection: 'column', 
       justifyContent: 'center', 
       alignItems: 'center', 
-      mt: 6, 
+      mt: 7, 
+      mb: 2,
       maxWidth: '100%'
     }}>
       {texts.map((text, index) => (
