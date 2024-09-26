@@ -1,44 +1,81 @@
-import { useEffect, useState } from 'react';
-import TableGrid from '../shared/grid_table.js'
+import React, { useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { TextField } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-const Device_register_grid = () => {
+const DeviceRegisterGrid = ({ devices, devicesLoading}) => {
+  const [searchDevices, setSearchDevices] = useState('');
 
-  const [devices, setDevices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 50, headerAlign: 'center' },
+    { field: 'type', headerName: 'Type', width: 50, headerAlign: 'center' },
+    { field:'dev_name',headerName:'Device Name',width:125,headerAlign:'center'},
+    { field: 'loc', headerName: 'Location',width: 125, headerAlign: 'center' },
+    { field: 'opt1', headerName: 'Optional 1', width: 100 },
+    { field: 'opt2', headerName: 'Optional 2', width: 100 },
+    { field: 'opt3', headerName: 'Optional 3', width: 100 },
+  ];
 
-  //Fetch devices from the api
-  useEffect(() => {
-    const fetchDevices = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/devices');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setDevices(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchDevices();
-    
-  }, []);
+  const filteredDevices = (!devicesLoading && devices)
+    ? devices.filter((device) =>
+        device.dev_name.toLowerCase().includes(searchDevices.toLowerCase()) ||
+        device.dev_type.toLowerCase().includes(searchDevices.toLowerCase()) ||
+        device.dev_id.toLowerCase().includes(searchDevices.toLowerCase())
+        // Filter by loc.
+      )
+    : [];
 
-  useEffect(() => {
-    if (devices.length > 0) {
-      console.log('devices:', devices[0]);
-    }
-  }, [devices]);
+  const rows = filteredDevices.map((device) => ({
+    id: device.dev_id,
+    type: device.dev_type,
+    dev_name: device.dev_name,
+    loc: 'WIP', 
+    opt1: device.optional_info?.[0]?.opt1 || 'N/A',
+    opt2: device.optional_info?.[0]?.opt2 || 'N/A',
+    opt3: device.optional_info?.[0]?.opt3 || 'N/A',
+  }));
 
   return (
-    <div>
-
-    </div>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: 'clamp(250px, 95vw, 800px)',          
+      marginTop: 1,
+    }}
+>
+      {(!devicesLoading) ? (
+        <>
+          <TextField sx={{
+          width: 'clamp(250px, 95vw, 800px)'
+          }}
+          size='small'
+          label="Search"
+          variant="outlined"
+          value={searchDevices}
+          onChange={(e) => setSearchDevices(e.target.value)} 
+          />
+          <DataGrid sx={{
+          width: 'clamp(250px, 95vw, 800px)',
+          height: 'clamp(250px, 95vh, 800px)',
+          mt:0.3
+          }}
+              variant="outlined"
+              rows={rows}
+              columns={columns}
+              autoHeight
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+          />
+        </>
+      ) : (
+        <Typography component="h1" variant="h4">
+            Loading data...
+        </Typography>
+      )}
+    </Box>
   );
 };
 
-export default Device_register_grid;
+export default DeviceRegisterGrid;
