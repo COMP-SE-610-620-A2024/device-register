@@ -1,11 +1,10 @@
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import Inputs from './inputs';
 import SubmitButton from './submit_button';
 
-const FormInput = () => {
+const Form_container = () => {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [roomError, setRoomError] = React.useState(false);
@@ -70,4 +69,4 @@ const FormInput = () => {
   )
 };
 
-export default FormInput;
+export default Form_container;
