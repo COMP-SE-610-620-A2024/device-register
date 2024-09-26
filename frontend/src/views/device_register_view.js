@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import DeviceRegisterGrid from '../components/device_register_components/device_register_grid';
-import NavigationBar from '../components/shared/navigation';
+import DeviceRegisterGrid from '../components/device_register/device_register_grid';
+import NavigationBar from '../components/shared/navigation_bar';
 import { useFetchData } from '../components/shared/fetch_data';
 import TextBox from '../components/shared/text_box';
 
