@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import FormInput from '../components/move_view_components/form_container';
+import FormContainer from '../components/move_view_components/form_container';
 import NavigationBar from '../components/shared/navigation_bar'
 import { useFetchData } from '../components/shared/fetch_data';
 import TextBox from '../components/shared/text_box';
@@ -33,7 +33,7 @@ function MoveView() {
             ) : (
               <Typography>Loading devices...</Typography>
             )}
-          <FormInput></FormInput>
+          <FormContainer></FormContainer>
       </Box>
   );
 }
