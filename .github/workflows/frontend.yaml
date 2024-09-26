@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: frontend
-        
+
       - name: Run frontend tests with covarage
         run: npm test -- --coverage
         working-directory: frontend
