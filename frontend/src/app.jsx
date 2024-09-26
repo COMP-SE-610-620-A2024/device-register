@@ -4,7 +4,7 @@ import RegisterView from './views/device_register_view';
 import DeviceInfoView from './views/device_info_view';
 import EventView from './views/event_view';
 import MoveView from './views/move_view';
-import AdminView from "./views/admin_view";
+import AdminView from "./views/admin_view"; // Assuming this will exist soon as well.
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
           <Route path="/home" element={<RegisterView/>} />
           <Route path="/events" element={<EventView/>} />
           <Route path="/device_info" element={<DeviceInfoView/>} />
-          <Route path="/admin" element={<AdminView/>} />
+          <Route path="/admin" element={<AdminView/>} /> 
         </Routes>
       </Router>
   );
