@@ -38,21 +38,30 @@ const DeviceRegisterGrid = ({ devices, devicesLoading}) => {
 
   return (
     <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        gap: 2,
-    }}>
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: 'clamp(250px, 95vw, 800px)',          
+      marginTop: 1,
+    }}
+>
       {(!devicesLoading) ? (
         <>
-          <TextField
-          label="Search Devices"
+          <TextField sx={{
+          width: 'clamp(250px, 95vw, 800px)'
+          }}
+          size='small'
+          label="Search"
           variant="outlined"
           value={searchDevices}
           onChange={(e) => setSearchDevices(e.target.value)} 
-          sx={{ marginBottom: 2 }}
           />
-          <DataGrid
+          <DataGrid sx={{
+          width: 'clamp(250px, 95vw, 800px)',
+          height: 'clamp(250px, 95vh, 800px)',
+          mt:0.3
+          }}
+              variant="outlined"
               rows={rows}
               columns={columns}
               autoHeight
