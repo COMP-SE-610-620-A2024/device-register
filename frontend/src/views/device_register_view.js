@@ -11,12 +11,12 @@ function DeviceRegisterView() {
 
   return (
     <Box sx={{
-         display: 'flex',
+        display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',   // Ensure it spans the full width of the viewport
-        height: 'auto',  // Use auto height to allow the content to define the height
+        width: '100%',
+        height: 'auto',
     }}>
         <NavigationBar></NavigationBar>
         <TextBox

@@ -39,21 +39,25 @@ const EventGrid = ({ events, eventsLoading}) => {
 
   return (
     <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        gap: 2,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: 'clamp(250px, 95vw, 800px)',          
+      marginTop: 1,
     }}>
       {(!eventsLoading) ? (
         <>
-          <TextField
-          label="Search events"
+          <TextField sx={{width: 'clamp(250px, 95vw, 800px)'}}
+          label="Search"
           variant="outlined"
           value={searchEvents}
           onChange={(e) => setSearchEvents(e.target.value)} 
-          sx={{ marginBottom: 2 }}
           />
-          <DataGrid
+          <DataGrid sx={{
+            width: 'clamp(250px, 95vw, 800px)',
+            height: 'clamp(250px, 95vh, 800px)',
+            mt:0.3
+            }}
               rows={rows}
               columns={columns}
               autoHeight

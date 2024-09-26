@@ -11,13 +11,20 @@ function EventView() {
     = useFetchData('event_history');
 
   return (
-    <Box direction="column" justifyContent="space-between">
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: 'auto',
+    }}>
         <NavigationBar></NavigationBar>
         <TextBox
-                texts={[
-                  'Event History'
-                ]}
-              />
+          texts={[
+            'Event History'
+          ]}
+        />
         <EventGrid 
           events={events} 
           eventsLoading={eventsLoading} 
