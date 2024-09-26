@@ -9,14 +9,14 @@ const TextBox = ({texts}) => {
       flexDirection: 'column', 
       justifyContent: 'center', 
       alignItems: 'center', 
-      mt: 2, 
+      mt: 6, 
       maxWidth: '100%'
     }}>
       {texts.map((text, index) => (
         <Typography
           key={index}
           sx={{ 
-            fontSize: 'clamp(1rem, 5vw, 1.9rem)', 
+            fontSize: 'clamp(1.5rem, 5vw, 2.4rem)', 
             paddingY: 1,
             textAlign: 'center',
             overflow: 'hidden',

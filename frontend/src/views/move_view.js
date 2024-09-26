@@ -15,8 +15,13 @@ function MoveView() {
   Math.floor(Math.random()*devices.length) : 0;;
 
   return (
-      <Box direction="column" justifyContent="space-between">
-          <NavigationBar></NavigationBar>
+      <Box sx={{
+        display: 'flex',           
+        flexDirection: 'column',   
+        justifyContent: 'center',  
+        alignItems: 'center',  
+      }}>
+          <NavigationBar sx={{  }}/>
             {devices && !devicesLoading ? (
               <TextBox
                 texts={[
