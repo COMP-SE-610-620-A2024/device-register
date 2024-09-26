@@ -5,7 +5,7 @@ const SubmitButton = () => {
 
   return (
     <div>
-        <Button sx={{mt: 2}}
+        <Button sx={{mt: 3, minHeight: '55px',   }}
         type="submit"
         fullWidth
         variant="contained"

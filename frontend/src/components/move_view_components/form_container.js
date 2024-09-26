@@ -52,10 +52,7 @@ const FormInput = () => {
 
   return (
     <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
-      gap: 2,
+      wrap: "nowrap"
     }}
       component="form"
       onSubmit={handleSubmit}
