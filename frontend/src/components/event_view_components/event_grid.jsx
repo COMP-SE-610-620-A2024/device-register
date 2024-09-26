@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TableGrid from '../shared/grid_table.jsx'
 
 const EventGrid = ({ events, eventsLoading}) => {
   const [searchEvents, setSearchEvents] = useState('');
