@@ -10,17 +10,18 @@ export default [
     extends: ["eslint:recommended"],
   }),
   {
+    files: ["**/*.js", "**/*.jsx"],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
-        module: 'readonly', // Define Node.js globals here
+        module: 'readonly',
         require: 'readonly',
         process: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {
-          jsx: true, // Enable JSX support
+          jsx: true,
         },
       },
     },
