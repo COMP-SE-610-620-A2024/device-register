@@ -20,7 +20,7 @@ const Navigation_bar = () => (
             direction="row"          
             justifyContent="center" 
             alignItems="center"    
-            spacing={5}
+            spacing={0.5}
             wrap="nowrap"
             maxHeight={30}
             minWidth={225}
@@ -29,10 +29,11 @@ const Navigation_bar = () => (
                 <LinkButton
                     href="/events"
                     icon={<List/>}
+                    variant = "text"
                     iconSx={{ 
                         minWidth: '20px', 
                         minHeight: '20px', 
-                        fontSize: 'clamp(24px, 2vw, 32px)' 
+                        fontSize: 'clamp(24px, 2vw, 32px)',
                     }}
                 />
             </Grid2>
@@ -40,6 +41,7 @@ const Navigation_bar = () => (
                 <LinkButton
                     href="/home"
                     icon={<Home/>}
+                    variant = "text"
                     iconSx={{ 
                         minWidth: '20px', 
                         minHeight: '20px', 
@@ -51,6 +53,7 @@ const Navigation_bar = () => (
                 <LinkButton
                     href="/admin"
                     icon={<Lock/>}
+                    variant = "text"
                     iconSx={{ 
                         minWidth: '20px', 
                         minHeight: '20px', 
