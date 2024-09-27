@@ -9,7 +9,9 @@ const LinkButton = ({ href, text, icon, target = "_self", iconSx }) => {
       {text ? ( 
         <span className="link_button">{text}</span>
       ) : (
-        <IconButton sx={iconSx}>{icon}</IconButton>
+        <IconButton sx={iconSx}>
+          {icon}
+        </IconButton>
       )}
     </a>
   );
