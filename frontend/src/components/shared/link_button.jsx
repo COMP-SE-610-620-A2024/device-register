@@ -1,14 +1,26 @@
-import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { IconButton } from '@mui/material';
 
-const Link_button = ({}) => {
-  
-
+const LinkButton = ({ href, text, icon, target = "_self", iconSx }) => {
   return (
-    <Button>
-        
-    </Button>
+    <a href={href} target={target} rel="noopener noreferrer">
+      {/*Render text if exists, otherwise icon*/}  
+      {text ? ( 
+        <span className="link_button">{text}</span>
+      ) : (
+        <IconButton sx={iconSx}>{icon}</IconButton>
+      )}
+    </a>
   );
 };
 
-export default Link_button;
+LinkButton.propTypes = {
+  href: PropTypes.string.isRequired,
+  text: PropTypes.string,
+  icon: PropTypes.node,     
+  target: PropTypes.string,    
+  iconSx: PropTypes.object, 
+};
+
+export default LinkButton;

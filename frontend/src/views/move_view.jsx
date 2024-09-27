@@ -21,7 +21,7 @@ function MoveView() {
         justifyContent: 'center',  
         alignItems: 'center',  
       }}>
-          <NavigationBar sx={{  }}/>
+          <NavigationBar/>
             {devices && !devicesLoading ? (
               <TextBox
                 texts={[
@@ -31,7 +31,12 @@ function MoveView() {
                 ]}
               />
             ) : (
-              <Typography>Loading devices...</Typography>
+              <Typography sx={{
+                mt: 7,
+                fontSize: 'clamp(1.5rem, 10vw, 2.4rem)'
+                }}>
+                Loading devices...
+              </Typography>
             )}
           <FormContainer></FormContainer>
       </Box>

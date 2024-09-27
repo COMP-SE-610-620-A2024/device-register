@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Grid2';
-import IconButton from '@mui/material/IconButton';
+import LinkButton from './link_button';
 import { Home, List, Lock} from '@mui/icons-material';
 
 const Navigation_bar = () => (
@@ -25,50 +25,38 @@ const Navigation_bar = () => (
             maxHeight={30}
             minWidth={225}
         >
-            <Grid2 item>
-                <a
-                    className="App-link"
+            <Grid2 events>
+                <LinkButton
                     href="/events"
-                    target="_self"
-                    rel="noopener noreferrer"
-                >
-                    <IconButton sx={{
+                    icon={<List/>}
+                    iconSx={{ 
                         minWidth: '20px', 
-                        minHeight: '20px'
-                    }}>
-                        <List sx={{ fontSize: 'clamp(24px, 2vw, 32px)' }}/>
-                    </IconButton>
-                </a>
+                        minHeight: '20px', 
+                        fontSize: 'clamp(24px, 2vw, 32px)' 
+                    }}
+                />
             </Grid2>
-            <Grid2 item>
-                <a
-                    className="App-link"
+            <Grid2 home>
+                <LinkButton
                     href="/home"
-                    target="_self"
-                    rel="noopener noreferrer"
-                >
-                    <IconButton sx={{
+                    icon={<Home/>}
+                    iconSx={{ 
                         minWidth: '20px', 
-                        minHeight: '20px'
-                    }}>
-                        <Home sx={{ fontSize: 'clamp(24px, 2vw, 32px)' }}/>
-                    </IconButton>
-                </a>
+                        minHeight: '20px', 
+                        fontSize: 'clamp(24px, 2vw, 32px)' 
+                    }}
+                />
             </Grid2>
-            <Grid2 item>
-                <a
-                    className="App-link"
+            <Grid2 admin>
+                <LinkButton
                     href="/admin"
-                    target="_self"
-                    rel="noopener noreferrer"
-                >
-                    <IconButton sx={{
+                    icon={<Lock/>}
+                    iconSx={{ 
                         minWidth: '20px', 
-                        minHeight: '20px'
-                    }}>
-                        <Lock sx={{ fontSize: 'clamp(24px, 2vw, 32px)' }}/>
-                    </IconButton>
-                </a>
+                        minHeight: '20px', 
+                        fontSize: 'clamp(24px, 2vw, 32px)' 
+                    }}
+                />
             </Grid2>
         </Grid2>
     </Box>
