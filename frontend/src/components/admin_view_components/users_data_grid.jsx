@@ -57,8 +57,11 @@ const UsersGrid = ({ users, usersLoading}) => {
           />
         </>
       ) : (
-        <Typography component="h1" variant="h4">
-            Loading data...
+        <Typography sx={{
+          mt: 7,
+          fontSize: 'clamp(1.5rem, 10vw, 2.4rem)'
+          }}>
+          Loading devices...
         </Typography>
       )}
     </Box>
