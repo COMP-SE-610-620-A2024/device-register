@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 
 {/* Extending MUI Button to work as a link button.*/}
-const LinkButton = ({ href, text, icon, target = "_self", iconSx,
+const Link_button = ({ href, text, icon, target = "_self", iconSx,
    variant = "contained", size = "medium", color = "primary" }) => {
   return (
     <Button
@@ -23,7 +23,7 @@ const LinkButton = ({ href, text, icon, target = "_self", iconSx,
   );
 };
 
-LinkButton.propTypes = {
+Link_button.propTypes = {
   href: PropTypes.string.isRequired,
   text: PropTypes.string,
   icon: PropTypes.node,
@@ -35,4 +35,4 @@ LinkButton.propTypes = {
     ["primary", "secondary", "error", "info", "success", "warning"]),
 };
 
-export default LinkButton;
+export default Link_button;
