@@ -1,11 +1,13 @@
 from backend.utils.database_Init import db
 
+
 class Event(db.Model):
     __tablename__: str = 'events'
 
     event_id = db.Column(db.Integer, primary_key=True)
     dev_id = db.Column(db.Integer, db.ForeignKey('devices.dev_id'), nullable=False)
-    user_id = db.Column(db.Integer, nullable=False) # TODO: Add db.ForeignKey('users.user_id')
+    # TODO: Add below db.ForeignKey('users.user_id')
+    user_id = db.Column(db.Integer, nullable=False)
     move_time = db.Column(db.DateTime, nullable=False)
     loc_name = db.Column(db.String(200), nullable=False)
 

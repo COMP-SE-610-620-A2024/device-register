@@ -5,6 +5,7 @@ from backend.models.device_model import Device
 from backend.models.event_model import Event
 from sqlalchemy.sql import func
 
+
 @pytest.fixture
 def app():
     # Create and configure a new app instance for each tests.
@@ -42,6 +43,7 @@ def app():
 def client(app):
     # A tests client for the app.
     return app.test_client()
+
 
 def test_event_to_dict(app):
     with app.app_context():
