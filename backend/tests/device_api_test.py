@@ -6,7 +6,7 @@ from backend.models.device_model import Device
 
 @pytest.fixture
 def app():
-    # Create and configure a new app instance for each test.
+    # Create and configure a new app instance for each tests.
     app = create_app()
     app.config['TESTING'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
