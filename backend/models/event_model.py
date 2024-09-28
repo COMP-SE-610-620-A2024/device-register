@@ -14,6 +14,6 @@ class Event(db.Model):
             'event_id': str(self.event_id),
             'dev_id': str(self.dev_id),
             'user_id': str(self.user_id),
-            'move_time': str(self.move_time),
-            'loc_name': str(self.loc_name)
+            'move_time': self.move_time.isoformat() if self.move_time else None,
+            'loc_name': self.loc_name
         }
