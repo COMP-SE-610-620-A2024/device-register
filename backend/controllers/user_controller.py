@@ -1,7 +1,7 @@
 from flask import jsonify, Response
 from backend.models.user_model import User
 
-def get_user(user_id: int) -> tuple[Response, int]:
+def get_user_by_id(user_id: int) -> tuple[Response, int]:
     user: User | None = User.query.get(user_id)
     if user:
         return jsonify(user.to_dict()), 200

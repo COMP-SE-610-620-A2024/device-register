@@ -14,8 +14,8 @@ def app():
 
     with app.app_context():
         db.create_all()
-        # Add a tests device to the database
-        test_user = User(user_name="User xyz",
+        # Add a test user to the database
+        test_user: User = User(user_name="User xyz",
                         user_email="user@email.com")
         db.session.add(test_user)
         db.session.commit()
@@ -35,7 +35,6 @@ def client(app):
 
 
 def test_get_users(client):
-    # Test the GET /api/devices/ endpoint.
     response = client.get('/api/users/')
     assert response.status_code == 200  # Check that the status code is 200 OK
 
