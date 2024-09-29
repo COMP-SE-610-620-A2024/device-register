@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 
 @pytest.fixture
 def app():
-    # Create and configure a new app instance for each tests.
+    # Create and configure a new app instance for each test.
     app = create_app()
     app.config['TESTING'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
