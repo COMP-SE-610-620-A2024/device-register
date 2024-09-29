@@ -57,7 +57,7 @@ def test_event_to_dict(app):
         assert event_dict['loc_name'] == event.loc_name
         assert event_dict['move_time'] == event.move_time.isoformat()
 
-        
+
 def test_get_all_events(client):
     # Test the GET /api/events endpoint.
     response = client.get('/api/events/')
