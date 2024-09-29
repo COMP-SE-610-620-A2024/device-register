@@ -27,3 +27,14 @@ class Event(db.Model):
     @staticmethod
     def get_event_by_id(event_id: int) -> 'Event':
         return Event.query.get(event_id)
+
+    @staticmethod
+    def remove_event(event_id: int) -> 'bool':
+        event = Event.get_event_by_id(event_id)
+
+        if event:
+            db.session.delete(event)
+            db.session.commit()
+            return True
+        else:
+            return False
