@@ -25,5 +25,5 @@ class Event(db.Model):
         return Event.query.all()
 
     @staticmethod
-    def get_event_by_id(event_id) -> 'Event':
+    def get_event_by_id(event_id: int) -> 'Event':
         return Event.query.get(event_id)
