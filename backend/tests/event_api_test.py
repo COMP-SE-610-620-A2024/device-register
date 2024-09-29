@@ -79,4 +79,3 @@ def test_get_event_by_id(client):
     assert data['dev_id'] == "1"
     assert data['user_id'] == "1"
     assert data['loc_name'] == "Lab"
-    
