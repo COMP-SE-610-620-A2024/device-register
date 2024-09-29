@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 
 @pytest.fixture
 def app():
-    # Create and configure a new app instance for each test.
+    # Create and configure a new app instance for each tests.
     app = create_app()
     app.config['TESTING'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -35,7 +35,7 @@ def app():
 
     yield app
 
-    # Clean up / reset the database after each test.
+    # Clean up / reset the database after each tests
     with app.app_context():
         db.session.remove()
         db.drop_all()
