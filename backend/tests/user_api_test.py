@@ -1,7 +1,7 @@
 import pytest
 from backend.app import create_app
 from backend.utils.database_Init import db
-from backend.models.device_model import Device
+from backend.models.user_model import User
 
 
 @pytest.fixture
@@ -15,12 +15,9 @@ def app():
     with app.app_context():
         db.create_all()
         # Add a tests device to the database
-        test_device = Device(dev_name="Device",
-                             dev_manufacturer="Manfact A",
-                             dev_model="Model S",
-                             dev_class="class A",
-                             dev_comments="Location: Herwood xyz")
-        db.session.add(test_device)
+        test_user = User(user_name="User xyz",
+                        user_email="user@email.com")
+        db.session.add(test_user)
         db.session.commit()
 
     yield app
@@ -37,15 +34,12 @@ def client(app):
     return app.test_client()
 
 
-def test_get_devices(client):
+def test_get_users(client):
     # Test the GET /api/devices/ endpoint.
-    response = client.get('/api/devices/')
+    response = client.get('/api/users/')
     assert response.status_code == 200  # Check that the status code is 200 OK
 
     data = response.get_json()
     assert len(data) == 1
-    assert data[0]['dev_name'] == "Device"
-    assert data[0]['dev_manufacturer'] == "Manfact A"
-    assert data[0]['dev_model'] == "Model S"
-    assert data[0]['dev_class'] == "class A"
-    assert data[0]['dev_comments'] == "Location: Herwood xyz"
+    assert data[0]['user_name'] == "User xyz"
+    assert data[0]['user_email'] == "user@email.com"
