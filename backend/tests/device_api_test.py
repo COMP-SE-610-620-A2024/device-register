@@ -15,7 +15,7 @@ def app():
     with app.app_context():
         db.create_all()
         # Add a tests device to the database
-        test_device = Device(dev_name="Device",
+        test_device: Device = Device(dev_name="Device",
                              dev_manufacturer="Manfact A",
                              dev_model="Model S",
                              dev_class="class A",
@@ -43,7 +43,7 @@ def test_get_devices(client):
     assert response.status_code == 200  # Check that the status code is 200 OK
 
     data = response.get_json()
-    assert len(data) == 1
+    assert len(data) == 2
     assert data[0]['dev_name'] == "Device"
     assert data[0]['dev_manufacturer'] == "Manfact A"
     assert data[0]['dev_model'] == "Model S"
