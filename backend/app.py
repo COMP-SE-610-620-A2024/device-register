@@ -18,6 +18,9 @@ def create_app() -> Flask:
     from backend.api.user_api import user_api
     app.register_blueprint(user_api, url_prefix='/api/users')
 
+    from backend.api.event_api import event_api
+    app.register_blueprint(event_api, url_prefix='/api/events')
+
     with (((app.app_context()))):
         db.create_all()
 
