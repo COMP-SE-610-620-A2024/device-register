@@ -10,6 +10,5 @@ def list_events() -> tuple[Response, int]:
 
 
 @event_api.route('/<int:event_id>', methods=['GET'])
-#@event_api.route('/int:event_id', methods=['GET'])
 def event_by_id(event_id: int) -> tuple[Response, int]:
     return get_event_by_id(event_id)
