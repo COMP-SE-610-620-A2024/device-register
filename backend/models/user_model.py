@@ -16,7 +16,7 @@ class User(db.Model):
         }
 
     @staticmethod
-    def add_or_update_user(user_data: dict) -> 'User':
+    def add_or_update_user(user_data: dict) -> tuple['User', bool]:
         existing_user = (User.query.filter_by(user_email=user_data.get('user_email'))
                          .first())
 
@@ -24,12 +24,12 @@ class User(db.Model):
             for key, value in user_data.items():
                 setattr(existing_user, key, value)
             db.session.commit()
-            return existing_user
+            return existing_user, False  # Corrected here
         else:
             new_user = User(**user_data)
             db.session.add(new_user)
             db.session.commit()
-            return new_user
+            return new_user, True  # Corrected here
 
     @staticmethod
     def get_all() -> list['User']:

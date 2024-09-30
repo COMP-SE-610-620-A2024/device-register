@@ -11,20 +11,18 @@ def get_user_by_id(user_id: int) -> tuple[Response, int]:
 
 def add_or_update_user(user_data: dict[str, str | int]) -> tuple[Response, int]:
     try:
-        # Check if the user exists
-        existing_user = (User.query.filter_by(user_email=user_data.get('user_email'))
-                         .first())
+        updated_user, created = User.add_or_update_user(user_data)
 
-        if existing_user:
-            # Update the existing user
-            updated_user: User = User.add_or_update_user(user_data)
-            return jsonify(updated_user.to_dict()), 200  # Return 200 for updates
+        if created:
+            status_code = 201  # new user created
         else:
-            # Add a new user
-            new_user: User = User.add_or_update_user(user_data)
-            return jsonify(new_user.to_dict()), 201  # Return 201 for creation
+            status_code = 200  # existing user updated
+
+        return jsonify(updated_user.to_dict()), status_code
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': 'An unexpected error occurred: ' + str(e)}), 500
 
 
 def get_all_users() -> tuple[Response, int]:
