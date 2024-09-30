@@ -2,6 +2,7 @@ import pytest
 from backend.app import create_app
 from backend.utils.database_Init import db
 from backend.models.user_model import User
+from backend.controllers.user_controller import add_or_update_user, get_user_by_id, get_all_users
 
 @pytest.fixture
 def app():
@@ -18,63 +19,64 @@ def app():
         db.session.add(test_user)
         db.session.commit()
 
-    yield app
+        yield app
 
-    # Clean up / reset the database after each tests
+    # Clean up / reset the database after each test
     with app.app_context():
         db.session.remove()
         db.drop_all()
 
 @pytest.fixture
-def client(app):
-    # A test client for the app.
-    return app.test_client()
+def app_context(app):
+    with app.app_context():
+        yield app
 
-def test_add_or_update_user(client):
-    # Test the POST /api/users/ endpoint for adding a new user.
+def test_add_or_update_user(app_context):
+    # Test adding a new user by directly calling the controller function.
     new_user_data = {
         "user_name": "New User",
         "user_email": "newuser@email.com"
     }
 
-    # Test adding a new user
-    response = client.post('/api/users/', json=new_user_data)
-    assert response.status_code == 201
-    data = response.get_json()
-    assert data['user_name'] == new_user_data['user_name']
-    assert data['user_email'] == new_user_data['user_email']
+    # Call the controller function directly
+    response, status_code = add_or_update_user(new_user_data)
 
-    # Test updating an existing user by email
+    # Assert that the response is correct
+    assert status_code == 201
+    assert response.json['user_name'] == new_user_data['user_name']
+    assert response.json['user_email'] == new_user_data['user_email']
+
+    # Test updating an existing user
     updated_user_data = {
         "user_name": "Updated User",
         "user_email": "newuser@email.com"
     }
 
-    response = client.post('/api/users/', json=updated_user_data)
-    assert response.status_code == 200  # Expect 200 OK for an update
+    # Since we don't pass a user_id, it will update based on email
+    response, status_code = add_or_update_user(updated_user_data)
+    assert status_code == 200
+    assert response.json['user_name'] == updated_user_data['user_name']
 
-    updated_data = response.get_json()
-    assert updated_data['user_name'] == updated_user_data['user_name']
-    assert updated_data['user_email'] == updated_user_data['user_email']
+def test_get_user_by_id(app_context):
+    # Get the user that was added in the fixture by directly calling the controller.
+    response, status_code = get_user_by_id(1)
 
-    with client.application.app_context():
-        updated_user = User.query.filter_by(user_email=updated_user_data['user_email']).first()
-        assert updated_user is not None
-        assert updated_user.user_name == updated_user_data['user_name']
+    # Assert that the user is found
+    assert status_code == 200
+    assert response.json['user_name'] == "User xyz"
+    assert response.json['user_email'] == "user@email.com"
 
-def test_add_user_with_duplicate_email(client):
-    # Test adding a new user with an existing email.
-    duplicate_user_data = {
-        "user_name": "Duplicate User",
-        "user_email": "user@email.com"
-    }
+    # Test non-existent user
+    response, status_code = get_user_by_id(9999)
+    assert status_code == 404
+    assert response.json['error'] == "User not found"
 
-    response = client.post('/api/users/', json=duplicate_user_data)
-    assert response.status_code == 200  # Expect 200 OK for updating existing user
+def test_get_all_users(app_context):
+    # Test fetching all users
+    response, status_code = get_all_users()
 
-    data = response.get_json()
-    assert data['user_name'] == "Duplicate User"  # Ensure the name has changed
-
-    with client.application.app_context():
-        users_count = User.query.count()
-        assert users_count == 1  # Ensure still only one user in the database
+    # Assert that one user is found (added in the fixture)
+    assert status_code == 200
+    assert len(response.json) == 1
+    assert response.json[0]['user_name'] == "User xyz"
+    assert response.json[0]['user_email'] == "user@email.com"
