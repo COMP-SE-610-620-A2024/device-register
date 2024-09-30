@@ -1,5 +1,6 @@
 from backend.utils.database_Init import db
 
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -16,7 +17,8 @@ class User(db.Model):
 
     @staticmethod
     def add_or_update_user(user_data: dict) -> 'User':
-        existing_user = User.query.filter_by(user_email=user_data.get('user_email')).first()
+        existing_user = (User.query.filter_by(user_email=user_data.get('user_email'))
+                         .first())
 
         if existing_user:
             for key, value in user_data.items():

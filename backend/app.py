@@ -14,7 +14,7 @@ def create_app() -> Flask:
 
     from backend.api.device_api import device_api
     app.register_blueprint(device_api, url_prefix='/api/devices')
-    
+
     from backend.api.user_api import user_api
     app.register_blueprint(user_api, url_prefix='/api/users')
 

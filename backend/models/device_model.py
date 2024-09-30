@@ -7,7 +7,7 @@ class Device(db.Model):
     dev_id = db.Column(db.Integer, primary_key=True)
     dev_name = db.Column(db.String(100), nullable=False)
     dev_manufacturer = db.Column(db.String(50), nullable=False)
-    dev_model= db.Column(db.String(50), nullable=False)
+    dev_model = db.Column(db.String(50), nullable=False)
     dev_class = db.Column(db.String(50), nullable=False)
     dev_comments = db.Column(db.String(200), nullable=False)
 
