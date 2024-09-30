@@ -24,12 +24,12 @@ class User(db.Model):
             for key, value in user_data.items():
                 setattr(existing_user, key, value)
             db.session.commit()
-            return existing_user, False  # Corrected here
+            return existing_user, False
         else:
             new_user = User(**user_data)
             db.session.add(new_user)
             db.session.commit()
-            return new_user, True  # Corrected here
+            return new_user, True
 
     @staticmethod
     def get_all() -> list['User']:
