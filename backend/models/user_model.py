@@ -1,6 +1,5 @@
 from backend.utils.database_Init import db
 
-
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -17,24 +16,25 @@ class User(db.Model):
 
     @staticmethod
     def add_user(user_data: dict) -> 'User':
-        if User.query.filter_by(user_email=user_data.get('user_email')).first():
-            raise ValueError("Email already exists.")
-
-        new_user: User = User(**user_data)
+        new_user = User(**user_data)
         db.session.add(new_user)
         db.session.commit()
         return new_user
 
     @staticmethod
-    def update_user(user_id: int, new_data: dict):
-        user: User = User.query.get(user_id)
-
+    def update_user(user_id: int, new_data: dict) -> 'User':
+        user = User.query.get(user_id)
         if user:
             for key, value in new_data.items():
                 setattr(user, key, value)
             db.session.commit()
-        return user
+            return user
 
     @staticmethod
     def get_all() -> list['User']:
         return User.query.all()
+
+    @staticmethod
+    def find_user_by_email(email: str) -> int:
+        user = User.query.filter_by(user_email=email).first()
+        return user.user_id if user else None
