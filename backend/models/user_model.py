@@ -15,20 +15,19 @@ class User(db.Model):
         }
 
     @staticmethod
-    def add_user(user_data: dict) -> 'User':
-        new_user = User(**user_data)
-        db.session.add(new_user)
-        db.session.commit()
-        return new_user
+    def add_or_update_user(user_data: dict) -> 'User':
+        existing_user = User.query.filter_by(user_email=user_data.get('user_email')).first()
 
-    @staticmethod
-    def update_user(user_id: int, new_data: dict) -> 'User':
-        user = User.query.get(user_id)
-        if user:
-            for key, value in new_data.items():
-                setattr(user, key, value)
+        if existing_user:
+            for key, value in user_data.items():
+                setattr(existing_user, key, value)
             db.session.commit()
-            return user
+            return existing_user
+        else:
+            new_user = User(**user_data)
+            db.session.add(new_user)
+            db.session.commit()
+            return new_user
 
     @staticmethod
     def get_all() -> list['User']:
