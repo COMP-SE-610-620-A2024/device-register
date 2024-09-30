@@ -16,7 +16,7 @@ def app():
         db.create_all()
         # Add a test user to the database
         test_user: User = User(user_name="User xyz",
-                        user_email="user@email.com")
+            user_email="user@email.com")
         db.session.add(test_user)
         db.session.commit()
 
@@ -33,6 +33,7 @@ def client(app):
     # A tests client for the app.
     return app.test_client()
 
+
 def test_user_to_dict(app):
     with app.app_context():
         user = User.query.first()
@@ -43,6 +44,7 @@ def test_user_to_dict(app):
         assert user_dict['user_name'] == user.user_name
         assert user_dict['user_email'] == user.user_email
 
+
 def test_get_all_users(client):
     # Test the GET /api/users endpoint.
     response = client.get('/api/users/')
@@ -52,6 +54,7 @@ def test_get_all_users(client):
     assert len(data) == 1
     assert data[0]['user_name'] == "User xyz"
     assert data[0]['user_email'] == "user@email.com"
+
 
 def test_get_user_by_id(client):
     # Test the GET /api/users/int:user_id endpoint.

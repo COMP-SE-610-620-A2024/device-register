@@ -2,7 +2,10 @@ import pytest
 from backend.app import create_app
 from backend.utils.database_Init import db
 from backend.models.user_model import User
-from backend.controllers.user_controller import add_or_update_user, get_user_by_id, get_all_users
+from backend.controllers.user_controller import (add_or_update_user,
+                                                 get_user_by_id,
+                                                 get_all_users)
+
 
 @pytest.fixture
 def app():
@@ -26,10 +29,12 @@ def app():
         db.session.remove()
         db.drop_all()
 
+
 @pytest.fixture
 def app_context(app):
     with app.app_context():
         yield app
+
 
 def test_add_or_update_user(app_context):
     # Test adding a new user by directly calling the controller function.
@@ -57,6 +62,7 @@ def test_add_or_update_user(app_context):
     assert status_code == 200
     assert response.json['user_name'] == updated_user_data['user_name']
 
+
 def test_get_user_by_id(app_context):
     # Get the user that was added in the fixture by directly calling the controller.
     response, status_code = get_user_by_id(1)
@@ -70,6 +76,7 @@ def test_get_user_by_id(app_context):
     response, status_code = get_user_by_id(9999)
     assert status_code == 404
     assert response.json['error'] == "User not found"
+
 
 def test_get_all_users(app_context):
     # Test fetching all users
