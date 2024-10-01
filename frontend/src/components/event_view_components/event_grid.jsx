@@ -18,7 +18,7 @@ const DeviceGrid = () => {
       valueGetter: (params) => params.data.loc && params.data.loc.length > 0 ? params.data.loc[0].loc_name : 'N/A', 
       filter: "agTextColumnFilter", 
       flex: 3 
-    }, // Doesn't work
+    }, 
   ];
 
   if (loading) {
