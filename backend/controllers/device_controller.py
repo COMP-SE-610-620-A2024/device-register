@@ -16,3 +16,14 @@ def get_device_by_id(dev_id: int) -> tuple[Response, int]:
     if device:
         return jsonify(device.to_dict()), 200
     return jsonify({'error': 'Device not found'}), 404
+
+
+def update_device(
+    dev_id: int, device_data: dict[str, str | int]
+) -> tuple[Response, int]:
+    updated_device, success = Device.update_device_by_id(dev_id, device_data)
+
+    if success:
+        return jsonify(updated_device.to_dict()), 200
+    else:
+        return jsonify({'error': 'Device not found'}), 404

@@ -28,3 +28,16 @@ class Device(db.Model):
     @staticmethod
     def get_device_by_id(dev_id: int) -> 'Device':
         return db.session.get(Device, dev_id)
+
+    @staticmethod
+    def update_device_by_id(dev_id: int, device_data: dict[str, str | int]
+                            ) -> tuple['Device', bool]:
+        existing_device = Device.get_device_by_id(dev_id)
+
+        if existing_device:
+            for key, value in device_data.items():
+                setattr(existing_device, key, value)
+            db.session.commit()
+            return existing_device, True
+        else:
+            return existing_device, False
