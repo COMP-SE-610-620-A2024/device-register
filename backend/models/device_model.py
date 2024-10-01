@@ -1,4 +1,5 @@
 from backend.utils.database_Init import db
+from sqlalchemy.exc import SQLAlchemyError
 
 
 class Device(db.Model):
@@ -20,3 +21,17 @@ class Device(db.Model):
     @staticmethod
     def get_all() -> list['Device']:
         return Device.query.all()
+
+    @staticmethod
+    def create_devices(device_list: list['Device']) -> tuple['bool', 'str']:
+        try:
+            for new_device in device_list:
+                db.session.add(new_device)
+
+            db.session.commit()
+
+        except SQLAlchemyError as error:
+            db.session.rollback()
+            return False, str(error)
+
+        return True, ""
