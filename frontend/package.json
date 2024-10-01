@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.0",
     "@mui/material": "^6.1.0",
+    "@mui/x-data-grid": "^7.16.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
@@ -25,7 +26,8 @@
     "test": "jest",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test:coverage": "jest --coverage ."
+    "test:coverage": "jest --coverage .",
+    "mock-api": "json-server --watch ./src/__tests__/test_api.json --port 5000"
   },
   "browserslist": {
     "production": [
@@ -41,6 +43,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "json-server": "^1.0.0-beta.2",
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
     "@eslint/eslintrc": "^3.1.0",

@@ -1,3 +1,5 @@
+import * as React from 'react';
+import Box from '@mui/material/Box';
 import NavigationBar from '../components/shared/navigation_bar'
 import EventGrid from '../components/event_view_components/event_grid'
 import * as React from 'react';

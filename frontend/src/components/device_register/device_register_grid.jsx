@@ -1,5 +1,7 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import GridTable from '../shared/grid_table.jsx';
+import Typography from '@mui/material/Typography';
+import { useFetchData } from '../shared/fetch_data'; // Import the custom hook
 
 const DeviceGrid = () => {
   const { data, loading, error } = useFetchData('devices'); // Fetch the devices data
