@@ -29,17 +29,16 @@ class Device(db.Model):
     @staticmethod
     def create_devices(device_list: list['Device']) -> tuple['bool', 'str']:
         try:
-            for new_device in device_list:
-                db.session.add(new_device)
-
-            db.session.commit()
+            with db.session.begin():
+                for new_device in device_list:
+                    db.session.add(new_device)
 
         except SQLAlchemyError as error:
             db.session.rollback()
             return False, str(error)
 
         return True, ""
-      
+
     @staticmethod
     def get_device_by_id(dev_id: int) -> 'Device':
         return db.session.get(Device, dev_id)
