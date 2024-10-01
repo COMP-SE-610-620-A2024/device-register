@@ -37,7 +37,7 @@ def create_app() -> Flask:
                 dev_manufacturer="Manfact A",
                 dev_model="Model S",
                 dev_class="class A",
-                dev_comments="Location: Herwood xyz",
+                dev_comments="Location: Herwood xyz"
 
             )
             db.session.add(test_device)
