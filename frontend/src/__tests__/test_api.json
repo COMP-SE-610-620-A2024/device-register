@@ -75,6 +75,169 @@
           "opt3"
       ]
     }
+    ,{
+      "dev_id": "8",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "9",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "10",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "11",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "12",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "13",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "14",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "15",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "16",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "17",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "18",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    },{
+      "dev_id": "19",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "20",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
+    ,{
+      "dev_id": "21",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    },{
+      "dev_id": "22",
+      "dev_name": "Random Use Nanoscope",
+      "dev_type": "Microscope",
+      "dev_serial": "007",
+      "optional_info":[
+          "opt1", 
+          "opt2", 
+          "opt3"
+      ]
+    }
   ],
   "event_history":[
     {

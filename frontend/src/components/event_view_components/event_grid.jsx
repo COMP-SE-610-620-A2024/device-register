@@ -5,38 +5,50 @@ import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const EventGrid = ({ events, eventsLoading}) => {
-  const [searchEvents, setSearchEvents] = useState('');
+const DeviceGrid = () => {
+  const { data, loading, error } = useFetchData('event_history'); // Changes when API available
 
-  const columns = [
-    { field:'id',headerName:'Id',width:50,headerAlign:'center'},
-    { field:'dev_id',headerName:'Device Id',width:50,headerAlign:'center'},
-    { field:'t_start',headerName:'Time Start',width:125,headerAlign:'center'},
-    { field:'t_end',headerName:'Time End', width: 125, headerAlign: 'center'},
-    { field:'loc_name',headerName:'Location',width:125,headerAlign:'center'},
-    { field:'opt1',headerName:'Optional1',width:100},
-    { field:'opt2',headerName:'Optional2',width:100},
-    { field:'opt3',headerName:'Optional3',width:100},
+  const columnDefs = [
+    { field: "event_id", filter: "agNumberColumnFilter", headerName: "#",flex: 1 },
+    { field: "dev_id", filter: "agTextColumnFilter", headerName: "USER (WIP)", flex: 1 }, // Replaced with user_name
+    { field: "time_start", filter: "agDateColumnFilter", headerName: "Date", flex: 4 },
+    { 
+      headerName: "Location", 
+      field: "loc[0].loc_name", 
+      valueGetter: (params) => params.data.loc && params.data.loc.length > 0 ? params.data.loc[0].loc_name : 'N/A', 
+      filter: "agTextColumnFilter", 
+      flex: 3 
+    }, // Doesn't work
   ];
 
-  const filteredEvents = (!eventsLoading && events)
-    ? events.filter((event) =>
-        event.event_id.toLowerCase().includes(searchEvents.toLowerCase()) ||
-        event.dev_id.toLowerCase().includes(searchEvents.toLowerCase()) ||
-        event.loc[0].loc_name.toLowerCase().includes(searchEvents.toLowerCase())
-      )
-    : [];
+  if (loading) {
+    return (
+      <Typography
+        sx={{
+          mt: 7,
+          fontSize: 'clamp(1.5rem, 10vw, 2.4rem)',
+        }}
+      >
+        Loading devices...
+      </Typography>
+    );
+  }
 
-  const rows = filteredEvents.map((event) => ({
-    id: event.event_id,
-    dev_id: event.dev_id,
-    t_start: event.time_start,
-    t_end: event.time_end,
-    loc_name: event.loc[0].loc_name, 
-    opt1: event.optional_info?.[0]?.opt1 || 'N/A',
-    opt2: event.optional_info?.[0]?.opt2 || 'N/A',
-    opt3: event.optional_info?.[0]?.opt3 || 'N/A',
-  }));
+  if (error) {
+    return (
+      <Typography
+      sx={{
+        mt: 7,
+        fontSize: 'clamp(1.5rem, 9vw, 2.4rem)',
+        color: 'red',
+        textWrap: true
+      }}
+    >
+        Failed to load devices.<br />
+        Please try again later.<br />
+    </Typography>
+    );
+  }
 
   return (
     <Box sx={{
@@ -74,4 +86,4 @@ const EventGrid = ({ events, eventsLoading}) => {
   );
 };
 
-export default EventGrid;
+export default DeviceGrid;

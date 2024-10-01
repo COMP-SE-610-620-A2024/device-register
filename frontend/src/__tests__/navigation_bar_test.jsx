@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/';
 import NavigationBar from '../components/shared/navigation_bar';
 
-describe("LinkButton Component", () => {
+describe("Navigation Bar Component", () => {
 
   test("Render navigation bar correctly", () => {
     render(<NavigationBar />);

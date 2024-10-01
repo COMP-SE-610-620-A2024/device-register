@@ -1,81 +1,51 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-const DeviceRegisterGrid = ({ devices, devicesLoading}) => {
-  const [searchDevices, setSearchDevices] = useState('');
+const DeviceGrid = () => {
+  const { data, loading, error } = useFetchData('devices'); // Fetch the devices data
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 50, headerAlign: 'center' },
-    { field: 'type', headerName: 'Type', width: 50, headerAlign: 'center' },
-    { field:'dev_name',headerName:'Device Name',width:125,headerAlign:'center'},
-    { field: 'loc', headerName: 'Location',width: 125, headerAlign: 'center' },
-    { field: 'opt1', headerName: 'Optional 1', width: 100 },
-    { field: 'opt2', headerName: 'Optional 2', width: 100 },
-    { field: 'opt3', headerName: 'Optional 3', width: 100 },
+  const columnDefs = [
+    { field: "dev_id", filter: "agNumberColumnFilter", headerName: "ID", flex: 1 },
+    { field: "dev_type", filter: "agTextColumnFilter", headerName: "Type", flex: 1 },
+    { field: "dev_name", filter: "agTextColumnFilter", headerName: "Device Name", flex: 3 },
+    { field: "dev_serial", filter: "agTextColumnFilter", headerName: "LOC (WIP)", flex: 3 }, // Replaced with loc_name
   ];
 
-  const filteredDevices = (!devicesLoading && devices)
-    ? devices.filter((device) =>
-        device.dev_name.toLowerCase().includes(searchDevices.toLowerCase()) ||
-        device.dev_type.toLowerCase().includes(searchDevices.toLowerCase()) ||
-        device.dev_id.toLowerCase().includes(searchDevices.toLowerCase())
-        // Filter by loc.
-      )
-    : [];
+  if (loading) {
+    return (
+      <Typography
+        sx={{
+          mt: 7,
+          fontSize: 'clamp(1.5rem, 10vw, 2.4rem)',
+        }}
+      >
+        Loading devices...
+      </Typography>
+    );
+  }
 
-  const rows = filteredDevices.map((device) => ({
-    id: device.dev_id,
-    type: device.dev_type,
-    dev_name: device.dev_name,
-    loc: 'WIP', 
-    opt1: device.optional_info?.[0]?.opt1 || 'N/A',
-    opt2: device.optional_info?.[0]?.opt2 || 'N/A',
-    opt3: device.optional_info?.[0]?.opt3 || 'N/A',
-  }));
+  if (error) {
+    return (
+      <Typography
+        sx={{
+          mt: 7,
+          fontSize: 'clamp(1.5rem, 9vw, 2.4rem)',
+          color: 'red',
+          textWrap: true
+        }}
+      >
+          Failed to load devices.<br />
+          Please try again later.<br />
+      </Typography>
+    );
+  }
 
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: 'clamp(250px, 95vw, 800px)',          
-      marginTop: 1,
-    }}
->
-      {(!devicesLoading) ? (
-        <>
-          <TextField sx={{
-          width: 'clamp(250px, 95vw, 800px)'
-          }}
-          size='small'
-          label="Search"
-          variant="outlined"
-          value={searchDevices}
-          onChange={(e) => setSearchDevices(e.target.value)} 
-          />
-          <DataGrid sx={{
-          width: 'clamp(250px, 95vw, 800px)',
-          height: 'clamp(250px, 95vh, 800px)',
-          mt:0.3
-          }}
-              variant="outlined"
-              rows={rows}
-              columns={columns}
-              autoHeight
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-          />
-        </>
-      ) : (
-        <Typography sx={{
-          mt: 7,
-          fontSize: 'clamp(1.5rem, 10vw, 2.4rem)'
-          }}>
-          Loading devices...
-        </Typography>
-      )}
-    </Box>
+    <GridTable 
+      rowData={data && data.length ? data : []} 
+      columnDefs={columnDefs}
+    />
   );
 };
 
-export default DeviceRegisterGrid;
+export default DeviceGrid;

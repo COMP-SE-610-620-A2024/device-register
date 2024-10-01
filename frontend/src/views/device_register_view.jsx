@@ -8,8 +8,6 @@ import { useFetchData } from '../components/shared/fetch_data';
 import TextBox from '../components/shared/text_box';
 
 function DeviceRegisterView() {
-  const { data: devices, loading: devicesLoading, error: devicesError }
-    = useFetchData('devices');
 
   return (
     <Box direction="column" justifyContent="space-between">
@@ -19,10 +17,7 @@ function DeviceRegisterView() {
             'Device Register'
           ]}
         />
-        <DeviceRegisterGrid 
-          devices={devices} 
-          devicesLoading={devicesLoading} 
-       />
+        <DeviceGrid/>
     </Box>
   );
 }
