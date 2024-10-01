@@ -1,5 +1,9 @@
 from flask import Blueprint, Response, request
-from backend.controllers.device_controller import get_devices, get_device_by_id, update_device
+from backend.controllers.device_controller import (
+    get_devices,
+    get_device_by_id,
+    update_device
+)
 
 device_api = Blueprint('device_api', __name__)
 
