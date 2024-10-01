@@ -1,6 +1,5 @@
 from backend.utils.database_Init import db
 
-
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -39,3 +38,8 @@ class User(db.Model):
     def find_user_by_email(email: str) -> int:
         user = User.query.filter_by(user_email=email).first()
         return user.user_id if user else None
+
+    @staticmethod
+    def get_user_by_id(user_id: int) -> 'User':
+        user: User | None = db.session.get(User, user_id)
+        return user if user else None
