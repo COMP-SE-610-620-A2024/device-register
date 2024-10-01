@@ -1,5 +1,6 @@
 from backend.utils.database_Init import db
 
+
 class User(db.Model):
     __tablename__ = 'users'
 
