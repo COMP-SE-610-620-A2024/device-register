@@ -1,9 +1,7 @@
-import TableGrid from '../shared/grid_table.jsx'
-import React, { useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { TextField } from '@mui/material';
-import Box from '@mui/material/Box';
+import React from 'react';
+import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
+import { useFetchData } from '../shared/fetch_data'; // Import the custom hook
 
 const DeviceGrid = () => {
   const { data, loading, error } = useFetchData('event_history'); // Changes when API available
@@ -18,7 +16,7 @@ const DeviceGrid = () => {
       valueGetter: (params) => params.data.loc && params.data.loc.length > 0 ? params.data.loc[0].loc_name : 'N/A', 
       filter: "agTextColumnFilter", 
       flex: 3 
-    }, 
+    }, // Doesn't work
   ];
 
   if (loading) {
@@ -51,38 +49,10 @@ const DeviceGrid = () => {
   }
 
   return (
-    <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        gap: 2,
-    }}>
-      {(!eventsLoading) ? (
-        <>
-          <TextField
-          label="Search events"
-          variant="outlined"
-          value={searchEvents}
-          onChange={(e) => setSearchEvents(e.target.value)} 
-          sx={{ marginBottom: 2 }}
-          />
-          <DataGrid
-              rows={rows}
-              columns={columns}
-              autoHeight
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-          />
-        </>
-      ) : (
-        <Typography sx={{
-          mt: 7,
-          fontSize: 'clamp(1.5rem, 10vw, 2.4rem)'
-          }}>
-          Loading devices...
-        </Typography>
-      )}
-    </Box>
+    <GridTable 
+      rowData={data && data.length ? data : []}
+      columnDefs={columnDefs}
+    />
   );
 };
 

@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import LinkButton from '../components/shared/link_button';
 
 function Admin_view() {
   return (

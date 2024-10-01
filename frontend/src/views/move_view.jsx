@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import FormContainer from '../components/move_view_components/form_container';
 import NavigationBar from '../components/shared/navigation_bar'
-import Form_container from '../components/shared/form_container'
-import Function_button from '../components/shared/function_button'
-import Text_field from '../components/shared/text_field'
+import { useFetchData } from '../components/shared/fetch_data';
+import TextBox from '../components/shared/text_box';
 
 function MoveView() {
   const { data: devices, loading: devicesLoading, error: devicesError }

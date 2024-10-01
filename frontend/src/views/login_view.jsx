@@ -1,15 +1,15 @@
 import NavigationBar from '../components/shared/navigation_bar'
-import FormContainer from '../components/shared/form_container'
-import FunctionButton from '../components/shared/function_button'
-import TextField from '../components/shared/text_field'
+import LinkButton from '../components/shared/link_button'
+import deviceDescription from '../components/device_info/device_description'
+import deviceGrid from '../components/device_info/device_info_grid' 
 
-const Login_view = () => {
+const Device_info_view = () => {
 
-    return (
-      <div>
-          
-      </div>
-    );
-  };
-  
-  export default Login_view;
+  return (
+    <div>
+        
+    </div>
+  );
+};
+
+export default Device_info_view;
