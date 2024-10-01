@@ -16,10 +16,10 @@ def app():
         db.create_all()
         # Add a tests device to the database
         test_device = Device(dev_name="Device",
-                             dev_manufacturer="Company A",
-                             dev_model="M",
-                             dev_class="C",
-                             dev_comments="")
+                             dev_manufacturer="Manfact A",
+                             dev_model="Model S",
+                             dev_class="class A",
+                             dev_comments="Location: Herwood xyz")
 
         db.session.add(test_device)
         db.session.commit()
@@ -47,9 +47,9 @@ def test_get_devices(client):
     assert len(data) == 2
 
     assert data[1]['dev_name'] == "Device"
-    assert data[1]['dev_manufacturer'] == "Company A"
-    assert data[1]['dev_model'] == "M"
-    assert data[1]['dev_class'] == "C"
+    assert data[1]['dev_manufacturer'] == "Manfact A"
+    assert data[1]['dev_model'] == "Model S"
+    assert data[1]['dev_class'] == "class A"
 
 
 def test_post_devices(client, app):
