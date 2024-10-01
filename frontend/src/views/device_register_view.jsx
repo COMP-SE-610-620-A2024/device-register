@@ -1,13 +1,10 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import DeviceRegisterGrid from '../components/device_register/device_register_grid';
+import DeviceGrid from '../components/device_register/device_register_grid';
 import NavigationBar from '../components/shared/navigation_bar';
-import { useFetchData } from '../components/shared/fetch_data';
 import TextBox from '../components/shared/text_box';
 
 function DeviceRegisterView() {
-  const { data: devices, loading: devicesLoading, error: devicesError }
-    = useFetchData('devices');
 
   return (
     <Box sx={{
@@ -15,19 +12,18 @@ function DeviceRegisterView() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-        height: 'auto',
+        width: '100%', 
+        height: '100%',
+        overflow: 'hidden',
+        textWrap: 'nowrap'
     }}>
-        <NavigationBar></NavigationBar>
+        <NavigationBar/>
         <TextBox
           texts={[
             'Device Register'
           ]}
         />
-        <DeviceRegisterGrid 
-          devices={devices} 
-          devicesLoading={devicesLoading} 
-       />
+        <DeviceGrid/>
     </Box>
   );
 }
