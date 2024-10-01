@@ -18,8 +18,10 @@ def app():
         db.create_all()
         # Add a tests device to the database
         test_device = Device(dev_name="Device",
-                             dev_type="Type A",
-                             dev_serial="Test123")
+                             dev_manufacturer="Company A",
+                             dev_model="M",
+                             dev_class="C",
+                             dev_comments="")
         db.session.add(test_device)
         db.session.commit()
 

@@ -23,14 +23,16 @@ def create_app() -> Flask:
 
         # Adding a test device, remove later
         existing_device: Device | None = (
-            Device.query.filter_by(dev_serial="123456").first()
+            Device.query.filter_by(dev_name="TestDevice").first()
         )
 
         if not existing_device:
             test_device = Device(
-                dev_name="Test",
-                dev_type="Type",
-                dev_serial="123456",
+                dev_name="TestDevice",
+                dev_manufacturer="Manufacturer",
+                dev_model="Model",
+                dev_class="Class",
+                dev_comments="Comment",
             )
             db.session.add(test_device)
             db.session.commit()
