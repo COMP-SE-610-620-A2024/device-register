@@ -7,6 +7,7 @@ from backend.utils.swagger_setup import setup_swagger
 def create_app(testing=False) -> Flask:
     app = Flask(__name__)
     CORS(app)
+
     setup_swagger(app)
 
     if testing:
