@@ -27,5 +27,4 @@ class Device(db.Model):
 
     @staticmethod
     def get_device_by_id(dev_id: int) -> 'Device':
-        device: Device | None = db.session.get(Device, dev_id)
-        return device if device else None
+        return db.session.get(Device, dev_id)
