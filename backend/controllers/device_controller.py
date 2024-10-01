@@ -22,7 +22,10 @@ def create_devices() -> tuple[Response, int]:
         if not all(key in item for key in ('name', 'manufacturer', 'model',
                                            'class', 'comments')):
             return (jsonify({'error': "All devices must have"
-                                      " name, manufacturer, model, class and comments"}),
+                                      " name,"
+                                      " manufacturer,"
+                                      " model,"
+                                      " class and comments"}),
                     400)
 
         new_device = Device(dev_name=item['name'],
