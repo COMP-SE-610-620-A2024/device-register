@@ -39,3 +39,7 @@ class Device(db.Model):
             return False, str(error)
 
         return True, ""
+      
+    @staticmethod
+    def get_device_by_id(dev_id: int) -> 'Device':
+        return db.session.get(Device, dev_id)

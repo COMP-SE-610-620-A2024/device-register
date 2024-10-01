@@ -10,7 +10,6 @@ def get_devices() -> tuple[Response, int]:
     print(device_list)
     return jsonify(device_list), 200
 
-
 def create_devices() -> tuple[Response, int]:
     device_json = request.get_json()
 
@@ -37,3 +36,9 @@ def create_devices() -> tuple[Response, int]:
         return jsonify({'message': "Devices created successfully"}), 201
     else:
         return jsonify({'error': f"Database error: {database_response[1]}"}), 500
+      
+def get_device_by_id(dev_id: int) -> tuple[Response, int]:
+    device: Device | None = Device.get_device_by_id(dev_id)
+    if device:
+        return jsonify(device.to_dict()), 200
+    return jsonify({'error': 'Device not found'}), 404
