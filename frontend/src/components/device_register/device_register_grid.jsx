@@ -1,16 +1,16 @@
 import React from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
-import { useFetchData } from '../shared/fetch_data'; // Import the custom hook
+import { useFetchData } from '../shared/fetch_data';
 
-const DeviceGrid = () => {
+const Device_grid = () => {
   const { data, loading, error } = useFetchData('devices'); // Fetch the devices data
 
   const columnDefs = [
     { field: "dev_id", filter: "agNumberColumnFilter", headerName: "ID", flex: 1 },
     { field: "dev_type", filter: "agTextColumnFilter", headerName: "Type", flex: 1 },
     { field: "dev_name", filter: "agTextColumnFilter", headerName: "Device Name", flex: 3 },
-    { field: "dev_serial", filter: "agTextColumnFilter", headerName: "LOC (WIP)", flex: 3 }, // Replaced with loc_name
+    { field: "loc_name", filter: "agTextColumnFilter", headerName: "LOC", flex: 3 }, 
   ];
 
   if (loading) {
@@ -50,4 +50,4 @@ const DeviceGrid = () => {
   );
 };
 
-export default DeviceGrid;
+export default Device_grid;

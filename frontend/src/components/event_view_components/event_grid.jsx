@@ -1,14 +1,14 @@
 import React from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
-import { useFetchData } from '../shared/fetch_data'; // Import the custom hook
+import { useFetchData } from '../shared/fetch_data';
 
-const DeviceGrid = () => {
+const Event_grid = () => {
   const { data, loading, error } = useFetchData('event_history'); // Changes when API available
 
   const columnDefs = [
-    { field: "event_id", filter: "agNumberColumnFilter", headerName: "#",flex: 1 },
-    { field: "dev_id", filter: "agTextColumnFilter", headerName: "USER (WIP)", flex: 1 }, // Replaced with user_name
+    { field: "event_id", filter: "agNumberColumnFilter", headerName: "DEV",flex: 1 },
+    { field: "dev_id", filter: "agTextColumnFilter", headerName: "USER", flex: 1 }, // Replaced with user_name
     { field: "time_start", filter: "agDateColumnFilter", headerName: "Date", flex: 4 },
     { 
       headerName: "Location", 
@@ -16,7 +16,7 @@ const DeviceGrid = () => {
       valueGetter: (params) => params.data.loc && params.data.loc.length > 0 ? params.data.loc[0].loc_name : 'N/A', 
       filter: "agTextColumnFilter", 
       flex: 3 
-    }, // Doesn't work
+    },
   ];
 
   if (loading) {
@@ -56,4 +56,4 @@ const DeviceGrid = () => {
   );
 };
 
-export default DeviceGrid;
+export default Event_grid;

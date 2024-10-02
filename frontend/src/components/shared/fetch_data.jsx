@@ -23,5 +23,5 @@ export const useFetchData = (endpoint) => {
 
   }, [url]);
 
-  return { data, loading, error }; // Error not used currently but good to have.
+  return { data, loading, error };
 };
