@@ -42,3 +42,21 @@ class Device(db.Model):
     @staticmethod
     def get_device_by_id(dev_id: int) -> 'Device':
         return db.session.get(Device, dev_id)
+
+    @staticmethod
+    def remove_devices(id_list: list['int']) -> tuple['int', 'str']:
+        try:
+            with db.session.begin():
+                for device_id in id_list:
+                    device: Device = Device.get_device_by_id(device_id)
+                    if device:
+                        db.session.delete(device)
+                    else:
+                        db.session.rollback()
+                        return 404, f"Device not found by id: {device_id}"
+
+            return 200, ''
+
+        except SQLAlchemyError as error:
+            db.session.rollback()
+            return 500, str(error)
