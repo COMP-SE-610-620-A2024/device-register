@@ -51,8 +51,13 @@ def get_device_by_id(dev_id: int) -> tuple[Response, int]:
 
 
 def update_device(
-    dev_id: int, device_data: dict[str, str | int]
-) -> tuple[Response, int]:
+        dev_id: int, device_data: dict[str, str | int]) -> tuple[Response, int]:
+    valid_fields = {
+        'dev_name', 'dev_manufacturer', 'dev_model', 'dev_class', 'dev_comments'}
+
+    if not any(key in valid_fields for key in device_data):
+        return jsonify({'error': 'No valid fields provided to update'}), 400
+
     updated_device, success = Device.update_device_by_id(dev_id, device_data)
 
     if success:
