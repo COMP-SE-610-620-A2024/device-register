@@ -15,34 +15,36 @@ def app():
     with app.app_context():
         db.create_all()
         # Add a tests device to the database
-        test_device: Device = Device(dev_name="Device",
-                             dev_manufacturer="Manfact A",
-                             dev_model="Model S",
-                             dev_class="class A",
-                             dev_comments="Location: Herwood xyz")
+        test_device: Device = Device(
+            dev_name="Device",
+            dev_manufacturer="Manfact A",
+            dev_model="Model S",
+            dev_class="class A",
+            dev_comments="Location: Herwood xyz")
 
         db.session.add(test_device)
         db.session.commit()
 
         # Add a test user to the database
-        test_user: User = User(user_name="User",
-                         user_email="user@mail.com")
+        test_user: User = User(user_name="User", user_email="user@mail.com")
         db.session.add(test_user)
         db.session.commit()
 
         # Add test events to the database
-        test_event1: Event = Event(dev_id=1,
-                                  user_id=1,
-                                  move_time=func.now(),
-                                  loc_name='Lab')
+        test_event1: Event = Event(
+            dev_id=1,
+            user_id=1,
+            move_time=func.now(),
+            loc_name='Lab')
         db.session.add(test_event1)
         db.session.commit()
 
         # Add test events to the database
-        test_event2: Event = Event(dev_id=1,
-                                  user_id=1,
-                                  move_time=func.now(),
-                                  loc_name='Labz')
+        test_event2: Event = Event(
+            dev_id=1,
+            user_id=1,
+            move_time=func.now(),
+            loc_name='Labz')
         db.session.add(test_event2)
         db.session.commit()
 
