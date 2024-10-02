@@ -15,7 +15,7 @@ def app():
     with app.app_context():
         db.create_all()
         # Add a tests device to the database
-        test_device = Device(dev_name="Device",
+        test_device: Device = Device(dev_name="Device",
                              dev_manufacturer="Manfact A",
                              dev_model="Model S",
                              dev_class="class A",
@@ -25,7 +25,7 @@ def app():
         db.session.commit()
 
         # Add a test user to the database
-        test_user = User(user_name="User",
+        test_user: User = User(user_name="User",
                          user_email="user@mail.com")
         db.session.add(test_user)
         db.session.commit()
