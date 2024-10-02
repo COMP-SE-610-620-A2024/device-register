@@ -25,29 +25,6 @@ def app():
         db.session.add(test_device)
         db.session.commit()
 
-        # Add a test user to the database
-        test_user: User = User(user_name="User", user_email="user@mail.com")
-        db.session.add(test_user)
-        db.session.commit()
-
-        # Add test events to the database
-        test_event1: Event = Event(
-            dev_id=1,
-            user_id=1,
-            move_time=func.now(),
-            loc_name='Lab')
-        db.session.add(test_event1)
-        db.session.commit()
-
-        # Add test events to the database
-        test_event2: Event = Event(
-            dev_id=1,
-            user_id=1,
-            move_time=func.now(),
-            loc_name='Labz')
-        db.session.add(test_event2)
-        db.session.commit()
-
     yield app
 
     # Clean up / reset the database after each tests
@@ -201,22 +178,43 @@ def test_update_device_invalid_fields(client):
     assert data['error'] == 'No valid fields provided to update'
 
 
-def test_get_events_by_device_id(client):
+def test_get_events_by_device_id(client, app):
     # Test the GET /api/<int:dev_id>/events endpoint.
-    response = client.get('/api/devices/1/events')
-    assert response.status_code == 200
+    with app.app_context():
+        test_user: User = User(user_name="User", user_email="user@mail.com")
+        db.session.add(test_user)
+        db.session.commit()
 
-    data = response.get_json()
-    assert len(data) == 2
-    assert data[0]['dev_id'] == "1"
-    assert data[0]['user_id'] == "1"
-    assert data[0]['loc_name'] == "Lab"
-    assert data[1]['dev_id'] == "1"
-    assert data[1]['user_id'] == "1"
-    assert data[1]['loc_name'] == "Labz"
+        test_event1: Event = Event(
+            dev_id=1,
+            user_id=1,
+            move_time=func.now(),
+            loc_name='Lab')
+        db.session.add(test_event1)
+        db.session.commit()
 
-    response_404 = client.get('/api/devices/25565/events')
-    assert response_404.status_code == 404
+        test_event2: Event = Event(
+            dev_id=1,
+            user_id=1,
+            move_time=func.now(),
+            loc_name='Labz')
+        db.session.add(test_event2)
+        db.session.commit()
+
+        response = client.get('/api/devices/1/events')
+        assert response.status_code == 200
+
+        data = response.get_json()
+        assert len(data) == 2
+        assert data[0]['dev_id'] == "1"
+        assert data[0]['user_id'] == "1"
+        assert data[0]['loc_name'] == "Lab"
+        assert data[1]['dev_id'] == "1"
+        assert data[1]['user_id'] == "1"
+        assert data[1]['loc_name'] == "Labz"
+
+        response_404 = client.get('/api/devices/25565/events')
+        assert response_404.status_code == 404
 
 
 def test_remove_devices(client, app):
