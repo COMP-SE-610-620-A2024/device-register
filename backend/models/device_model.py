@@ -12,6 +12,8 @@ class Device(db.Model):
     dev_class = db.Column(db.String(50), nullable=False)
     dev_comments = db.Column(db.String(200), nullable=False)
 
+    events = db.relationship('Event', back_populates='device', lazy=True)
+
     def to_dict(self) -> dict[str, str]:
         return {
             'dev_id': str(self.dev_id),

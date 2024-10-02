@@ -8,6 +8,8 @@ class User(db.Model):
     user_name = db.Column(db.String(100), nullable=False)
     user_email = db.Column(db.String(50), nullable=False, unique=True)
 
+    events = db.relationship('Event', back_populates='user', lazy=True)
+
     def to_dict(self) -> dict[str, str]:
         return {
             'user_id': str(self.user_id),

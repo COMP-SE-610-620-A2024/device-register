@@ -11,6 +11,9 @@ class Event(db.Model):
     move_time = db.Column(db.DateTime, nullable=False)
     loc_name = db.Column(db.String(200), nullable=False)
 
+    device = db.relationship('Device', back_populates='events', lazy=True)
+    user = db.relationship('User', back_populates='events', lazy=True)
+
     def to_dict(self) -> dict[str, str]:
         return {
             'event_id': str(self.event_id),
