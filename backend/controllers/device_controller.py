@@ -50,6 +50,17 @@ def get_device_by_id(dev_id: int) -> tuple[Response, int]:
     return jsonify({'error': 'Device not found'}), 404
 
 
+def update_device(
+    dev_id: int, device_data: dict[str, str | int]
+) -> tuple[Response, int]:
+    updated_device, success = Device.update_device_by_id(dev_id, device_data)
+
+    if success:
+        return jsonify(updated_device.to_dict()), 200
+    else:
+        return jsonify({'error': 'Device not found'}), 404
+
+
 def remove_devices() -> tuple[Response, int]:
     id_list_json = request.get_json()
 
@@ -76,14 +87,3 @@ def remove_devices() -> tuple[Response, int]:
                                   f"{database_response[1]}"}), 404)
     else:
         return jsonify({'error': f"Database error: {database_response[1]}"}), 500
-
-
-def update_device(
-    dev_id: int, device_data: dict[str, str | int]
-) -> tuple[Response, int]:
-    updated_device, success = Device.update_device_by_id(dev_id, device_data)
-
-    if success:
-        return jsonify(updated_device.to_dict()), 200
-    else:
-        return jsonify({'error': 'Device not found'}), 404

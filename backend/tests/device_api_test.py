@@ -135,6 +135,34 @@ def test_get_device_by_id(client):
     assert response_404.status_code == 404
 
 
+
+def test_update_device_by_id(client):
+    # Test the PATCH /api/devices/int:dev_id endpoint.
+    new_device_data = {
+        "dev_name": "New device",
+        "dev_manufacturer": "Toyota",
+        "dev_model": "Corolla",
+        "dev_class": "Super",
+        "dev_comments": "Moved to Timbuktu"
+    }
+
+    response = client.patch('/api/devices/1', json=new_device_data)
+
+    assert response.status_code == 200
+
+    updated_device = response.get_json()
+
+    assert updated_device['dev_name'] == "New device"
+    assert updated_device['dev_manufacturer'] == "Toyota"
+    assert updated_device['dev_model'] == "Corolla"
+    assert updated_device['dev_class'] == "Super"
+    assert updated_device['dev_comments'] == "Moved to Timbuktu"
+
+    # Verify that updating a non-existent device returns 404
+    response_404 = client.patch('/api/devices/9999', json=new_device_data)
+    assert response_404.status_code == 404
+
+
 def test_remove_devices(client, app):
     # Test the DELETE /api/devices/ endpoint.
     with app.app_context():
@@ -181,30 +209,3 @@ def test_remove_devices(client, app):
         assert db.session.get(Device, 3) is None
 
         assert len(Device.query.all()) == 1
-
-
-def test_update_device_by_id(client):
-    # Test the PATCH /api/devices/int:dev_id endpoint.
-    new_device_data = {
-        "dev_name": "New device",
-        "dev_manufacturer": "Toyota",
-        "dev_model": "Corolla",
-        "dev_class": "Super",
-        "dev_comments": "Moved to Timbuktu"
-    }
-
-    response = client.patch('/api/devices/1', json=new_device_data)
-
-    assert response.status_code == 200
-
-    updated_device = response.get_json()
-
-    assert updated_device['dev_name'] == "New device"
-    assert updated_device['dev_manufacturer'] == "Toyota"
-    assert updated_device['dev_model'] == "Corolla"
-    assert updated_device['dev_class'] == "Super"
-    assert updated_device['dev_comments'] == "Moved to Timbuktu"
-
-    # Verify that updating a non-existent device returns 404
-    response_404 = client.patch('/api/devices/9999', json=new_device_data)
-    assert response_404.status_code == 404
