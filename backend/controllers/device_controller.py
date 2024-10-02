@@ -72,7 +72,7 @@ def remove_devices() -> tuple[Response, int]:
     if database_response[0] == 200:
         return jsonify({'message': "Devices deleted successfully"}), 200
     elif database_response[0] == 404:
-        return (jsonify({'error': f"Failed to delete devices."
+        return (jsonify({'error': f"Failed to delete devices. "
                                   f"{database_response[1]}"}), 404)
     else:
         return jsonify({'error': f"Database error: {database_response[1]}"}), 500

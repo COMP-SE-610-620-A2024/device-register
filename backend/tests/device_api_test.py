@@ -177,7 +177,7 @@ def test_remove_devices(client, app):
         response6 = client.delete('/api/devices/', json=payload6)
         assert response6.status_code == 404
 
-        assert db.session.get(Device, test_device1.dev_id) is None
-        assert db.session.get(Device, test_device2.dev_id) is None
+        assert db.session.get(Device, 2) is None
+        assert db.session.get(Device, 3) is None
 
         assert len(Device.query.all()) == 1
