@@ -1,4 +1,5 @@
-from backend.utils.database_Init import db
+from backend.setup.database_Init import db
+from backend.models.event_model import Event
 from sqlalchemy import delete
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -47,6 +48,19 @@ class Device(db.Model):
         return db.session.get(Device, dev_id)
 
     @staticmethod
+    def update_device_by_id(dev_id: int, device_data: dict[str, str | int]
+                            ) -> tuple['Device', bool]:
+        existing_device = Device.get_device_by_id(dev_id)
+
+        if existing_device:
+            for key, value in device_data.items():
+                setattr(existing_device, key, value)
+            db.session.commit()
+            return existing_device, True
+        else:
+            return existing_device, False
+
+    @staticmethod
     def remove_devices(id_list: list['int']) -> tuple['int', 'str']:
         try:
             del_stmt = delete(Device).where(Device.dev_id.in_(id_list))
@@ -61,3 +75,10 @@ class Device(db.Model):
         except SQLAlchemyError as error:
             db.session.rollback()
             return 500, str(error)
+
+    @staticmethod
+    def get_events_by_device_id(dev_id: int) -> tuple[list['Event'] | None, int]:
+        device = Device.get_device_by_id(dev_id)
+        if device:
+            return device.events, 200
+        return None, 404

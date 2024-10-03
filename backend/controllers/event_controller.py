@@ -51,7 +51,7 @@ def create_event() -> tuple[Response, int]:
     if not isinstance(user_info, dict):
         return jsonify({'error': "Expected user attribute to be object"}), 400
 
-    if not all(key in user_info for key in ('name', 'email')):
+    if not all(key in user_info for key in ('user_name', 'user_email')):
         return jsonify({'error': "User object must contain name and email"}), 400
 
     not_ok_status, response_str = add_or_update_user_util(user_info)
