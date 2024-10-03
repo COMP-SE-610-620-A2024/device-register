@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Search_bar from './Search_bar';
+import Search_bar from '../components/shared/search_bar';
+import '@testing-library/jest-dom';
 
 describe('Search_bar Component', () => {
     let setQuickFilterTextMock;
@@ -36,5 +37,4 @@ describe('Search_bar Component', () => {
         expect(setQuickFilterTextMock).toHaveBeenCalledTimes(1);
         expect(setQuickFilterTextMock).toHaveBeenCalledWith('test');
     });
-
 });
