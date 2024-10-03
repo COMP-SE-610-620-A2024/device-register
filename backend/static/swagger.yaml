@@ -104,6 +104,50 @@ paths:
         '404':
           description: Device not found
 
+    patch:
+        tags:
+            - Devices
+        summary: Update device by ID
+        parameters:
+        - name: dev_id
+          in: path
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+              $ref: '#/definitions/NewDevice'
+        responses:
+            '200':
+              description: Device updated
+            '400':
+              description: Invalid input
+            '404':
+              description: Device not found
+            '500':
+              description: Database error
+
+  /api/devices/{dev_id}/events:
+    get:
+      tags:
+        - Devices
+      summary: Get all events for device
+      parameters:
+        - name: dev_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: A list of events
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Event'
+        '404':
+          description: Device not found
+
   /api/users/:
     get:
       tags:
