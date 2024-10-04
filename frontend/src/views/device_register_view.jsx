@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import DeviceGrid from '../components/device_register/device_register_grid';
 import NavigationBar from '../components/shared/navigation_bar';
 
-function DeviceRegisterView() {
+function Device_register_view() {
 
   return (
     <Box sx={{
@@ -31,4 +31,4 @@ function DeviceRegisterView() {
   );
 }
 
-export default DeviceRegisterView;
+export default Device_register_view;
