@@ -3,10 +3,17 @@ import { render, screen } from '@testing-library/react';
 import DeviceRegisterView from '../views/device_register_view';
 import '@testing-library/jest-dom';
 
-jest.mock('../components/shared/navigation_bar',
-                              () => () => <div>Mocked NavigationBar</div>);
-jest.mock('../components/device_register/device_register_grid',
-                              () => () => <div>Mocked DeviceGrid</div>);
+jest.mock('../components/shared/navigation_bar', () => {
+    const MockedNavigationBar = () => <div>Mocked NavigationBar</div>;
+    MockedNavigationBar.displayName = 'MockedNavigationBar'; // eslint wants this.
+    return MockedNavigationBar;
+});
+
+jest.mock('../components/device_register/device_register_grid', () => {
+    const MockedDeviceGrid = () => <div>Mocked DeviceGrid</div>;
+    MockedDeviceGrid.displayName = 'MockedDeviceGrid'; // eslint wants this.
+    return MockedDeviceGrid;
+});
 
 describe('DeviceRegisterView Component', () => {
     test('render Navbar, header, and DeviceGrid correctly', () => {
