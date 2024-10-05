@@ -14,10 +14,17 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
 
 
 def create_app(testing=False) -> Flask:
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='/opt/device-register/backend/static')
     CORS(app)
 
     setup_swagger(app)
+    app.config['SWAGGER'] = {
+        'title': 'Device API',
+        'uiversion': 3,
+        'openapi': '3.0.2',
+        'swagger_ui': True,
+        'specs_route': '/apidocs/'
+    }
 
     if testing:
         app.config['TESTING'] = True
