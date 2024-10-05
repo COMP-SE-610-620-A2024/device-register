@@ -37,13 +37,13 @@ def create_app(testing=False) -> Flask:
     db.init_app(app)
 
     from backend.api.device_api import device_api
-    app.register_blueprint(device_api, url_prefix='/api/devices')
+    app.register_blueprint(device_api, url_prefix='/devices')
 
     from backend.api.user_api import user_api
-    app.register_blueprint(user_api, url_prefix='/api/users')
+    app.register_blueprint(user_api, url_prefix='/users')
 
     from backend.api.event_api import event_api
-    app.register_blueprint(event_api, url_prefix='/api/events')
+    app.register_blueprint(event_api, url_prefix='/events')
 
     with app.app_context():
         db.create_all()
