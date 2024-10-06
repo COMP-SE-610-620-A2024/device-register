@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 from backend.setup.database_Init import db
 from flask_cors import CORS
 from backend.utils.swagger_setup import setup_swagger
@@ -14,7 +14,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
 
 
 def create_app(testing=False) -> Flask:
-    app = Flask(__name__, static_folder='/opt/device-register/backend/static')
+    app = Flask(__name__)
     CORS(app)
 
     setup_swagger(app)
@@ -48,7 +48,7 @@ def create_app(testing=False) -> Flask:
     with app.app_context():
         db.create_all()
 
-    @app.route('/')
+    @app.route('/flask')
     def index() -> str:
         return "Hello from Flask with SQLAlchemy!"
 

@@ -1,12 +1,14 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /app
-
-    RewriteCond %{REQUEST_URI} !^/api
-    RewriteCond %{REQUEST_URI} !^/apidocs
+    RewriteBase /
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 
-    RewriteRule ^ /app/index.html [L]
+    RewriteCond %{REQUEST_URI} !^/api
+    RewriteCond %{REQUEST_URI} !^/apidocs
+
+    RewriteCond %{REQUEST_URI} !^/index\.html$
+
+    RewriteRule ^ /index.html [L]
 </IfModule>
