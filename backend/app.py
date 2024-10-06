@@ -7,13 +7,13 @@ from sqlalchemy.engine import Engine
 
 
 @event.listens_for(Engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record)->None:
+def set_sqlite_pragma(dbapi_connection, connection_record) -> None:
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
 
-def create_app(testing: bool=False) -> Flask:
+def create_app(testing: bool = False) -> Flask:
     deployment_path = '/'
     app = Flask(__name__)
     CORS(app)
