@@ -1,4 +1,4 @@
-from flask import Flask, redirect
+from flask import Flask
 from backend.setup.database_Init import db
 from flask_cors import CORS
 from backend.utils.swagger_setup import setup_swagger
@@ -7,13 +7,13 @@ from sqlalchemy.engine import Engine
 
 
 @event.listens_for(Engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
+def set_sqlite_pragma(dbapi_connection, connection_record)->None:
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
 
-def create_app(testing=True) -> Flask:
+def create_app(testing: bool=False) -> Flask:
     deployment_path = '/'
     app = Flask(__name__)
     CORS(app)
