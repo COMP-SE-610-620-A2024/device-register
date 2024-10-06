@@ -1,7 +1,7 @@
 from flask import Flask
 from backend.setup.database_Init import db
 from flask_cors import CORS
-from backend.utils.swagger_setup import setup_swagger
+from backend.setup.swagger_setup import setup_swagger
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
