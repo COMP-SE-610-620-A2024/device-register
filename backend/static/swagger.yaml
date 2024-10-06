@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: API documentation for device register application.
 
-basePath: /
+basePath: /api/
 
 tags:
   - name: Devices
