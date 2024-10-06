@@ -23,7 +23,7 @@ def create_app(testing=True) -> Flask:
         deployment_path = '/api/'
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-    setup_swagger(app, deployment_path)
+    setup_swagger(app)
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
