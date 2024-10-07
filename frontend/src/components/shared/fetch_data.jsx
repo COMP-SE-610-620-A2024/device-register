@@ -5,7 +5,7 @@ export const useFetchData = (endpoint) => {
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
 
-  const url = `http://localhost:5000/${endpoint}`
+  const url = `http://localhost:5000/api/${endpoint}/`
 
   useEffect(() => {
     const fetchData = async () => {
