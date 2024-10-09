@@ -83,7 +83,7 @@ def test_post_devices(client, app):
 
         for device in devices[1:]:
             dev_id = device.dev_id
-            qr_image_path = os.path.join(app.root_path, 'static', 'qr',
+            qr_image_path = os.path.join(os.getcwd(), 'static', 'qr',
                                          f"{dev_id}.png")
             assert os.path.exists(qr_image_path)
             remove_qr(dev_id)
