@@ -1,9 +1,11 @@
+import os
 import pytest
 from backend.app import create_app
 from backend.setup.database_Init import db
 from backend.models.device_model import Device
 from backend.models.event_model import Event
 from backend.models.user_model import User
+from backend.utils.qr_generator import generate_qr, remove_qr
 from sqlalchemy.sql import func
 
 
@@ -73,6 +75,18 @@ def test_post_devices(client, app):
     ]
     response1 = client.post('/api/devices/', json=payload1)
     assert response1.status_code == 201
+
+    with app.app_context():
+        devices = Device.query.all()
+
+        assert len(devices) == 3
+
+        for device in devices[1:]:
+            dev_id = device.dev_id
+            qr_image_path = os.path.join(app.root_path, 'static', 'qr',
+                                         f"{dev_id}.png")
+            assert os.path.exists(qr_image_path)
+            remove_qr(dev_id)
 
     payload2 = {
             "dev_name": "Device 3",
@@ -235,9 +249,18 @@ def test_remove_devices(client, app):
         db.session.add(test_device2)
         db.session.commit()
 
+        generate_qr(test_device1.dev_id, testing=True)
+        generate_qr(test_device2.dev_id, testing=True)
+
         payload1 = [{'id': 2}, {'id': 3}]
         response1 = client.delete('/api/devices/', json=payload1)
         assert response1.status_code == 200
+        assert db.session.get(Device, test_device1.dev_id) is None
+        assert db.session.get(Device, test_device2.dev_id) is None
+        qr_image_path1 = os.path.join(app.root_path, 'static', 'qr', f"{test_device1.dev_id}.png")
+        qr_image_path2 = os.path.join(app.root_path, 'static', 'qr', f"{test_device2.dev_id}.png")
+        assert not os.path.exists(qr_image_path1)
+        assert not os.path.exists(qr_image_path2)
 
         payload2 = {'id': 1}
         response2 = client.delete('/api/devices/', json=payload2)
@@ -258,8 +281,5 @@ def test_remove_devices(client, app):
         payload6 = [{'id': 9999}]
         response6 = client.delete('/api/devices/', json=payload6)
         assert response6.status_code == 404
-
-        assert db.session.get(Device, 2) is None
-        assert db.session.get(Device, 3) is None
 
         assert len(Device.query.all()) == 1

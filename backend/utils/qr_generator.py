@@ -8,8 +8,11 @@ QR_FOLDER = os.path.join(os.getcwd(), 'static', 'qr')
 os.makedirs(QR_FOLDER, exist_ok=True)
 
 
-def generate_qr(device_id: int):
-    base_url = request.url_root.rstrip('/')
+def generate_qr(device_id: int, testing=False):
+    if testing:
+        base_url = 'http://localhost/'
+    else:
+        base_url = request.url_root.rstrip('/')
 
     device_url = f"{base_url}/devices/{device_id}/move"
 
