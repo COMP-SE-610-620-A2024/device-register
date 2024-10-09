@@ -257,8 +257,10 @@ def test_remove_devices(client, app):
         assert response1.status_code == 200
         assert db.session.get(Device, test_device1.dev_id) is None
         assert db.session.get(Device, test_device2.dev_id) is None
-        qr_image_path1 = os.path.join(app.root_path, 'static', 'qr', f"{test_device1.dev_id}.png")
-        qr_image_path2 = os.path.join(app.root_path, 'static', 'qr', f"{test_device2.dev_id}.png")
+        qr_image_path1 = os.path.join(app.root_path, 'static', 'qr',
+                                      f"{test_device1.dev_id}.png")
+        qr_image_path2 = os.path.join(app.root_path, 'static', 'qr',
+                                      f"{test_device2.dev_id}.png")
         assert not os.path.exists(qr_image_path1)
         assert not os.path.exists(qr_image_path2)
 
