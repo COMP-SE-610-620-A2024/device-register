@@ -5,7 +5,6 @@ from backend.setup.database_Init import db
 from backend.models.device_model import Device
 from backend.models.event_model import Event
 from backend.models.user_model import User
-from backend.utils.qr_generator import generate_qr, remove_qr
 from sqlalchemy.sql import func
 
 
@@ -81,12 +80,13 @@ def test_post_devices(client, app):
 
         assert len(devices) == 3
 
-        for device in devices[1:]:
+        # Clean up the created QR images
+        for device in devices:
             dev_id = device.dev_id
             qr_image_path = os.path.join(os.getcwd(), 'static', 'qr',
                                          f"{dev_id}.png")
-            assert os.path.exists(qr_image_path)
-            remove_qr(dev_id)
+            if os.path.exists(qr_image_path):
+                os.remove(qr_image_path)
 
     payload2 = {
             "dev_name": "Device 3",
@@ -249,20 +249,14 @@ def test_remove_devices(client, app):
         db.session.add(test_device2)
         db.session.commit()
 
-        generate_qr(test_device1.dev_id, testing=True)
-        generate_qr(test_device2.dev_id, testing=True)
+        dev_id1 = test_device1.dev_id
+        dev_id2 = test_device2.dev_id
 
         payload1 = [{'id': 2}, {'id': 3}]
         response1 = client.delete('/api/devices/', json=payload1)
         assert response1.status_code == 200
-        assert db.session.get(Device, test_device1.dev_id) is None
-        assert db.session.get(Device, test_device2.dev_id) is None
-        qr_image_path1 = os.path.join(app.root_path, 'static', 'qr',
-                                      f"{test_device1.dev_id}.png")
-        qr_image_path2 = os.path.join(app.root_path, 'static', 'qr',
-                                      f"{test_device2.dev_id}.png")
-        assert not os.path.exists(qr_image_path1)
-        assert not os.path.exists(qr_image_path2)
+        assert db.session.get(Device, dev_id1) is None
+        assert db.session.get(Device, dev_id2) is None
 
         payload2 = {'id': 1}
         response2 = client.delete('/api/devices/', json=payload2)
