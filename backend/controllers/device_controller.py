@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from os import remove
 from typing import Union
 
 from flask import jsonify, request, Response

@@ -1,14 +1,17 @@
-from flask import url_for
+from flask import request
 import qrcode
 import os
 
 
-# TODO: Make sure the folder exists
 QR_FOLDER = os.path.join(os.getcwd(), 'static', 'qr')
+
+os.makedirs(QR_FOLDER, exist_ok=True)
 
 
 def generate_qr(device_id: int):
-    device_url = url_for('device_api.device_by_id' ,dev_id=device_id, _external=True)
+    base_url = request.url_root.rstrip('/')
+
+    device_url = f"{base_url}/devices/{device_id}/move"
 
     qr_image = qrcode.make(device_url)
 
@@ -23,4 +26,4 @@ def remove_qr(device_id: int):
 
 
 def qr_path(device_id: int):
-    return os.path.join(QR_FOLDER, f'{device_id}.png')
+    return os.path.join(QR_FOLDER, f"{device_id}.png")
