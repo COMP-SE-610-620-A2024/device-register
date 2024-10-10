@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
 import useFetchData from '../shared/fetch_data';
@@ -14,15 +15,22 @@ const Event_grid = () => {
     }));
 
     // Link dev_id to the device_info page
-    const DeviceCellRenderer = (props) => (
-        <LinkButton
-          href={`/device_info/${props.value}`}
-          text={props.value}
-          variant="text"
-          color="primary"
-          size="small"
-        />
-    );
+    const DeviceCellRenderer = ({ value }) => {
+        const devIdString = value?.toString() || 'Unknown Device';
+        return (
+            <LinkButton 
+              href={`/device_info/${devIdString}`} 
+              text={devIdString}
+              variant="text"
+              color="primary"
+              size="small"
+            />
+        );
+    };
+
+    DeviceCellRenderer.propTypes = {
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
+    };
 
     const columnDefs = [
       { field: "dev_id", filter: "agTextColumnFilter", headerName: "DEV", flex: 1.5, cellRenderer: DeviceCellRenderer },
