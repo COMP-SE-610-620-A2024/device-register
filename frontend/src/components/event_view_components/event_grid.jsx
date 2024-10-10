@@ -27,7 +27,6 @@ const Event_grid = () => {
             />
         );
     };
-
     DeviceCellRenderer.propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
     };
