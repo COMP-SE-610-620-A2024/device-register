@@ -1,6 +1,5 @@
 from flask import jsonify, request, Response
 
-from backend.api.user_api import get_user_by_user_id
 from backend.models.event_model import Event
 from backend.controllers.user_controller import add_or_update_user
 from datetime import datetime
@@ -13,10 +12,8 @@ def get_all_events() -> tuple[Response, int]:
 
     for event in all_events:
         event_dict = event.to_dict()
-
-        user_info = get_user_info_util(event.user_id)
-        event_dict['user_name'] = user_info['user_name']
-        event_dict['user_email'] = user_info['user_email']
+        event_dict['user_name'] = event.user.user_name
+        event_dict['user_email'] = event.user.user_email
 
         event_list.append(event_dict)
 
@@ -30,10 +27,8 @@ def get_event_by_id(event_id: int) -> tuple[Response, int]:
 
     if one_event is not None:
         event_dict = one_event.to_dict()
-
-        user_info = get_user_info_util(one_event.user_id)
-        event_dict['user_name'] = user_info['user_name']
-        event_dict['user_email'] = user_info['user_email']
+        event_dict['user_name'] = one_event.user.user_name
+        event_dict['user_email'] = one_event.user.user_email
         return jsonify(event_dict), 200
     else:
         return jsonify({'error': f'No event exists with provided Id: {event_id}'}), 404
@@ -162,11 +157,3 @@ def add_or_update_user_util(user_info) -> tuple['int', 'str']:
         return 0, user_response[0].get_json()['user_id']
     else:
         return user_response[1], str(user_response[0])
-
-
-def get_user_info_util(user_id) -> dict[str, str]:
-    user_response = get_user_by_user_id(user_id)
-    if user_response[1] == 200:
-        return user_response[0].get_json()
-    else:
-        return {"user_name": "Not Found", "user_email": "Not Found"}

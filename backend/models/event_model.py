@@ -1,5 +1,6 @@
 from backend.setup.database_Init import db
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import selectinload
 
 
 class Event(db.Model):
@@ -24,11 +25,13 @@ class Event(db.Model):
 
     @staticmethod
     def get_all_events() -> list['Event']:
-        return Event.query.all()
+        return Event.query.options(selectinload(Event.user)).all()
 
     @staticmethod
     def get_event_by_id(event_id: int) -> 'Event':
-        return db.session.get(Event, event_id)
+        return (Event.query.options(selectinload(Event.user))
+                .filter_by(event_id=event_id)
+                .first())
 
     @staticmethod
     def create_event(new_event: 'Event') -> tuple['bool', 'str']:
