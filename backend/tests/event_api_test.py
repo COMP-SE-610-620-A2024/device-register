@@ -95,6 +95,8 @@ def test_get_event_by_id(client):
     data = response.get_json()
     assert data['dev_id'] == "1"
     assert data['user_id'] == "1"
+    assert data['user_name'] == "User"
+    assert data['user_email'] == "user@mail.com"
     assert data['loc_name'] == "Lab"
     assert data['comment'] == "I have nothing to say"
 
