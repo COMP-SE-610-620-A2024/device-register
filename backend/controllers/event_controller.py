@@ -32,11 +32,13 @@ def create_event() -> tuple[Response, int]:
     if not all(key in event_json for key in ('dev_id',
                                              'user',
                                              'move_time',
-                                             'loc_name')):
+                                             'loc_name',
+                                             'comment')):
         return (jsonify({'error': "Event must have"
                                   " dev_id,"
-                                  " move_time"
-                                  " loc_name, and"
+                                  " move_time,"
+                                  " loc_name,"
+                                  " comment, and"
                                   " user"}),
                 400)
 
@@ -65,7 +67,8 @@ def create_event() -> tuple[Response, int]:
     new_event = Event(dev_id=event_json['dev_id'],
                       user_id=user_id,
                       move_time=move_time,
-                      loc_name=event_json['loc_name'])
+                      loc_name=event_json['loc_name'],
+                      comment=event_json['comment'])
 
     database_response = Event.create_event(new_event)
     if database_response[0]:
@@ -84,7 +87,7 @@ def update_event(event_id: int) -> tuple[Response, int]:
     if not isinstance(event_json, dict):
         return jsonify({'error': "Expected an event object"}), 400
 
-    allowed_keys = {'dev_id', 'user', 'move_time', 'loc_name'}
+    allowed_keys = {'dev_id', 'user', 'move_time', 'loc_name', 'comment'}
     invalid_keys = set(event_json.keys()) - allowed_keys
     if invalid_keys:
         return jsonify({'error': f"Illegal keys :{', '.join(invalid_keys)}"}), 400
@@ -118,6 +121,9 @@ def update_event(event_id: int) -> tuple[Response, int]:
 
     if 'loc_name' in event_json:
         event.loc_name = event_json['loc_name']
+
+    if 'comment' in event_json:
+        event.comment = event_json['comment']
 
     update_success, db_error = Event.update_event()
     if update_success:
