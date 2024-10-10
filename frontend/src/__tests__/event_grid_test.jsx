@@ -47,7 +47,7 @@ describe('DeviceRegisterGrid Component', () => {
 
         // Cells
         expect(screen.getByText('020202')).toBeInTheDocument();
-        expect(screen.getByText('2024-10-03')).toBeInTheDocument();
+        expect(screen.getByText('03/10/2024')).toBeInTheDocument();
         expect(screen.getByText('Test Laboratory')).toBeInTheDocument();
         // Headers
         expect(screen.getByText('DEV')).toBeInTheDocument();

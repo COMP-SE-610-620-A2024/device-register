@@ -2,21 +2,33 @@ import React from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
 import useFetchData from '../shared/fetch_data';
+import LinkButton from '../shared/link_button';
 
 const Event_grid = () => {
     const { data, loading, error } = useFetchData('events');
 
     const formattedData = data.map(event => ({
         ...event,
-        // Format Datetime to just be a Date.
-        move_time: event.move_time.split("T")[0],
-    }));  
-    
+         // Format dates in data to European time format
+        move_time: new Date(event.move_time).toLocaleDateString('en-GB')
+    }));
+
+    // Link dev_id to the device_info page
+    const DeviceCellRenderer = (props) => (
+        <LinkButton
+          href={`/device_info/${props.value}`}
+          text={props.value}
+          variant="text"
+          color="primary"
+          size="small"
+        />
+    );
+
     const columnDefs = [
-        { field: "dev_id", filter: "agTextColumnFilter", headerName: "DEV", flex: 1.5 },
-        { field: "user_id", filter: "agTextColumnFilter", headerName: "USER", flex: 1.5 }, 
-        { field: "move_time", filter: "agDateColumnFilter", headerName: "Date", flex: 2.5, suppressHeaderFilterButton: false, },
-        { field: "loc_name", filter: "agTextColumnFilter", headerName: "Location", flex: 2.0 },
+      { field: "dev_id", filter: "agTextColumnFilter", headerName: "DEV", flex: 1.5, cellRenderer: DeviceCellRenderer },
+      { field: "user_id", filter: "agTextColumnFilter", headerName: "USER", flex: 1.5 },
+      { field: "move_time", filter: "agDateColumnFilter", headerName: "Date", flex: 2.5, suppressHeaderFilterButton: false },
+      { field: "loc_name", filter: "agTextColumnFilter", headerName: "Location", flex: 2.0 },
     ];
 
     if (loading) {
