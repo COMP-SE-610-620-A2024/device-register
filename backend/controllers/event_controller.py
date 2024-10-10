@@ -1,4 +1,6 @@
 from flask import jsonify, request, Response
+
+from backend.api.user_api import get_user_by_user_id
 from backend.models.event_model import Event
 from backend.controllers.user_controller import add_or_update_user
 from datetime import datetime
@@ -6,9 +8,20 @@ from datetime import datetime
 
 def get_all_events() -> tuple[Response, int]:
     all_events: list[Event] = Event.get_all_events()
-    event_list: list[dict[str, str]] = [
-        event.to_dict() for event in all_events
-    ]
+
+    event_list: list[dict[str, str]] = []
+
+    for event in all_events:
+        event_dict = event.to_dict()
+
+        user_response = get_user_by_user_id(event.user_id)
+        if user_response[1] == 200:
+            user_info = user_response[0].get_json()
+            event_dict['user_name'] = user_info['user_name']
+            event_dict['user_email'] = user_info['user_email']
+
+        event_list.append(event_dict)
+
     print(event_list)
     return jsonify(event_list), 200
 

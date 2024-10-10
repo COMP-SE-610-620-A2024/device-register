@@ -81,6 +81,8 @@ def test_get_all_events(client):
     assert len(data) == 1
     assert data[0]['dev_id'] == "1"
     assert data[0]['user_id'] == "1"
+    assert data[0]['user_name'] == "User"
+    assert data[0]['user_email'] == "user@mail.com"
     assert data[0]['loc_name'] == "Lab"
     assert data[0]['comment'] == "I have nothing to say"
 
