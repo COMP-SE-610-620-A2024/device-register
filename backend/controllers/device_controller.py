@@ -112,22 +112,5 @@ def remove_devices() -> tuple[Response, int]:
 
 
 def current_locations() -> tuple[Response, int]:
-    all_devices = Device.get_all()
-
-    devices_with_locations = []
-
-    for device in all_devices:
-        latest_event = device.events[-1] if device.events else None
-
-        if latest_event:
-            device_data = {
-                "device_id": device.dev_id,
-                "device_name": device.dev_name,
-                "device_model": device.dev_model,
-                "dev_manufacturer": device.dev_manufacturer,
-                "loc_name": latest_event.loc_name,
-                "move_time": latest_event.move_time
-            }
-            devices_with_locations.append(device_data)
-
-    return jsonify(devices_with_locations), 200
+    locations = Device.get_current_locations()
+    return jsonify(locations), 200

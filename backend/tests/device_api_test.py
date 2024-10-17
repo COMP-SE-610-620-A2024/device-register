@@ -336,19 +336,19 @@ def test_get_current_locations(client, app):
         assert response.status_code == 200
 
         data = response.get_json()
-        assert len(data) == 2
+        assert len(data) == 3
 
-        assert data[0]['device_id'] == test_device1.dev_id
-        assert data[0]['device_name'] == test_device1.dev_name
-        assert data[0]['device_model'] == test_device1.dev_model
-        assert data[0]['dev_manufacturer'] == test_device1.dev_manufacturer
-        assert data[0]['loc_name'] == "Location 1"
+        assert data[1]['device_id'] == str(test_device1.dev_id)
+        assert data[1]['device_name'] == test_device1.dev_name
+        assert data[1]['device_model'] == test_device1.dev_model
+        assert data[1]['dev_manufacturer'] == test_device1.dev_manufacturer
+        assert data[1]['loc_name'] == "Location 1"
 
-        assert data[1]['device_id'] == test_device2.dev_id
-        assert data[1]['device_name'] == test_device2.dev_name
-        assert data[1]['device_model'] == test_device2.dev_model
-        assert data[1]['dev_manufacturer'] == test_device2.dev_manufacturer
-        assert data[1]['loc_name'] == "Location 2"
+        assert data[2]['device_id'] == str(test_device2.dev_id)
+        assert data[2]['device_name'] == test_device2.dev_name
+        assert data[2]['device_model'] == test_device2.dev_model
+        assert data[2]['dev_manufacturer'] == test_device2.dev_manufacturer
+        assert data[2]['loc_name'] == "Location 2"
 
         response_404 = client.get('/api/devices/9999/current_locations/')
         assert response_404.status_code == 404
