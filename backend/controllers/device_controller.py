@@ -109,3 +109,25 @@ def remove_devices() -> tuple[Response, int]:
                                   f"{database_response[1]}"}), 404)
     else:
         return jsonify({'error': f"Database error: {database_response[1]}"}), 500
+
+
+def current_locations() -> tuple[Response, int]:
+    all_devices = Device.get_all()
+
+    devices_with_locations = []
+
+    for device in all_devices:
+        latest_event = device.events[-1] if device.events else None
+
+        if latest_event:
+            device_data = {
+                "device_id": device.dev_id,
+                "device_name": device.dev_name,
+                "device_model": device.dev_model,
+                "dev_manufacturer": device.dev_manufacturer,
+                "loc_name": latest_event.loc_name,
+                "move_time": latest_event.move_time
+            }
+            devices_with_locations.append(device_data)
+
+    return jsonify(devices_with_locations), 200
