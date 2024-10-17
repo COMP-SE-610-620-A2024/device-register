@@ -1,5 +1,10 @@
+from __future__ import annotations
+
+from typing import Union
+
 from flask import jsonify, request, Response
 from backend.models.device_model import Device
+from backend.utils.qr_generator import generate_qr, remove_qr
 
 
 def get_devices() -> tuple[Response, int]:
@@ -19,8 +24,8 @@ def create_devices() -> tuple[Response, int]:
 
     device_list = []
     for item in device_json:
-        if not all(key in item for key in ('name', 'manufacturer', 'model',
-                                           'class', 'comments')):
+        if not all(key in item for key in ('dev_name', 'dev_manufacturer', 'dev_model',
+                                           'dev_class', 'dev_comments')):
             return (jsonify({'error': "All devices must have"
                                       " name,"
                                       " manufacturer,"
@@ -28,16 +33,19 @@ def create_devices() -> tuple[Response, int]:
                                       " class and comments"}),
                     400)
 
-        new_device = Device(dev_name=item['name'],
-                            dev_manufacturer=item['manufacturer'],
-                            dev_model=item['model'],
-                            dev_class=item['class'],
-                            dev_comments=item['comments'])
+        new_device = Device(dev_name=item['dev_name'],
+                            dev_manufacturer=item['dev_manufacturer'],
+                            dev_model=item['dev_model'],
+                            dev_class=item['dev_class'],
+                            dev_comments=item['dev_comments'])
 
         device_list.append(new_device)
 
     database_response = Device.create_devices(device_list)
     if database_response[0]:
+        for device in device_list:
+            generate_qr(device.dev_id)
+
         return jsonify({'message': "Devices created successfully"}), 201
     else:
         return jsonify({'error': f"Database error: {database_response[1]}"}), 500
@@ -58,7 +66,7 @@ def get_events_by_device_id(dev_id: int) -> tuple[Response, int]:
 
 
 def update_device(
-        dev_id: int, device_data: dict[str, str | int]) -> tuple[Response, int]:
+        dev_id: int, device_data: dict[str, Union[str, int]]) -> tuple[Response, int]:
     valid_fields = {
         'dev_name', 'dev_manufacturer', 'dev_model', 'dev_class', 'dev_comments'}
 
@@ -93,6 +101,8 @@ def remove_devices() -> tuple[Response, int]:
     database_response = Device.remove_devices(device_id_list)
 
     if database_response[0] == 200:
+        for dev_id in device_id_list:
+            remove_qr(dev_id)
         return jsonify({'message': "Devices deleted successfully"}), 200
     elif database_response[0] == 404:
         return (jsonify({'error': f"Failed to delete devices. "

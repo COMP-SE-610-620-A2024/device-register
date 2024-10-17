@@ -1,5 +1,7 @@
+from typing import Union
+
+from backend.setup.database_Init import db
 from backend.models.event_model import Event
-from backend.utils.database_Init import db
 from sqlalchemy import delete
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -48,7 +50,7 @@ class Device(db.Model):
         return db.session.get(Device, dev_id)
 
     @staticmethod
-    def update_device_by_id(dev_id: int, device_data: dict[str, str | int]
+    def update_device_by_id(dev_id: int, device_data: Union[dict[str, str, int]]
                             ) -> tuple['Device', bool]:
         existing_device = Device.get_device_by_id(dev_id)
 
@@ -77,7 +79,7 @@ class Device(db.Model):
             return 500, str(error)
 
     @staticmethod
-    def get_events_by_device_id(dev_id: int) -> tuple[list['Event'] | None, int]:
+    def get_events_by_device_id(dev_id: int) -> Union[tuple[list['Event'], None, int]]:
         device = Device.get_device_by_id(dev_id)
         if device:
             return device.events, 200
