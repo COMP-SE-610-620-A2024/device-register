@@ -1,3 +1,4 @@
+import os
 import pytest
 from backend.app import create_app
 from backend.setup.database_Init import db
@@ -73,6 +74,19 @@ def test_post_devices(client, app):
     ]
     response1 = client.post('/api/devices/', json=payload1)
     assert response1.status_code == 201
+
+    with app.app_context():
+        devices = Device.query.all()
+
+        assert len(devices) == 3
+
+        # Clean up the created QR images
+        for device in devices:
+            dev_id = device.dev_id
+            qr_image_path = os.path.join(os.getcwd(), 'static', 'qr',
+                                         f"{dev_id}.png")
+            if os.path.exists(qr_image_path):
+                os.remove(qr_image_path)
 
     payload2 = {
             "dev_name": "Device 3",
@@ -189,7 +203,8 @@ def test_get_events_by_device_id(client, app):
             dev_id=1,
             user_id=1,
             move_time=func.now(),
-            loc_name='Lab')
+            loc_name='Lab',
+            comment='Hello')
         db.session.add(test_event1)
         db.session.commit()
 
@@ -197,7 +212,8 @@ def test_get_events_by_device_id(client, app):
             dev_id=1,
             user_id=1,
             move_time=func.now(),
-            loc_name='Labz')
+            loc_name='Labz',
+            comment='Hi')
         db.session.add(test_event2)
         db.session.commit()
 
@@ -209,9 +225,11 @@ def test_get_events_by_device_id(client, app):
         assert data[0]['dev_id'] == "1"
         assert data[0]['user_id'] == "1"
         assert data[0]['loc_name'] == "Lab"
+        assert data[0]['comment'] == "Hello"
         assert data[1]['dev_id'] == "1"
         assert data[1]['user_id'] == "1"
         assert data[1]['loc_name'] == "Labz"
+        assert data[1]['comment'] == "Hi"
 
         response_404 = client.get('/api/devices/25565/events')
         assert response_404.status_code == 404
@@ -235,9 +253,14 @@ def test_remove_devices(client, app):
         db.session.add(test_device2)
         db.session.commit()
 
+        dev_id1 = test_device1.dev_id
+        dev_id2 = test_device2.dev_id
+
         payload1 = [{'id': 2}, {'id': 3}]
         response1 = client.delete('/api/devices/', json=payload1)
         assert response1.status_code == 200
+        assert db.session.get(Device, dev_id1) is None
+        assert db.session.get(Device, dev_id2) is None
 
         payload2 = {'id': 1}
         response2 = client.delete('/api/devices/', json=payload2)
@@ -259,7 +282,73 @@ def test_remove_devices(client, app):
         response6 = client.delete('/api/devices/', json=payload6)
         assert response6.status_code == 404
 
-        assert db.session.get(Device, 2) is None
-        assert db.session.get(Device, 3) is None
-
         assert len(Device.query.all()) == 1
+
+
+def test_get_current_locations(client, app):
+    # Test the GET /api/devices/current_locations/ endpoint.
+    with app.app_context():
+        test_user: User = User(user_name="User", user_email="user@mail.com")
+        db.session.add(test_user)
+        db.session.commit()
+
+        test_device1: Device = Device(
+            dev_name="Unique Device 1",
+            dev_manufacturer="Unique Manufacturer 1",
+            dev_model="Unique Model 1",
+            dev_class="Unique Class 1",
+            dev_comments="Location: Unique Location 1"
+        )
+        db.session.add(test_device1)
+        db.session.commit()
+
+        test_device2: Device = Device(
+            dev_name="Unique Device 2",
+            dev_manufacturer="Unique Manufacturer 2",
+            dev_model="Unique Model 2",
+            dev_class="Unique Class 2",
+            dev_comments="Location: Unique Location 2"
+        )
+        db.session.add(test_device2)
+        db.session.commit()
+
+        event1: Event = Event(
+            dev_id=test_device1.dev_id,
+            user_id=test_user.user_id,
+            move_time=func.now(),
+            loc_name="Location 1",
+            comment="Device 1 is here"
+        )
+        db.session.add(event1)
+
+        event2: Event = Event(
+            dev_id=test_device2.dev_id,
+            user_id=test_user.user_id,
+            move_time=func.now(),
+            loc_name="Location 2",
+            comment="Device 2 is here"
+        )
+        db.session.add(event2)
+
+        db.session.commit()
+
+        response = client.get('/api/devices/current_locations/')
+        assert response.status_code == 200
+
+        data = response.get_json()
+        assert len(data) == 3
+
+        assert data[1]['device_id'] == str(test_device1.dev_id)
+        assert data[1]['device_name'] == test_device1.dev_name
+        assert data[1]['device_model'] == test_device1.dev_model
+        assert data[1]['dev_manufacturer'] == test_device1.dev_manufacturer
+        assert data[1]['loc_name'] == "Location 1"
+
+        assert data[2]['device_id'] == str(test_device2.dev_id)
+        assert data[2]['device_name'] == test_device2.dev_name
+        assert data[2]['device_model'] == test_device2.dev_model
+        assert data[2]['dev_manufacturer'] == test_device2.dev_manufacturer
+        assert data[2]['loc_name'] == "Location 2"
+
+        response_404 = client.get('/api/devices/9999/current_locations/')
+        assert response_404.status_code == 404
