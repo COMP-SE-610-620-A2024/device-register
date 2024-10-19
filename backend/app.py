@@ -28,11 +28,10 @@ def create_app(testing: bool = True) -> Flask:
         deployment_path = '/api/'
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+        app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     setup_swagger(app)
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 
     JWTManager(app)
 
