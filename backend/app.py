@@ -4,6 +4,11 @@ from flask_cors import CORS
 from backend.setup.swagger_setup import setup_swagger
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
+from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 @event.listens_for(Engine, "connect")
@@ -27,6 +32,10 @@ def create_app(testing: bool = True) -> Flask:
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+
+    JWTManager(app)
+
     db.init_app(app)
 
     from backend.api.device_api import device_api
@@ -37,6 +46,9 @@ def create_app(testing: bool = True) -> Flask:
 
     from backend.api.event_api import event_api
     app.register_blueprint(event_api, url_prefix=f'{deployment_path}/events')
+
+    from backend.api.auth_api import auth_api
+    app.register_blueprint(auth_api, url_prefix=f'{deployment_path}/auth')
 
     with app.app_context():
         db.create_all()
