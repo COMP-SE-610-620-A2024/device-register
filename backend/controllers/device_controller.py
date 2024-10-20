@@ -105,7 +105,12 @@ def remove_devices() -> tuple[Response, int]:
 
         if event_response[0] != 200:
             return jsonify(
-                {'error': f"Failed to delete events for device ID {dev_id}: {event_response[1]}"}
+                {
+                    'error': (
+                        f"Failed to delete events for device ID {dev_id}:"
+                        f" {event_response[1]}"
+                    )
+                }
             ), 500
 
     database_response = Device.remove_devices(device_id_list)
