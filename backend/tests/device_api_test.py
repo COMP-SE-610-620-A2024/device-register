@@ -287,8 +287,6 @@ def test_remove_devices(client, app):
         response = client.delete('/api/devices/', json=payload)
         assert response.status_code == 200
 
-        db.session.expunge_all()
-
         assert db.session.get(Device, dev_id1) is None
         assert db.session.get(Device, dev_id2) is None
 
