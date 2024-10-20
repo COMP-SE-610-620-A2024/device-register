@@ -129,3 +129,18 @@ class Device(db.Model):
         ]
 
         return devices_with_locations
+
+    @staticmethod
+    def remove_events_by_device_id(dev_id: int) -> tuple[int, str]:
+        try:
+            event_del_stmt = delete(Event).where(Event.dev_id == dev_id)
+            result = db.session.execute(event_del_stmt)
+
+            if result.rowcount == 0:
+                return 404, f"No events found for device ID {dev_id}"
+
+            db.session.commit()
+            return 200, ""
+        except SQLAlchemyError as error:
+            db.session.rollback()
+            return 500, str(error)
