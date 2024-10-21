@@ -16,7 +16,13 @@ class Device(db.Model):
     dev_class = db.Column(db.String(50), nullable=False)
     dev_comments = db.Column(db.String(200), nullable=False)
 
-    events = db.relationship('Event', backref='device', lazy=True)
+    events = db.relationship(
+        'Event',
+        backref='device',
+        lazy=True,
+        cascade='all, delete-orphan',
+        passive_deletes=True
+    )
 
     def to_dict(self) -> dict[str, str]:
         return {
@@ -118,9 +124,9 @@ class Device(db.Model):
 
         devices_with_locations = [
             {
-                "device_id": str(device.dev_id),
-                "device_name": device.dev_name,
-                "device_model": device.dev_model,
+                "dev_id": str(device.dev_id),
+                "dev_name": device.dev_name,
+                "dev_model": device.dev_model,
                 "dev_manufacturer": device.dev_manufacturer,
                 "loc_name": loc_name,
                 "move_time": move_time.isoformat() if move_time else None
