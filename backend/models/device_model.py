@@ -1,4 +1,6 @@
-from typing import Union
+from typing import Union, Tuple, Any
+
+from sqlalchemy.orm import RelationshipProperty
 
 from backend.setup.database_Init import db
 from backend.models.event_model import Event
@@ -85,7 +87,7 @@ class Device(db.Model):
             return 500, str(error)
 
     @staticmethod
-    def get_events_by_device_id(dev_id: int) -> Union[tuple[list['Event'], None, int]]:
+    def get_events_by_device_id(dev_id: int) -> Union[tuple[Any, int], tuple[None, int]]:
         device = Device.get_device_by_id(dev_id)
         if device:
             return device.events, 200
