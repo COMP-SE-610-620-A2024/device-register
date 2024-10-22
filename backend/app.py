@@ -49,6 +49,9 @@ def create_app(testing: bool = True) -> Flask:
     from backend.api.auth_api import auth_api
     app.register_blueprint(auth_api, url_prefix=f'{deployment_path}/auth')
 
+    from backend.api.attachments_api import attachments_api
+    app.register_blueprint(attachments_api, url_prefix=f'{deployment_path}/attachments')
+
     with app.app_context():
         db.create_all()
 
