@@ -22,7 +22,7 @@ paths:
       summary: Get all devices
       responses:
         '200':
-          description: A list of devices
+          description: A list of devicesa
           schema:
             type: array
             items:
