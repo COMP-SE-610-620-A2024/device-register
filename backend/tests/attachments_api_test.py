@@ -39,10 +39,15 @@ def client(app):
 
 def test_upload_files(client, app):
     # Test the POST /api/attachments/upload/<dev_id> endpoint.
-    test_files_dir: str = os.path.join(os.getcwd(),
-                                       'backend', 'tests', 'static', 'attachments', 'test_files')
-    user_directory: str = os.path.join(os.getcwd(),
-                                       'backend', 'tests', 'static', 'attachments', '1')
+    test_files_dir: str = os.path.join(
+        os.getcwd(),
+        'backend', 'tests', 'static', 'attachments', 'test_files'
+    )
+
+    user_directory: str = os.path.join(
+        os.getcwd(),
+        'backend', 'tests', 'static', 'attachments', '1'
+    )
 
     # Uploading to a non-existent device
     with open(os.path.join(test_files_dir, 'cat.jpg'), 'rb') as file:
@@ -59,7 +64,7 @@ def test_upload_files(client, app):
     # Uploading an unsupported file type (CSV)
     with open(os.path.join(test_files_dir, 'not_supported.csv'), 'rb') as file:
         response_invalid_file_type = client.post('api/attachments/upload/1',
-                                                 data={'files': (file, 'not_supported.csv')})
+                                            data={'files': (file, 'not_supported.csv')})
     assert response_invalid_file_type.status_code == 400
 
     # Sending a request with no files
