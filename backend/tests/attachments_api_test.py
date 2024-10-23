@@ -39,8 +39,8 @@ def client(app):
 
 def test_upload_files(client, app):
     # Test the POST /api/attachments/upload/<dev_id> endpoint.
-    test_files_dir: str = os.path.join(os.getcwd(), 'static', 'attachments', 'test_files')
-    user_directory: str = os.path.join(os.getcwd(), 'static', 'attachments', '1')
+    test_files_dir: str = os.path.join(os.getcwd(), 'tests', 'static', 'attachments', 'test_files')
+    user_directory: str = os.path.join(os.getcwd(), 'tests', 'static', 'attachments', '1')
 
     # Uploading to a non-existent device
     with open(os.path.join(test_files_dir, 'cat.jpg'), 'rb') as file:
