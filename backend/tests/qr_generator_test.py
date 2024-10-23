@@ -10,7 +10,7 @@ from backend.utils.qr_generator import generate_qr, remove_qr
 @pytest.fixture
 def app():
     # Create and configure a new app instance for each test.
-    app = create_app(config_env_path=os.path.join(config.PROJECT_ROOT, '.env-test'))
+    app = create_app(env_config_file='.env-test')
 
     with app.app_context():
         db.create_all()
@@ -62,7 +62,8 @@ def test_remove_qr(client, app):
     dev_id = device.dev_id
     generate_qr(dev_id)
 
-    qr_image_path = os.path.join(os.getcwd(), 'static', 'qr', f"{dev_id}.png")
+    qr_image_path = os.path.join(
+        config.PROJECT_ROOT, 'backend', 'static', 'qr', f"{dev_id}.png")
 
     remove_qr(dev_id)
 

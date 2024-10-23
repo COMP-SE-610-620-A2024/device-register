@@ -29,13 +29,14 @@ class Config:
             cls._instance.load()
         return cls._instance
 
-    def load(self, _env_path: str = None):
-        if _env_path is None:
-            _project_root = os.path.dirname(os.path.dirname(
-                os.path.dirname(os.path.abspath(__file__))))
+    def load(self, _env_file: str = None):
+        _project_root = os.path.dirname(os.path.dirname(
+            os.path.dirname(os.path.abspath(__file__))))
+        if _env_file is None:
             _env_path = os.path.join(_project_root, '.env')
             print(f"Loading configurations from default path {_env_path}")
         else:
+            _env_path = os.path.join(_project_root, _env_file)
             print(f"Loading configurations from path {_env_path}")
         if not load_dotenv(_env_path):
             print("No .env file found. using default config (local testing).")
