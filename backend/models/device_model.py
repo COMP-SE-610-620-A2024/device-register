@@ -4,8 +4,6 @@ from backend.setup.database_Init import db
 from backend.models.event_model import Event
 from sqlalchemy import delete
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import joinedload
-
 
 
 
@@ -46,7 +44,8 @@ class Device(db.Model):
     def create_devices(device_list: list['Device']) -> tuple['bool', 'str']:
         try:
             with db.session.begin():
-                db.session.add_all(device_list)
+                for new_device in device_list:
+                    db.session.add(new_device)
 
         except SQLAlchemyError as error:
             db.session.rollback()
@@ -89,23 +88,11 @@ class Device(db.Model):
 
     @staticmethod
     def get_events_by_device_id(dev_id: int)\
-            -> Union[tuple[list[dict], int], tuple[str, int]]:
-        device = db.session.query(Device).options(
-            joinedload(Device.events)
-            .joinedload(Event.user)
-        ).filter_by(dev_id=dev_id).first()
-
-        if not device:
-            return "Device not found", 404
-        if device.events:
-            events = device.events
-            events_with_user_name = [
-                {**event.to_dict(), 'user_name': event.user.user_name}
-                for event in events
-            ]
-            return events_with_user_name, 200
-        else:
-            return f"Events not found for device {dev_id}", 404
+            -> Union[tuple[list[Event], int], tuple[None, int]]:
+        device = Device.get_device_by_id(dev_id)
+        if device:
+            return device.events, 200
+        return None, 404
 
     @staticmethod
     def get_current_locations() -> list[dict[str, Union[str, None]]]:
