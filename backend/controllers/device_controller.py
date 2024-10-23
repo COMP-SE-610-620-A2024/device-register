@@ -1,7 +1,7 @@
 from typing import Union, Optional
 
 from datetime import datetime
-from flask import current_app, jsonify, request, Response
+from flask import jsonify, request, Response
 from backend.controllers.event_controller import create_event
 from backend.models.device_model import Device
 from backend.utils.qr_generator import generate_qr, remove_qr
