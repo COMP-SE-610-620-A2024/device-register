@@ -46,7 +46,8 @@ def test_generate_qr(client, app):
     dev_id = device.dev_id
     generate_qr(dev_id)
 
-    qr_image_path = os.path.join(config.PROJECT_ROOT, 'backend', 'static', 'qr', f"{dev_id}.png")
+    qr_image_path = os.path.join(
+        config.PROJECT_ROOT, 'backend', 'static', 'qr', f"{dev_id}.png")
 
     assert os.path.isfile(qr_image_path)
 

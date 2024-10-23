@@ -3,7 +3,7 @@ import os
 
 from backend.utils.config import config
 
-QR_FOLDER = os.path.join(config.PROJECT_ROOT,'backend', 'static', 'qr')
+QR_FOLDER = os.path.join(config.PROJECT_ROOT, 'backend', 'static', 'qr')
 
 os.makedirs(QR_FOLDER, exist_ok=True)
 

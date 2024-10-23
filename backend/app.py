@@ -19,7 +19,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record) -> None:
     cursor.close()
 
 
-def create_app(config_env_path:str = None) -> Flask:
+def create_app(config_env_path: str = None) -> Flask:
     if config_env_path is not None:
         config.load(config_env_path)
     app = Flask(__name__)
