@@ -85,10 +85,15 @@ class Device(db.Model):
 
     @staticmethod
     def get_events_by_device_id(dev_id: int)\
-            -> Union[tuple[list[Event], int], tuple[None, int]]:
+            -> Union[tuple[list[dict], int], tuple[None, int]]:
         device = Device.get_device_by_id(dev_id)
         if device:
-            return device.events, 200
+            events = device.events
+            events_with_user_name = [
+                {**event.to_dict(), 'user_name': event.user.user_name}
+                for event in events
+            ]
+            return events_with_user_name, 200
         return None, 404
 
     @staticmethod
