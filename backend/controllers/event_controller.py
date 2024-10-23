@@ -32,17 +32,18 @@ def get_event_by_id(event_id: int) -> tuple[Response, int]:
         return jsonify({'error': f'No event exists with provided Id: {event_id}'}), 404
 
 
-def create_event() -> tuple[Response, int]:
-    request_json = request.get_json()
+def create_event(event_data=None) -> tuple[Response, int]:
+    if not event_data:
+        event_data = request.get_json()
 
-    if not isinstance(request_json, (dict, list)):
+    if not isinstance(event_data, (dict, list)):
         return jsonify({'error': "Expected an event object or list"}), 400
 
     # turn dict into a list, or check list contains dicts
-    if isinstance(request_json, dict):
-        event_json_list = [request_json]
+    if isinstance(event_data, dict):
+        event_json_list = [event_data]
     else:
-        event_json_list = request_json
+        event_json_list = event_data
         for item in event_json_list:
             if not isinstance(item, dict):
                 return jsonify({'error': "Expected event objects in the list"}), 400

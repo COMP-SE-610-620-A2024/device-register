@@ -64,10 +64,7 @@ def create_devices() -> tuple[Response, int]:
         }
         home_event_list.append(new_event_json)
 
-    with current_app.test_request_context('/api/events',
-                                          method='POST',
-                                          json=home_event_list):
-        event_response, event_status_code = create_event()
+    event_response, event_status_code = create_event(home_event_list)
 
     if event_status_code != 201:
         print(event_response.get_json())
