@@ -104,7 +104,6 @@ class Device(db.Model):
         else:
             return f"Events not found for device {dev_id}", 404
 
-
     @staticmethod
     def get_current_locations() -> list[dict[str, Union[str, None]]]:
         latest_event_subquery = (
