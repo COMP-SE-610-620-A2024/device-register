@@ -7,11 +7,13 @@ from backend.models.event_model import Event
 from backend.models.user_model import User
 from sqlalchemy.sql import func
 
+from backend.utils.config import config
+
 
 @pytest.fixture
 def app():
     # Create and configure a new app instance for each test.
-    app = create_app(testing=True)
+    app = create_app('.env-test')
 
     with app.app_context():
         db.create_all()
@@ -62,6 +64,7 @@ def test_post_devices(client, app):
             "dev_manufacturer": "Company A",
             "dev_model": "M1",
             "dev_class": "C1",
+            "dev_location": "Lab",
             "dev_comments": ""
         },
         {
@@ -69,6 +72,7 @@ def test_post_devices(client, app):
             "dev_manufacturer": "Company A",
             "dev_model": "M2",
             "dev_class": "C1",
+            "dev_location": "lab",
             "dev_comments": ""
         }
     ]
@@ -83,7 +87,7 @@ def test_post_devices(client, app):
         # Clean up the created QR images
         for device in devices:
             dev_id = device.dev_id
-            qr_image_path = os.path.join(os.getcwd(), 'static', 'qr',
+            qr_image_path = os.path.join(config.PROJECT_ROOT, 'backend', 'static', 'qr',
                                          f"{dev_id}.png")
             if os.path.exists(qr_image_path):
                 os.remove(qr_image_path)
@@ -115,6 +119,9 @@ def test_post_devices(client, app):
     ]
     response_missing_field = client.post('/api/devices/', json=payload3)
     assert response_missing_field.status_code == 400
+
+    response_empty_list = client.post('/api/devices/', json=[])
+    assert response_empty_list.status_code == 400
 
     with app.app_context():
         devices = Device.query.all()
@@ -226,10 +233,12 @@ def test_get_events_by_device_id(client, app):
         assert data[0]['user_id'] == "1"
         assert data[0]['loc_name'] == "Lab"
         assert data[0]['comment'] == "Hello"
+        assert data[0]['user_name'] == "User"
         assert data[1]['dev_id'] == "1"
         assert data[1]['user_id'] == "1"
         assert data[1]['loc_name'] == "Labz"
         assert data[1]['comment'] == "Hi"
+        assert data[1]['user_name'] == "User"
 
         response_404 = client.get('/api/devices/25565/events')
         assert response_404.status_code == 404
