@@ -131,6 +131,19 @@ def test_post_devices(client, app):
     response_empty_list = client.post('/api/devices/', json=[])
     assert response_empty_list.status_code == 400
 
+    payload4 = [
+        {
+            "dev_name": "Device 1",
+            "dev_manufacturer": "Company A",
+            "dev_model": "M1",
+            "class_id": 9999,
+            "dev_location": "Lab",
+            "dev_comments": ""
+        }
+    ]
+    response_nonexistent_class = client.post('/api/devices/', json=payload4)
+    assert response_nonexistent_class.status_code == 500
+
     with app.app_context():
         devices = Device.query.all()
 
@@ -193,6 +206,17 @@ def test_update_device_by_id(client):
     # Verify that updating a non-existent device returns 404
     response_404 = client.patch('/api/devices/9999', json=new_device_data)
     assert response_404.status_code == 404
+
+    nonexistent_class_device = {
+        "dev_name": "New device",
+        "dev_manufacturer": "Toyota",
+        "dev_model": "Corolla",
+        "class_id": 9999,
+        "dev_comments": "Moved to Timbuktu"
+    }
+    response_bad_class = client.patch('/api/devices/1',
+                                      json=nonexistent_class_device)
+    assert response_bad_class.status_code == 500
 
 
 def test_update_device_invalid_fields(client):

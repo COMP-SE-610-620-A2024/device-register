@@ -4,7 +4,7 @@ from backend.setup.database_Init import db
 from backend.models.class_model import Class
 from backend.models.event_model import Event
 from sqlalchemy import delete
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import joinedload
 
 
@@ -65,16 +65,21 @@ class Device(db.Model):
 
     @staticmethod
     def update_device_by_id(dev_id: int, device_data: Union[dict[str, str, int]]
-                            ) -> tuple['Device', bool]:
+                            ) -> tuple[Union['Device', str], int]:
         existing_device = Device.get_device_by_id(dev_id)
 
-        if existing_device:
+        if not existing_device:
+            return existing_device, 404
+
+        try:
             for key, value in device_data.items():
                 setattr(existing_device, key, value)
             db.session.commit()
-            return existing_device, True
-        else:
-            return existing_device, False
+        except IntegrityError as error:
+            db.session.rollback()
+            return str(error), 500
+
+        return existing_device, 0
 
     @staticmethod
     def remove_devices(id_list: list['int']) -> tuple['int', 'str']:

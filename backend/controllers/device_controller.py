@@ -99,12 +99,14 @@ def update_device(
     if not any(key in valid_fields for key in device_data):
         return jsonify({'error': 'No valid fields provided to update'}), 400
 
-    updated_device, success = Device.update_device_by_id(dev_id, device_data)
+    result, error_code = Device.update_device_by_id(dev_id, device_data)
 
-    if success:
-        return jsonify(updated_device.to_dict()), 200
-    else:
+    if error_code == 404:
         return jsonify({'error': 'Device not found'}), 404
+    elif error_code:
+        return jsonify({'error': result}), error_code
+    else:
+        return jsonify(result.to_dict()), 200
 
 
 def remove_devices() -> tuple[Response, int]:
