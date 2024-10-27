@@ -2,23 +2,32 @@ import os
 import pytest
 from backend.app import create_app
 from backend.setup.database_Init import db
+from backend.models.class_model import Class
 from backend.models.device_model import Device
+from backend.utils.config import config
 from backend.utils.qr_generator import generate_qr, remove_qr
 
 
 @pytest.fixture
 def app():
     # Create and configure a new app instance for each test.
-    app = create_app(testing=True)
+    app = create_app(env_config_file='.env-test')
 
     with app.app_context():
         db.create_all()
+
+        # Add a test class to the database
+        test_class: Class = Class(
+            class_name="class A"
+        )
+        db.session.add(test_class)
+
         # Add a tests device to the database
         test_device: Device = Device(
             dev_name="Device",
             dev_manufacturer="Manfact A",
             dev_model="Model S",
-            dev_class="class A",
+            class_id=1,
             dev_comments="Location: Herwood xyz")
 
         db.session.add(test_device)
@@ -43,10 +52,12 @@ def test_generate_qr(client, app):
         device: Device = Device.query.first()
 
     dev_id = device.dev_id
-    generate_qr(dev_id, testing=True)
+    generate_qr(dev_id)
 
-    qr_image_path = os.path.join(os.getcwd(), 'static', 'qr', f"{dev_id}.png")
-    assert os.path.exists(qr_image_path)
+    qr_image_path = os.path.join(
+        config.PROJECT_ROOT, 'backend', 'static', 'qr', f"{dev_id}.png")
+
+    assert os.path.isfile(qr_image_path)
 
     if os.path.exists(qr_image_path):
         os.remove(qr_image_path)
@@ -57,9 +68,10 @@ def test_remove_qr(client, app):
         device: Device = Device.query.first()
 
     dev_id = device.dev_id
-    generate_qr(dev_id, testing=True)
+    generate_qr(dev_id)
 
-    qr_image_path = os.path.join(os.getcwd(), 'static', 'qr', f"{dev_id}.png")
+    qr_image_path = os.path.join(
+        config.PROJECT_ROOT, 'backend', 'static', 'qr', f"{dev_id}.png")
 
     remove_qr(dev_id)
 
