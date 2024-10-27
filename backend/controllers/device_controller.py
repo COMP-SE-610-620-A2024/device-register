@@ -106,7 +106,10 @@ def update_device(
     elif error_code:
         return jsonify({'error': result}), error_code
     else:
-        return jsonify(result.to_dict()), 200
+        updated_device_with_class_id = result.to_dict()
+        updated_device_with_class_id["class_id"] = result.class_id
+        del updated_device_with_class_id["class_name"]
+        return jsonify(updated_device_with_class_id), 200
 
 
 def remove_devices() -> tuple[Response, int]:

@@ -200,7 +200,7 @@ def test_update_device_by_id(client):
     assert updated_device['dev_name'] == "New device"
     assert updated_device['dev_manufacturer'] == "Toyota"
     assert updated_device['dev_model'] == "Corolla"
-    assert updated_device['class_name'] == "class A"
+    assert updated_device['class_id'] == 1
     assert updated_device['dev_comments'] == "Moved to Timbuktu"
 
     # Verify that updating a non-existent device returns 404
