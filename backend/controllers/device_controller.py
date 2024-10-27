@@ -29,20 +29,20 @@ def create_devices() -> tuple[Response, int]:
     device_list_with_location = []
     for item in device_json:
         if not all(key in item for key in ('dev_name', 'dev_manufacturer',
-                                           'dev_model', 'dev_class',
+                                           'dev_model', 'class_id',
                                            'dev_location', 'dev_comments')):
             return (jsonify({'error': "All devices must have"
                                       " name,"
                                       " manufacturer,"
                                       " model,"
-                                      " class,"
+                                      " class id,"
                                       " location and comments"}),
                     400)
 
         new_device = Device(dev_name=item['dev_name'],
                             dev_manufacturer=item['dev_manufacturer'],
                             dev_model=item['dev_model'],
-                            dev_class=item['dev_class'],
+                            class_id=item['class_id'],
                             dev_comments=item['dev_comments'])
 
         device_list.append(new_device)
@@ -94,7 +94,7 @@ def get_events_by_device_id(dev_id: int) -> tuple[Response, int]:
 def update_device(
         dev_id: int, device_data: dict[str, Union[str, int]]) -> tuple[Response, int]:
     valid_fields = {
-        'dev_name', 'dev_manufacturer', 'dev_model', 'dev_class', 'dev_comments'}
+        'dev_name', 'dev_manufacturer', 'dev_model', 'class_id', 'dev_comments'}
 
     if not any(key in valid_fields for key in device_data):
         return jsonify({'error': 'No valid fields provided to update'}), 400
