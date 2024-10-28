@@ -14,7 +14,7 @@ def get_all_events() -> tuple[Response, int]:
         event_dict = event.to_dict()
         event_dict['user_name'] = event.user.user_name
         event_dict['user_email'] = event.user.user_email
-
+        event_dict['dev_name'] = event.device.dev_name
         event_list.append(event_dict)
 
     return jsonify(event_list), 200

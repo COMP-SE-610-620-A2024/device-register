@@ -88,6 +88,7 @@ def test_get_all_events(client):
     data = response.get_json()
     assert len(data) == 1
     assert data[0]['dev_id'] == "1"
+    assert data[0]['dev_name'] == "Device A"
     assert data[0]['user_id'] == "1"
     assert data[0]['user_name'] == "User"
     assert data[0]['user_email'] == "user@mail.com"
