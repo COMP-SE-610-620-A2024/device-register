@@ -14,7 +14,7 @@ const Move_view = () => {
   const { data: device, error } = useFetchData('devices/' + id);
   const devName = String(device.dev_name);
   const [errorMessage, setErrorMessage] = useState(null);
-  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const {
     result: eventResult,
@@ -55,13 +55,13 @@ const Move_view = () => {
     // Check for empty fields
     if (!loc_name || !user.user_name || !user.user_email) {
       setErrorMessage("Please fill out all required fields.");
-      setTimeout(() => setErrorMessage(null), 5000);
+      setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       return;
     }
     //Validate email
     if (!emailRegex.test(user.user_email)) {
       setErrorMessage("Please enter a valid email address.");
-      setTimeout(() => setErrorMessage(null), 5000);
+      setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       return;
     }
 
