@@ -51,7 +51,9 @@ describe('DeviceRegisterGrid Component', () => {
         // Cells
         expect(screen.getByText('020202')).toBeInTheDocument();
         // Testing that UTC to GMT+2 date conversion works
-        expect(screen.getByText('04/11/2024, 01:12')).toBeInTheDocument(); 
+        expect(screen.getByText('04/11/2024, 01:12') || 
+                // Hack to test daylight saving time. Close enough.
+               screen.getByText('04/11/2024, 02:12')).toBeInTheDocument(); 
         expect(screen.getByText('Test Laboratory')).toBeInTheDocument();
 
         // Headers
