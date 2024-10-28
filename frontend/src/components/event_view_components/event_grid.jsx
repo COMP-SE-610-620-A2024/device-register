@@ -43,13 +43,15 @@ const Event_grid = () => {
     };
 
     const columnDefs = [
-      { field: "dev_id", filter: "agTextColumnFilter", headerName: "Device id", flex: 1, minWidth: 63}, // Enough for 9999 devices
-      { field: "user_name", filter: "agTextColumnFilter", headerName: "User name", flex: 1, minWidth: 63 }, // Enough for 9999 users
-      { field: "move_time_iso", filter: "agDateColumnFilter", headerName: "Date/Time", flex: 2.0, minWidth: 160,
-        filterParams:filterParams, suppressHeaderFilterButton: false, sort: 'desc'// Enough for showing datetime
-        , valueFormatter: (params) => params.data.move_time
+      { field: "move_time_iso", filter: "agDateColumnFilter", headerName: "Date/Time", flex: 2.0, minWidth: 150, // Enough for showing datetime
+            filterParams:filterParams, suppressHeaderFilterButton: false, sort: 'desc'
+            , valueFormatter: (params) => params.data.move_time
       },
       { field: "loc_name", filter: "agTextColumnFilter", headerName: "Location", flex: 2.0, minWidth: 130 }, // 14 characters
+      { field: "dev_id", filter: "agTextColumnFilter", headerName: "Device id", flex: 1, minWidth: 130},  // 14 characters
+      { field: "user_name", filter: "agTextColumnFilter", headerName: "User name", flex: 1, minWidth: 150 },  // 15 characters
+      
+      
     ];
 
     if (loading) {
