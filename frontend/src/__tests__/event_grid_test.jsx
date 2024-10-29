@@ -30,18 +30,7 @@ describe('DeviceRegisterGrid Component', () => {
     });
 
     test('renders the data grid with the fetched data', async () => {
-        const testTime = new Date();
-        const moveTime = testTime.toISOString();
-
-        const expectedString = new Date(moveTime).toLocaleString('en-GB', {
-            timeZone: "Europe/Helsinki",
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-        });
+        const moveTime = new Date('04 Dec 2024 23:59:30 GMT').toISOString();
     
         useFetchData.mockReturnValue({
             data: [
@@ -59,19 +48,20 @@ describe('DeviceRegisterGrid Component', () => {
     
         render(<EventGrid />);
     
-        // Cells
+        // Verify cells and headers
         expect(screen.getByText('020202')).toBeInTheDocument();
     
-        // Testing that UTC to local time conversion works
-        expect(screen.getByText(expectedString)).toBeInTheDocument();
+        // Verify datetime with UTC.
+        expect(screen.getByText('04/12/2024, 23:59')).toBeInTheDocument();
         expect(screen.getByText('Test Laboratory')).toBeInTheDocument();
     
-        // Headers
+        // Verify headers
         expect(screen.getByText('Device id')).toBeInTheDocument();
         expect(screen.getByText('User name')).toBeInTheDocument();
         expect(screen.getByText('Date/Time')).toBeInTheDocument();
         expect(screen.getByText('Location')).toBeInTheDocument();
     });
+    
     
 
 });
