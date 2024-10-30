@@ -43,7 +43,8 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
                 file.save(file_path)
                 saved_files.append(safe_filename)
             except Exception as e:
-                return jsonify({"error": f"Failed to save file '{safe_filename}': {str(e)}"}), 500
+                return jsonify(
+                    {"error": f"Failed to save file '{safe_filename}': {str(e)}"}), 500
         else:
             return jsonify({"error": f"File '{file.filename}' type not allowed"}), 400
 
