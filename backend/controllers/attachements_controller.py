@@ -1,6 +1,7 @@
 import os
 from flask import jsonify, request, Response
 from backend.models.device_model import Device
+from werkzeug.utils import secure_filename
 
 
 allowed_mime_types = {'application/pdf', 'image/png', 'image/jpeg'}
@@ -24,14 +25,25 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
     user_directory = os.path.join('static', 'attachments', str(dev_id))
 
     # Create the directory if it doesn't exist
-    os.makedirs(user_directory, exist_ok=True)
+    try:
+        os.makedirs(user_directory, exist_ok=True)
+    except OSError as e:
+        return jsonify({"error": f"Failed to create directory: {str(e)}"}), 500
 
     saved_files = []
     for file in files:
         if allowed_mime_type(file):
-            file_path = os.path.join(user_directory, file.filename)
-            file.save(file_path)
-            saved_files.append(file.filename)
+            safe_filename = secure_filename(file.filename)
+            file_path = os.path.join(user_directory, safe_filename)
+
+            if os.path.exists(file_path):
+                return jsonify({"error": f"File '{safe_filename}' already exists"}), 400
+
+            try:
+                file.save(file_path)
+                saved_files.append(safe_filename)
+            except Exception as e:
+                return jsonify({"error": f"Failed to save file '{safe_filename}': {str(e)}"}), 500
         else:
             return jsonify({"error": f"File '{file.filename}' type not allowed"}), 400
 
