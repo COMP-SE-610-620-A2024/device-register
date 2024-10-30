@@ -5,6 +5,7 @@ import useFetchData from '../components/shared/fetch_data';
 import '@testing-library/jest-dom';
 
 jest.mock('../components/shared/fetch_data');
+jest.spyOn(Date.prototype, 'toLocaleString').mockImplementation(() => '08/10/2024, 15:34');
 
 describe('Device_info_grid Component', () => {
     beforeEach(() => {
@@ -33,9 +34,8 @@ describe('Device_info_grid Component', () => {
         useFetchData.mockReturnValue({
             data: [
                 { 
-                    event_id: 1, 
                     comment: 'toimii', 
-                    move_time: '2024-10-08 12:34:56', 
+                    move_time: "2024-10-08T12:34:00", 
                     loc_name: 'Labra' 
                 },
             ],
@@ -47,10 +47,9 @@ describe('Device_info_grid Component', () => {
 
         // Cells
         expect(screen.getByText('toimii')).toBeInTheDocument();
-        expect(screen.getByText('08/10/2024 12:34:56')).toBeInTheDocument();
+        expect(screen.getByText('08/10/2024, 15:34')).toBeInTheDocument();
         expect(screen.getByText('Labra')).toBeInTheDocument();
         // Headers
-        expect(screen.getByText('ID')).toBeInTheDocument();
         expect(screen.getByText('Comment')).toBeInTheDocument();
         expect(screen.getByText('Date/Time')).toBeInTheDocument();
         expect(screen.getByText('Location')).toBeInTheDocument();

@@ -1,6 +1,7 @@
 import pytest
 from backend.app import create_app
 from backend.setup.database_Init import db
+from backend.models.class_model import Class
 from backend.models.device_model import Device
 from backend.models.event_model import Event
 from backend.models.user_model import User
@@ -14,16 +15,23 @@ def app():
 
     with app.app_context():
         db.create_all()
+
+        # Add a test class to the database
+        test_class: Class = Class(
+            class_name="class A"
+        )
+        db.session.add(test_class)
+
         # Add two test devices to the database
         test_device1 = Device(dev_name="Device A",
                               dev_manufacturer="Manfact A",
                               dev_model="Model S",
-                              dev_class="class A",
+                              class_id=1,
                               dev_comments="Location: Herwood xyz")
         test_device2 = Device(dev_name="Device B",
                               dev_manufacturer="Manfact A",
                               dev_model="Model X",
-                              dev_class="class A",
+                              class_id=1,
                               dev_comments="Location: Herwood xyz")
         db.session.add(test_device1)
         db.session.add(test_device2)
@@ -36,12 +44,18 @@ def app():
         db.session.commit()
 
         # Add a test event to the database
-        test_event: Event = Event(dev_id=1,
-                                  user_id=1,
-                                  move_time=func.now(),
-                                  loc_name='Lab',
-                                  comment="I have nothing to say")
-        db.session.add(test_event)
+        test_event1: Event = Event(dev_id=1,
+                                   user_id=1,
+                                   move_time=func.now(),
+                                   loc_name='Lab',
+                                   comment="I have nothing to say")
+        test_event2: Event = Event(dev_id=2,
+                                   user_id=1,
+                                   move_time=func.now(),
+                                   loc_name='Lab',
+                                   comment="I have a lot to say")
+        db.session.add(test_event1)
+        db.session.add(test_event2)
         db.session.commit()
 
     yield app
@@ -78,13 +92,21 @@ def test_get_all_events(client):
     assert response.status_code == 200
 
     data = response.get_json()
-    assert len(data) == 1
+    assert len(data) == 2
     assert data[0]['dev_id'] == "1"
+    assert data[0]['dev_name'] == "Device A"
     assert data[0]['user_id'] == "1"
     assert data[0]['user_name'] == "User"
     assert data[0]['user_email'] == "user@mail.com"
     assert data[0]['loc_name'] == "Lab"
     assert data[0]['comment'] == "I have nothing to say"
+    assert data[1]['dev_id'] == "2"
+    assert data[1]['dev_name'] == "Device B"
+    assert data[1]['user_id'] == "1"
+    assert data[1]['user_name'] == "User"
+    assert data[1]['user_email'] == "user@mail.com"
+    assert data[1]['loc_name'] == "Lab"
+    assert data[1]['comment'] == "I have a lot to say"
 
 
 def test_get_event_by_id(client):
