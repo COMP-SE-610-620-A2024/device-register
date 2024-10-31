@@ -55,7 +55,7 @@ def test_upload_files(client, app):
 
     device_attachment_directory: str = os.path.join(
         config.PROJECT_ROOT,
-        'backend', 'tests', 'static', 'attachments', '1'
+        'backend',  'static', 'attachments', '1'
     )
 
     # Uploading to a non-existent device
