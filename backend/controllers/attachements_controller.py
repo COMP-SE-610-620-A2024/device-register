@@ -22,11 +22,11 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
     if len(files) == 0:
         return jsonify({"error": "No files uploaded"}), 400
 
-    user_directory = os.path.join('static', 'attachments', str(dev_id))
+    device_attachment_directory = os.path.join('static', 'attachments', str(dev_id))
 
     # Create the directory if it doesn't exist
     try:
-        os.makedirs(user_directory, exist_ok=True)
+        os.makedirs(device_attachment_directory, exist_ok=True)
     except OSError as e:
         return jsonify({"error": f"Failed to create directory: {str(e)}"}), 500
 
@@ -34,7 +34,7 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
     for file in files:
         if allowed_mime_type(file):
             safe_filename = secure_filename(file.filename)
-            file_path = os.path.join(user_directory, safe_filename)
+            file_path = os.path.join(device_attachment_directory, safe_filename)
 
             if os.path.exists(file_path):
                 return jsonify({"error": f"File '{safe_filename}' already exists"}), 400
