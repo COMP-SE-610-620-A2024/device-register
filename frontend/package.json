@@ -21,7 +21,7 @@
     "web-vitals": "^4.2.3"
   },
   "scripts": {
-    "start": "vite --mode production",
+    "start": "vite",
     "test": "jest",
     "build": "vite build",
     "preview": "vite preview",
