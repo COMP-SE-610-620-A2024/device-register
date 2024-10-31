@@ -24,7 +24,7 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
 
     device_attachment_directory = os.path.join('static', 'attachments', str(dev_id))
 
-    # Create the directory if it doesn't exist
+    # Create the directory if it does not exist
     try:
         os.makedirs(device_attachment_directory, exist_ok=True)
     except OSError as e:
