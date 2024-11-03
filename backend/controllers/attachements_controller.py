@@ -57,9 +57,10 @@ def get_all_files_in_directory(directory_path: str) -> list[str]:
         # List all files and directories in the specified path
         all_items = os.listdir(directory_path)
         # Filter out only the files
-        files = [item for item in all_items if os.path.isfile(
-            os.path.join(directory_path, item
-        ))]
+        files = [
+            item for item in all_items
+            if os.path.isfile(os.path.join(directory_path, item))
+        ]
         return files
     except OSError as e:
         print(f"Error accessing directory: {e}")
