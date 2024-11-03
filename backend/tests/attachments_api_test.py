@@ -89,3 +89,40 @@ def test_upload_files(client, app):
             if os.path.isfile(file_path):
                 os.remove(file_path)
         os.rmdir(device_attachment_directory)
+
+
+def test_get_files(client, app):
+    # Test the GET /api/attachments/list/<dev_id> endpoint.
+    device_attachment_directory: str = os.path.join(
+        config.PROJECT_ROOT,
+        'backend', 'tests', 'static', 'attachments', '1'
+    )
+
+    # Prepare a test file to upload for testing the list functionality
+    os.makedirs(device_attachment_directory, exist_ok=True)
+    test_file_path = os.path.join(device_attachment_directory, 'cat.jpg')
+
+    # Create a test file
+    with open(test_file_path, 'wb') as f:
+        f.write(b'Test image data')
+
+    # Test retrieving files from an existing device
+    response_valid_device = client.get('api/attachments/list/1')
+    assert response_valid_device.status_code == 200
+    assert ('Files retrieved successfully'
+            in response_valid_device.get_json()['message'])
+    assert ('/static/attachments/1/cat.jpg'
+            in response_valid_device.get_json()['files'])
+
+    # Test retrieving files from a non-existent device
+    response_invalid_device = client.get('api/attachments/list/2')
+    assert response_invalid_device.status_code == 404
+    assert 'Directory not found' in response_invalid_device.get_json()['error']
+
+    # Clean up the uploaded test files and the directory
+    if os.path.exists(device_attachment_directory):
+        for filename in os.listdir(device_attachment_directory):
+            file_path = os.path.join(device_attachment_directory, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        os.rmdir(device_attachment_directory)
