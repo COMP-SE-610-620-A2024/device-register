@@ -11,7 +11,7 @@ from backend.utils.qr_generator import generate_qr, remove_qr
 @pytest.fixture
 def app():
     # Create and configure a new app instance for each test.
-    app = create_app(env_config_file='.env-test')
+    app = create_app(env_config_file=".env.development")
 
     with app.app_context():
         db.create_all()

@@ -7,6 +7,7 @@ from sqlalchemy.engine import Engine
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 
+from backend.utils.backup import Backup
 from backend.utils.config import config
 
 load_dotenv()
@@ -19,20 +20,19 @@ def set_sqlite_pragma(dbapi_connection, connection_record) -> None:
     cursor.close()
 
 
-def create_app(env_config_file: str = ".env-test") -> Flask:
-    if env_config_file is not None:
-        config.load(env_config_file)
-    app = Flask(__name__)
+def create_app(env_config_file: str = ".env.development") -> Flask:
+    config.load(env_config_file)
+    app: Flask = Flask(__name__)
     CORS(app)
 
     app.config['TESTING'] = config.TESTING
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     setup_swagger(app)
     JWTManager(app)
     db.init_app(app)
+    Backup()
 
     from backend.api.device_api import device_api
     app.register_blueprint(device_api, url_prefix=f'{config.BACKEND_BASEPATH}/devices')
@@ -65,5 +65,5 @@ def create_app(env_config_file: str = ".env-test") -> Flask:
 
 # Running the app
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
+    application = create_app()
+    application.run(debug=True)
