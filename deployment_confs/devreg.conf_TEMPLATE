@@ -1,15 +1,15 @@
 <VirtualHost _default_:443>
-    ServerName ens-phot-devreg.rd.tuni.fi
+    ServerName {SERVER_NAME}
 
     # TUNI provided certs
     SSLEngine on
-    SSLCertificateFile /etc/pki/tls/certs/ens-phot-devreg.rd.tuni.fi-cert.pem
-    SSLCertificateKeyFile /etc/pki/tls/private/ens-phot-devreg.rd.tuni.fi-key.pem
+    SSLCertificateFile /etc/pki/tls/certs/{SERVER_NAME}-cert.pem
+    SSLCertificateKeyFile /etc/pki/tls/private/{SERVER_NAME}-key.pem
 
-    DocumentRoot /opt/device-register/frontend/dist
-    Alias /app /opt/device-register/frontend/dist
+    DocumentRoot {PROJECT_ROOT}/frontend/dist
+    Alias /app {PROJECT_ROOT}/frontend/dist
     # server front @ / via index, Alias / will override flask /api
-    <Directory /opt/device-register/frontend/dist>
+    <Directory {PROJECT_ROOT}/frontend/dist>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
@@ -19,16 +19,16 @@
     </Directory>
 
     # backend wsgi serving, won't use the env despite the configuration, probably need to comp separatel
-    WSGIDaemonProcess flaskapp python-home=/opt/device-register/venv python-path=/opt/device-register
+    WSGIDaemonProcess flaskapp python-home={PROJECT_ROOT}/venv python-path={PROJECT_ROOT}
     # Serve flask at /api
-    WSGIScriptAlias /api /opt/device-register/wsgi.py
-    <Directory /opt/device-register>
+    WSGIScriptAlias /api {PROJECT_ROOT}/wsgi.py
+    <Directory {PROJECT_ROOT}>
         Require all granted
     </Directory>
 
     # static filesystem, DO NOT STORE ANYTHING PRIVATE THERE
-    Alias /static /opt/device-register/backend/static
-    <Directory /opt/device-register/backend/static/>
+    Alias /static {PROJECT_ROOT}/backend/static
+    <Directory {PROJECT_ROOT}/backend/static/>
         Require all granted
     </Directory>
 
