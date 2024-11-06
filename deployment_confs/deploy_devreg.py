@@ -9,7 +9,7 @@ def run_com(com: list[str], sudo=False, cwd=PROJECT_ROOT):
     if sudo:
         com = ["sudo"] + com
     try:
-        print(f"\tRUN: { ' '.join(com)}\n"
+        print(f"\n\tRUN: { ' '.join(com)}\n"
               f"\tCWD: {cwd}")
         result = subprocess.run(com, check=True, text=True, capture_output=True, cwd=cwd)
         print(f"\tOUT:\n{result.stdout}")
@@ -19,6 +19,9 @@ def run_com(com: list[str], sudo=False, cwd=PROJECT_ROOT):
 
 def change_dir_tree_owners(owner, path):
     run_com(sudo=True, com=["chown", "-R", f"{owner}:{owner}", path])
+
+def change_rights(access, path):
+    run_com(sudo=True, com=["chmod", "-R", access, path])
 
 
 def create_apache_conf():
@@ -56,4 +59,9 @@ if __name__ == '__main__':
     create_apache_conf()
     print("applying new config")
     run_com(sudo=True, com=["cp", "devreg.conf", os.path.join("/", "etc", "httpd", "conf.d", "devreg.conf")], cwd=THIS_DIR)
-
+    print("change back to apache ownership & set correct rights")
+    change_dir_tree_owners("apache", PROJECT_ROOT)
+    change_rights("775", PROJECT_ROOT)
+    run_com(sudo=True, com=["chcon", "-R", "-t", "httpd_sys_rw_content_t", PROJECT_ROOT])
+    print("reload httpd server to finish deployment")
+    run_com(sudo=True, com=["systemctl", "reload", "httpd"], cwd=THIS_DIR)
