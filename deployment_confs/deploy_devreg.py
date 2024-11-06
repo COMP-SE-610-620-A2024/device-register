@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     print("#### BACKEND ####")
     print("installing python dependencies...")
-    run_com(sudo=False, com=["pip", "install", "-r", "requirements.txt"], cwd=os.path.join(PROJECT_ROOT, "backend"))
+    run_com(sudo=True, com=["pip", "install", "-r", "requirements.txt"], cwd=os.path.join(PROJECT_ROOT, "backend"))
 
     print("#### FRONTEND ####")
     print("installing js dependencies...")
