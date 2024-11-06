@@ -50,7 +50,7 @@ if __name__ == '__main__':
     print("installing js dependencies...")
     run_com(sudo=False, com=["npm", "install"], cwd=os.path.join(PROJECT_ROOT, "frontend"))
     print("building project")
-    run_com(sudo=False, command=["npm", "run", "build"], cwd=os.path.join(PROJECT_ROOT, "frontend"))
+    run_com(sudo=False, com=["npm", "run", "build"], cwd=os.path.join(PROJECT_ROOT, "frontend"))
     print("setting redirection rules")
     run_com(sudo=False, com=["cp", ".htaccess", os.path.join(PROJECT_ROOT, "frontend", "dist")], cwd=THIS_DIR)
 
