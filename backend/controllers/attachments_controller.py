@@ -72,10 +72,10 @@ def get_all_files_in_directory(directory_path: str) -> list[str]:
 def list_files(dev_id: int) -> tuple[Response, int]:
     device_attachment_directory = os.path.join('static', 'attachments', str(dev_id))
 
-    all_files = get_all_files_in_directory(device_attachment_directory)
-
     if not os.path.exists(device_attachment_directory):
         return jsonify({"error": "Directory not found"}), 404
+
+    all_files = get_all_files_in_directory(device_attachment_directory)
 
     # Check if there were any issues accessing the files
     if not all_files:
