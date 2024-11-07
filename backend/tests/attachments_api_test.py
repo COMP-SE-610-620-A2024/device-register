@@ -93,31 +93,39 @@ def test_upload_files(client, app):
 
 def test_get_files(client, app):
     # Test the GET /api/attachments/list/<dev_id> endpoint.
-    device_attachment_directory: str = os.path.join(
+    test_file_directory: str = os.path.join(
         config.PROJECT_ROOT,
-        'backend', 'tests', 'static', 'attachments', '1'
+        'backend', 'tests', 'static', 'attachments', 'test_files'
     )
 
-    # Prepare a test file to upload for testing the list functionality
-    os.makedirs(device_attachment_directory, exist_ok=True)
-    test_file_path = os.path.join(device_attachment_directory, 'cat.jpg')
+    device_attachment_directory: str = os.path.join(
+        config.PROJECT_ROOT,
+        'backend', 'static', 'attachments', '1'
+    )
 
-    # Create a test file
-    with open(test_file_path, 'wb') as f:
-        f.write(b'Test image data')
+    os.makedirs(device_attachment_directory, exist_ok=True)
+    test_file_path = os.path.join(test_file_directory, 'cat.jpg')
+    device_file_path = os.path.join(device_attachment_directory, 'cat.jpg')
+
+    # Simulate file upload by copying the test file to the device directory
+    with open(test_file_path, 'rb') as f:
+        file_data = f.read()
+    with open(device_file_path, 'wb') as f:
+        f.write(file_data)
 
     # Test retrieving files from an existing device
     response_valid_device = client.get('api/attachments/list/1')
     assert response_valid_device.status_code == 200
-    assert ('Files retrieved successfully'
-            in response_valid_device.get_json()['message'])
-    assert ('/static/attachments/1/cat.jpg'
-            in response_valid_device.get_json()['files'])
+    assert ('Files retrieved successfully' in
+            response_valid_device.get_json()['message'])
+    assert ('/static/attachments/1/cat.jpg' in
+            response_valid_device.get_json()['files'])
 
     # Test retrieving files from a non-existent device
     response_invalid_device = client.get('api/attachments/list/2')
     assert response_invalid_device.status_code == 404
-    assert 'Directory not found' in response_invalid_device.get_json()['error']
+    assert ('Directory not found' in
+            response_invalid_device.get_json()['error'])
 
     # Clean up the uploaded test files and the directory
     if os.path.exists(device_attachment_directory):

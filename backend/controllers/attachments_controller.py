@@ -56,9 +56,7 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
 
 def get_all_files_in_directory(directory_path: str) -> list[str]:
     try:
-        # List all files and directories in the specified path
         all_items = os.listdir(directory_path)
-        # Filter out only the files
         files = [
             item for item in all_items
             if os.path.isfile(os.path.join(directory_path, item))
@@ -66,11 +64,12 @@ def get_all_files_in_directory(directory_path: str) -> list[str]:
         return files
     except OSError as e:
         print(f"Error accessing directory: {e}")
-        return []  # Return an empty list in case of an error
+        return []
 
 
 def list_files(dev_id: int) -> tuple[Response, int]:
-    device_attachment_directory = os.path.join('static', 'attachments', str(dev_id))
+    device_attachment_directory = os.path.join(config.PROJECT_ROOT, 'backend',
+                                               'static', 'attachments', str(dev_id))
 
     if not os.path.exists(device_attachment_directory):
         return jsonify({"error": "Directory not found"}), 404
