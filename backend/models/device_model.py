@@ -3,22 +3,36 @@ from typing import Union
 from backend.setup.database_Init import db
 from backend.models.class_model import Class
 from backend.models.event_model import Event
-from sqlalchemy import delete
+from sqlalchemy import delete, CheckConstraint
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, validates
 
 
 class Device(db.Model):
     __tablename__ = 'devices'
 
+    @validates('dev_name', 'dev_manufacturer', 'dev_model', 'dev_comments')
+    def validate_length(self, key, data):
+        max_lengths = {
+            'dev_name': 100,
+            'dev_manufacturer': 50,
+            'dev_model': 50,
+            'dev_comments': 200
+        }
+        if len(data) > max_lengths[key]:
+            return data[:max_lengths[key]]
+        return data
+
+
+
     dev_id = db.Column(db.Integer, primary_key=True)
-    dev_name = db.Column(db.String(100), nullable=False)
-    dev_manufacturer = db.Column(db.String(50), nullable=False)
-    dev_model = db.Column(db.String(50), nullable=False)
+    dev_name = db.Column(db.String, nullable=False)
+    dev_manufacturer = db.Column(db.String, nullable=False)
+    dev_model = db.Column(db.String, nullable=False)
     class_id = db.Column(db.Integer,
                          db.ForeignKey('classes.class_id'),
                          nullable=False)
-    dev_comments = db.Column(db.String(200), nullable=False)
+    dev_comments = db.Column(db.String, nullable=False)
 
     events = db.relationship(
         'Event',
@@ -27,6 +41,7 @@ class Device(db.Model):
         cascade='all, delete-orphan',
         passive_deletes=True
     )
+
 
     def to_dict(self) -> dict[str, str]:
         return {
