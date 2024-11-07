@@ -17,7 +17,6 @@ class Event(db.Model):
             return data[:max_lengths[key]]
         return data
 
-
     event_id = db.Column(db.Integer, primary_key=True)
     dev_id = db.Column(db.Integer, db.ForeignKey('devices.dev_id', ondelete='CASCADE'),
                        nullable=False)

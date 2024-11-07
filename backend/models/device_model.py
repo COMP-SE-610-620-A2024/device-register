@@ -3,7 +3,7 @@ from typing import Union
 from backend.setup.database_Init import db
 from backend.models.class_model import Class
 from backend.models.event_model import Event
-from sqlalchemy import delete, CheckConstraint
+from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import joinedload, validates
 
@@ -23,8 +23,6 @@ class Device(db.Model):
             return data[:max_lengths[key]]
         return data
 
-
-
     dev_id = db.Column(db.Integer, primary_key=True)
     dev_name = db.Column(db.String, nullable=False)
     dev_manufacturer = db.Column(db.String, nullable=False)
@@ -41,7 +39,6 @@ class Device(db.Model):
         cascade='all, delete-orphan',
         passive_deletes=True
     )
-
 
     def to_dict(self) -> dict[str, str]:
         return {
