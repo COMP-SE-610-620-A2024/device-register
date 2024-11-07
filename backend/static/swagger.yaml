@@ -454,56 +454,39 @@ paths:
                 type: "string"
                 example: "Failed to create directory or save file"
 
-
-  /attachments/upload/{dev_id}:
-    post:
+  /attachments/list/{dev_id}:
+    get:
       tags:
         - Attachments
-      summary: "Upload attachments for device"
-      description: "Allows uploading one or more attachments (PDF, PNG, JPEG) for device."
+      summary: "List attachments for device"
+      description: "Lists all attachments for device."
       parameters:
         - name: "dev_id"
           in: "path"
           required: true
           type: "integer"
-        - name: "files"
-          in: "formData"
-          description: "File(s) to be uploaded"
-          required: true
-          type: "file"
-          x-multiple: true
-      consumes:
-        - "multipart/form-data"
       responses:
         200:
-          description: "Files uploaded successfully"
+          description: "List of attachments"
           schema:
             type: "object"
             properties:
               message:
                 type: "string"
-                example: "Files uploaded successfully"
+                example: "Files retrieved successfully"
               files:
                 type: "array"
                 items:
                   type: "string"
-                  example: "example.pdf"
-        400:
-          description: "Bad request - no files or invalid file type"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                example: "No files uploaded"
+                  example: "/static/attachments/1/example.pdf"
         404:
-          description: "Device not found"
+          description: "Directory not found"
           schema:
             type: "object"
             properties:
               error:
                 type: "string"
-                example: "Device not found"
+                example: "Directory not found"
         500:
           description: "Internal server error"
           schema:
@@ -511,7 +494,7 @@ paths:
             properties:
               error:
                 type: "string"
-                example: "Failed to create directory or save file"
+                example: "Failed to read directory"
 
   /auth/login:
     post:
