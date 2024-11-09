@@ -69,4 +69,5 @@ def test_remove_attachments(client, app):
     remove_attachments(dev_id)
 
     assert not os.path.exists(device_attachment_directory)
-    assert not os.path.exists(test_file_path)  # This may be redundant since the directory check should suffice
+    # This may be redundant since the directory check should suffice
+    assert not os.path.exists(test_file_path)
