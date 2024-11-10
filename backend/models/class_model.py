@@ -1,19 +1,28 @@
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import validates
+
 from backend.setup.database_Init import db
 
 
 class Class(db.Model):
     __tablename__ = 'classes'
 
+    @validates('class_name')
+    def validate_length(self, key, data):
+        max_lengths = {
+            'class_name': 50
+        }
+        if len(data) > max_lengths[key]:
+            return data[:max_lengths[key]]
+        return data
+
     class_id = db.Column(db.Integer, primary_key=True)
-    class_name = db.Column(db.String(50), nullable=False, unique=True)
+    class_name = db.Column(db.String, nullable=False, unique=True)
 
     devices = db.relationship(
         'Device',
         backref='device_class',
-        lazy=True,
-        cascade='all, delete-orphan',
-        passive_deletes=True
+        lazy=True
     )
 
     def to_dict(self) -> dict[str, str]:
@@ -52,6 +61,9 @@ class Class(db.Model):
             db.session.commit()
             return 200, (f"Deleted successfully class {class_id} "
                          f"{class_found.class_name}")
+        except IntegrityError:
+            db.session.rollback()
+            return 409, "Cannot delete a class that is associated with devices."
         except Exception as e:
             db.session.rollback()
             return 500, str(e)

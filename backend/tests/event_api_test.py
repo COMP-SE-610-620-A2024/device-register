@@ -5,6 +5,7 @@ from backend.models.class_model import Class
 from backend.models.device_model import Device
 from backend.models.event_model import Event
 from backend.models.user_model import User
+from flask_jwt_extended import create_access_token
 from sqlalchemy.sql import func
 
 
@@ -48,11 +49,13 @@ def app():
                                    user_id=1,
                                    move_time=func.now(),
                                    loc_name='Lab',
+                                   company='Firma',
                                    comment="I have nothing to say")
         test_event2: Event = Event(dev_id=2,
                                    user_id=1,
                                    move_time=func.now(),
                                    loc_name='Lab',
+                                   company="Firma",
                                    comment="I have a lot to say")
         db.session.add(test_event1)
         db.session.add(test_event2)
@@ -72,6 +75,13 @@ def client(app):
     return app.test_client()
 
 
+@pytest.fixture
+def auth_header(app):
+    with app.app_context():
+        access_token = create_access_token(identity="tester")
+        return {"Authorization": f"Bearer {access_token}"}
+
+
 def test_event_to_dict(app):
     with app.app_context():
         event = Event.query.first()
@@ -83,12 +93,13 @@ def test_event_to_dict(app):
         assert event_dict['user_id'] == str(event.user_id)
         assert event_dict['loc_name'] == event.loc_name
         assert event_dict['move_time'] == event.move_time.isoformat()
+        assert event_dict['company'] == event.company
         assert event_dict['comment'] == event.comment
 
 
-def test_get_all_events(client):
+def test_get_all_events(client, auth_header):
     # Test the GET /api/events endpoint.
-    response = client.get('/api/events/')
+    response = client.get('/api/events/', headers=auth_header)
     assert response.status_code == 200
 
     data = response.get_json()
@@ -99,6 +110,7 @@ def test_get_all_events(client):
     assert data[0]['user_name'] == "User"
     assert data[0]['user_email'] == "user@mail.com"
     assert data[0]['loc_name'] == "Lab"
+    assert data[0]['company'] == "Firma"
     assert data[0]['comment'] == "I have nothing to say"
     assert data[1]['dev_id'] == "2"
     assert data[1]['dev_name'] == "Device B"
@@ -106,12 +118,16 @@ def test_get_all_events(client):
     assert data[1]['user_name'] == "User"
     assert data[1]['user_email'] == "user@mail.com"
     assert data[1]['loc_name'] == "Lab"
+    assert data[1]['company'] == "Firma"
     assert data[1]['comment'] == "I have a lot to say"
 
+    response_401 = client.get('/api/events/')
+    assert response_401.status_code == 401
 
-def test_get_event_by_id(client):
+
+def test_get_event_by_id(client, auth_header):
     # Test the GET /api/events/int:event_id endpoint.
-    response = client.get('/api/events/1')
+    response = client.get('/api/events/1', headers=auth_header)
     assert response.status_code == 200
 
     data = response.get_json()
@@ -120,10 +136,14 @@ def test_get_event_by_id(client):
     assert data['user_name'] == "User"
     assert data['user_email'] == "user@mail.com"
     assert data['loc_name'] == "Lab"
+    assert data['company'] == "Firma"
     assert data['comment'] == "I have nothing to say"
 
-    response_404 = client.get('/api/events/9999')
+    response_404 = client.get('/api/events/9999', headers=auth_header)
     assert response_404.status_code == 404
+
+    response_401 = client.get('/api/events/1')
+    assert response_401.status_code == 401
 
 
 def test_create_event(client):
@@ -131,6 +151,7 @@ def test_create_event(client):
         'dev_id': 1,
         'move_time': "2024-10-02 14:14:28",
         'loc_name': "Room 1",
+        'company': "Firma",
         'comment': "You should clean your sockets",
         'user': {
             'user_name': 'User',
@@ -145,6 +166,7 @@ def test_create_event(client):
             'dev_id': 1,
             'move_time': "2024-10-02 14:14:28",
             'loc_name': "Room 1",
+            'company': "Firma",
             'comment': "You should clean your sockets",
             'user': {
                 'user_name': 'User',
@@ -155,6 +177,7 @@ def test_create_event(client):
             'dev_id': 2,
             'move_time': "2024-10-02 14:14:29",
             'loc_name': "Room 1",
+            'company': "Firma",
             'comment': "You should clean your room",
             'user': {
                 'user_name': 'User',
@@ -176,6 +199,7 @@ def test_create_event(client):
     payload5 = {
         'dev_id': 1,
         'move_time': "2024-10-02 14:14:28",
+        'company': "Firma",
         'comment': "You should clean your sockets",
         'user': {
             'user_name': 'User',
@@ -189,6 +213,7 @@ def test_create_event(client):
         'dev_id': 1,
         'move_time': "2024-10-02 14:14",
         'loc_name': "Room 1",
+        'company': "Firma",
         'comment': "You should clean your sockets",
         'user': {
             'user_name': 'User',
@@ -202,6 +227,7 @@ def test_create_event(client):
         'dev_id': 1,
         'move_time': "2024-10-02 14:14:28",
         'loc_name': "Room 1",
+        'company': "Firma",
         'comment': "You should clean your sockets",
         'user': 1
     }
@@ -212,6 +238,7 @@ def test_create_event(client):
         'dev_id': 1,
         'move_time': "2024-10-02 14:14:28",
         'loc_name': "Room 1",
+        'company': "Firma",
         'comment': "You should clean your sockets",
         'user': {
             'user_name': 'User'
@@ -224,6 +251,7 @@ def test_create_event(client):
         'dev_id': 9999,
         'move_time': "2024-10-02 14:14:28",
         'loc_name': "Room 1",
+        'company': "Firma",
         'comment': "You should clean your sockets",
         'user': {
             'user_name': 'User',
@@ -234,38 +262,44 @@ def test_create_event(client):
     assert response9.status_code == 500
 
 
-def test_patch_event(client):
+def test_patch_event(client, auth_header):
     # Test the PATCH /api/events/int:event_id endpoint.
     payload1 = {
         'dev_id': 2
     }
-    response1 = client.patch('/api/events/1', json=payload1)
+    response1 = client.patch('/api/events/1',
+                             json=payload1,
+                             headers=auth_header)
     assert response1.status_code == 200
 
-    event1 = client.get('/api/events/1')
+    event1 = client.get('/api/events/1', headers=auth_header)
     assert event1.get_json()['dev_id'] == "2"
 
     payload2 = {
         'dev_id': 1,
         'move_time': "2024-10-03 14:14:29",
         'loc_name': "Room 2",
+        'company': "Joku toinen firma",
         'comment': "You should clean your sockets",
         'user': {
             'user_name': 'No longer User',
             'user_email': 'user@othermail.com'
         }
     }
-    response2 = client.patch('/api/events/1', json=payload2)
+    response2 = client.patch('/api/events/1',
+                             json=payload2,
+                             headers=auth_header)
     assert response2.status_code == 200
 
-    event2 = client.get('/api/events/1')
+    event2 = client.get('/api/events/1', headers=auth_header)
     event2_json = event2.get_json()
     assert event2_json['dev_id'] == "1"
     assert event2_json['move_time'] == "2024-10-03T14:14:29"
     assert event2_json['loc_name'] == "Room 2"
+    assert event2_json['company'] == 'Joku toinen firma'
     assert event2_json['comment'] == "You should clean your sockets"
     user_id = event2_json['user_id']
-    user_response = client.get(f'/api/users/{user_id}')
+    user_response = client.get(f'/api/users/{user_id}', headers=auth_header)
     user_info = user_response.get_json()
     assert user_info['user_name'] == 'No longer User'
     assert user_info['user_email'] == 'user@othermail.com'
@@ -273,13 +307,17 @@ def test_patch_event(client):
     payload3 = {
         'dev_id': 3
     }
-    response3 = client.patch('/api/events/1', json=payload3)
+    response3 = client.patch('/api/events/1',
+                             json=payload3,
+                             headers=auth_header)
     assert response3.status_code == 500
 
     payload4 = {
         'dev_id': 2
     }
-    response4 = client.patch('/api/events/404', json=payload4)
+    response4 = client.patch('/api/events/404',
+                             json=payload4,
+                             headers=auth_header)
     assert response4.status_code == 404
 
     payload5 = [
@@ -287,46 +325,57 @@ def test_patch_event(client):
             'dev_id': 1,
         }
     ]
-    response5 = client.patch('/api/events/1', json=payload5)
+    response5 = client.patch('/api/events/1',
+                             json=payload5,
+                             headers=auth_header)
     assert response5.status_code == 400
 
     payload6 = {
         'dev_id': 2,
         'wrong': "key"
     }
-    response6 = client.patch('/api/events/1', json=payload6)
+    response6 = client.patch('/api/events/1',
+                             json=payload6,
+                             headers=auth_header)
     assert response6.status_code == 400
 
     payload7 = {
         'dev_id': 1,
         'move_time': "2024-10-03 14:14:29",
         'loc_name': "Room 2",
+        'company': "Testifirma",
         'comment': "You should clean your sockets",
         'user': {
             'naam': 'No longer User',
             'email': 'user@othermail.com'
         }
     }
-    response7 = client.patch('/api/events/1', json=payload7)
+    response7 = client.patch('/api/events/1',
+                             json=payload7,
+                             headers=auth_header)
     assert response7.status_code == 400
 
     payload8 = {
         'dev_id': 1,
         'move_time': "2024-10-03 14:14:29",
         'loc_name': "Room 2",
+        'company': "Testifirma",
         'comment': "You should clean your sockets",
         'user': {
             'user_name': 'No longer User',
             'eeem': 'user@othermail.com'
         }
     }
-    response8 = client.patch('/api/events/1', json=payload8)
+    response8 = client.patch('/api/events/1',
+                             json=payload8,
+                             headers=auth_header)
     assert response8.status_code == 400
 
     payload8 = {
         'dev_id': 1,
         'move_time': "2024-10-03 14:14:29",
         'loc_name': "Room 2",
+        'company': "Testifirma",
         'comment': "You should clean your sockets",
         'user': [
             {
@@ -335,23 +384,37 @@ def test_patch_event(client):
             }
         ]
     }
-    response8 = client.patch('/api/events/1', json=payload8)
+    response8 = client.patch('/api/events/1',
+                             json=payload8,
+                             headers=auth_header)
     assert response8.status_code == 400
 
     payload10 = {
         'move_time': "2024-10-03 14:14"
     }
-    response10 = client.patch('/api/events/1', json=payload10)
+    response10 = client.patch('/api/events/1',
+                              json=payload10,
+                              headers=auth_header)
     assert response10.status_code == 400
 
+    payload11 = {
+        'dev_id': 2
+    }
+    response11 = client.patch('/api/events/1',
+                              json=payload11)
+    assert response11.status_code == 401
 
-def test_remove_event(client):
+
+def test_remove_event(client, auth_header):
     # Test the DELETE /api/events/int:event_id endpoint.
-    response_delete = client.delete('/api/events/1')
+    response_delete_401 = client.delete('/api/events/1')
+    assert response_delete_401.status_code == 401
+
+    response_delete = client.delete('/api/events/1', headers=auth_header)
     assert response_delete.status_code == 200
 
-    response_get_deleted = client.get('/api/events/1')
+    response_get_deleted = client.get('/api/events/1', headers=auth_header)
     assert response_get_deleted.status_code == 404
 
-    response_delete_404 = client.delete('/api/events/9999')
+    response_delete_404 = client.delete('/api/events/9999', headers=auth_header)
     assert response_delete_404.status_code == 404

@@ -6,6 +6,7 @@ from backend.models.class_model import Class
 from backend.models.device_model import Device
 from backend.models.event_model import Event
 from backend.models.user_model import User
+from flask_jwt_extended import create_access_token
 from sqlalchemy.sql import func
 
 from backend.utils.config import config
@@ -48,6 +49,13 @@ def app():
 def client(app):
     # A tests client for the app.
     return app.test_client()
+
+
+@pytest.fixture
+def auth_header(app):
+    with app.app_context():
+        access_token = create_access_token(identity="tester")
+        return {"Authorization": f"Bearer {access_token}"}
 
 
 def test_get_devices(client):
@@ -177,11 +185,11 @@ def test_get_device_by_id(client):
     assert data['class_name'] == "class A"
     assert data['dev_comments'] == "Location: Herwood xyz"
 
-    response_404 = client.get('/api/users/9999')
+    response_404 = client.get('/api/devices/9999')
     assert response_404.status_code == 404
 
 
-def test_update_device_by_id(client):
+def test_update_device_by_id(client, auth_header):
     # Test the PATCH /api/devices/int:dev_id endpoint.
     new_device_data = {
         "dev_name": "New device",
@@ -191,7 +199,9 @@ def test_update_device_by_id(client):
         "dev_comments": "Moved to Timbuktu"
     }
 
-    response = client.patch('/api/devices/1', json=new_device_data)
+    response = client.patch('/api/devices/1',
+                            json=new_device_data,
+                            headers=auth_header)
 
     assert response.status_code == 200
 
@@ -204,7 +214,9 @@ def test_update_device_by_id(client):
     assert updated_device['dev_comments'] == "Moved to Timbuktu"
 
     # Verify that updating a non-existent device returns 404
-    response_404 = client.patch('/api/devices/9999', json=new_device_data)
+    response_404 = client.patch('/api/devices/9999',
+                                json=new_device_data,
+                                headers=auth_header)
     assert response_404.status_code == 404
 
     nonexistent_class_device = {
@@ -215,16 +227,23 @@ def test_update_device_by_id(client):
         "dev_comments": "Moved to Timbuktu"
     }
     response_bad_class = client.patch('/api/devices/1',
-                                      json=nonexistent_class_device)
+                                      json=nonexistent_class_device,
+                                      headers=auth_header)
     assert response_bad_class.status_code == 500
 
+    response_unauthorized = client.patch('/api/devices/1',
+                                         json=new_device_data)
+    assert response_unauthorized.status_code == 401
 
-def test_update_device_invalid_fields(client):
+
+def test_update_device_invalid_fields(client, auth_header):
     # Test updating with invalid fields
     invalid_device_data = {
         "invalid_field": "some value"
     }
-    response = client.patch('/api/devices/1', json=invalid_device_data)
+    response = client.patch('/api/devices/1',
+                            json=invalid_device_data,
+                            headers=auth_header)
 
     assert response.status_code == 400
     data = response.get_json()
@@ -243,6 +262,7 @@ def test_get_events_by_device_id(client, app):
             user_id=1,
             move_time=func.now(),
             loc_name='Lab',
+            company='Firma 1',
             comment='Hello')
         db.session.add(test_event1)
         db.session.commit()
@@ -252,6 +272,7 @@ def test_get_events_by_device_id(client, app):
             user_id=1,
             move_time=func.now(),
             loc_name='Labz',
+            company='Firma 2',
             comment='Hi')
         db.session.add(test_event2)
         db.session.commit()
@@ -264,11 +285,13 @@ def test_get_events_by_device_id(client, app):
         assert data[0]['dev_id'] == "1"
         assert data[0]['user_id'] == "1"
         assert data[0]['loc_name'] == "Lab"
+        assert data[0]['company'] == "Firma 1"
         assert data[0]['comment'] == "Hello"
         assert data[0]['user_name'] == "User"
         assert data[1]['dev_id'] == "1"
         assert data[1]['user_id'] == "1"
         assert data[1]['loc_name'] == "Labz"
+        assert data[1]['company'] == "Firma 2"
         assert data[1]['comment'] == "Hi"
         assert data[1]['user_name'] == "User"
 
@@ -276,7 +299,7 @@ def test_get_events_by_device_id(client, app):
         assert response_404.status_code == 404
 
 
-def test_remove_devices(client, app):
+def test_remove_devices(client, app, auth_header):
     # Test the DELETE /api/devices/ endpoint.
     with app.app_context():
         test_user = User(user_name="testuser", user_email="testuser@example.com")
@@ -310,6 +333,7 @@ def test_remove_devices(client, app):
             user_id=test_user.user_id,
             move_time=func.now(),
             loc_name='Lab',
+            company='Firma 1',
             comment='Event 1',
         )
         test_event2 = Event(
@@ -317,6 +341,7 @@ def test_remove_devices(client, app):
             user_id=test_user.user_id,
             move_time=func.now(),
             loc_name='Lab',
+            company='Firma 2',
             comment='Event 2',
         )
 
@@ -325,7 +350,13 @@ def test_remove_devices(client, app):
         db.session.commit()
 
         payload = [{'id': dev_id1}, {'id': dev_id2}]
-        response = client.delete('/api/devices/', json=payload)
+        response_unauthorized = client.delete('/api/devices/',
+                                              json=payload)
+        assert response_unauthorized.status_code == 401
+
+        response = client.delete('/api/devices/',
+                                 json=payload,
+                                 headers=auth_header)
         assert response.status_code == 200
 
         assert db.session.get(Device, dev_id1) is None
@@ -364,6 +395,7 @@ def test_get_current_locations(client, app):
             user_id=test_user.user_id,
             move_time=func.now(),
             loc_name="Location 1",
+            company='Firma 1',
             comment="Device 1 is here"
         )
         db.session.add(event1)
@@ -373,6 +405,7 @@ def test_get_current_locations(client, app):
             user_id=test_user.user_id,
             move_time=func.now(),
             loc_name="Location 2",
+            company='Firma 2',
             comment="Device 2 is here"
         )
         db.session.add(event2)

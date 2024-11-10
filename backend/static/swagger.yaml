@@ -67,6 +67,8 @@ paths:
       tags:
         - Devices
       summary: Delete devices
+      security:
+        - bearerAuth: [ ]
       parameters:
         - in: body
           name: body
@@ -87,6 +89,8 @@ paths:
           description: Devices deleted
         '400':
           description: Invalid input
+        '401':
+          description: Unauthorized
         '404':
           description: Devices not found
         '500':
@@ -111,28 +115,32 @@ paths:
           description: Device not found
 
     patch:
-        tags:
-            - Devices
-        summary: Update device by ID
-        parameters:
-        - name: dev_id
-          in: path
-          required: true
-          type: integer
-        - in: body
-          name: body
-          required: true
-          schema:
-              $ref: '#/definitions/NewDevice'
-        responses:
-            '200':
-              description: Device updated
-            '400':
-              description: Invalid input
-            '404':
-              description: Device not found
-            '500':
-              description: Database error
+      tags:
+          - Devices
+      summary: Update device by ID
+      security:
+        - bearerAuth: [ ]
+      parameters:
+      - name: dev_id
+        in: path
+        required: true
+        type: integer
+      - in: body
+        name: body
+        required: true
+        schema:
+            $ref: '#/definitions/NewDevice'
+      responses:
+          '200':
+            description: Device updated
+          '400':
+            description: Invalid input
+          '401':
+            description: Unauthorized
+          '404':
+            description: Device not found
+          '500':
+            description: Database error
 
   /devices/{dev_id}/events:
     get:
@@ -198,6 +206,8 @@ paths:
       tags:
         - Users
       summary: Get all users
+      security:
+        - bearerAuth: [ ]
       responses:
         '200':
           description: A list of users
@@ -205,12 +215,16 @@ paths:
             type: array
             items:
               $ref: '#/definitions/User'
+        '401':
+          description: Unauthorized
 
   /users/{user_id}:
     get:
       tags:
         - Users
       summary: Get user by ID
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: user_id
           in: path
@@ -221,6 +235,8 @@ paths:
           description: A single user
           schema:
             $ref: '#/definitions/User'
+        '401':
+          description: Unauthorized
         '404':
           description: User not found
 
@@ -229,6 +245,8 @@ paths:
       tags:
         - Events
       summary: Get all events
+      security:
+        - bearerAuth: [ ]
       responses:
         '200':
           description: A list of events
@@ -248,6 +266,8 @@ paths:
                     user_email:
                       type: string
                       example: "nimi.niminen@sahkoposti.com"
+        '401':
+          description: Unauthorized
     post:
       tags:
         - Events
@@ -264,6 +284,7 @@ paths:
               - dev_id: 1
                 move_time: "2024-12-11 11:11:11"
                 loc_name: "Room123"
+                company: "Teknologiafirma"
                 comment: "Move"
                 user:
                   user_name: "Siirtäjä"
@@ -271,6 +292,7 @@ paths:
               - dev_id: 2
                 move_time: "2024-12-12 12:12:12"
                 loc_name: "Room345"
+                company: "Toinen firma"
                 comment: "Move2"
                 user:
                   user_name: "Päällikkö"
@@ -289,6 +311,8 @@ paths:
       tags:
         - Events
       summary: Get event by ID
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: event_id
           in: path
@@ -299,12 +323,16 @@ paths:
           description: A single event
           schema:
             $ref: '#/definitions/Event'
+        '401':
+          description: Unauthorized
         '404':
           description: Event not found
     delete:
       tags:
         - Events
       summary: Delete event by ID
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: event_id
           in: path
@@ -313,6 +341,8 @@ paths:
       responses:
         '200':
           description: Event deleted
+        '401':
+          description: Unauthorized
         '404':
           description: Event not found
 
@@ -320,6 +350,8 @@ paths:
       tags:
         - Events
       summary: Update event by ID
+      security:
+        - bearerAuth: [ ]
       parameters:
       - name: event_id
         in: path
@@ -335,6 +367,8 @@ paths:
           description: Event updated
         '400':
           description: Invalid input
+        '401':
+          description: Unauthorized
         '404':
           description: Event not found
         '500':
@@ -356,6 +390,8 @@ paths:
       tags:
         - Classes
       summary: Create new class
+      security:
+        - bearerAuth: [ ]
       parameters:
         - in: body
           name: body
@@ -367,6 +403,10 @@ paths:
           description: Class created
         '400':
           description: Invalid input
+        '401':
+          description: Unauthorized
+        '409':
+          description: Class already exists
         '500':
           description: Database error
 
@@ -376,6 +416,8 @@ paths:
       tags:
         - Classes
       summary: Delete class by ID
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: class_id
           in: path
@@ -384,8 +426,14 @@ paths:
       responses:
         '200':
           description: Class deleted
+        '401':
+          description: Unauthorized
         '404':
           description: Class not found
+        '409':
+          description: Class cannot be deleted due to foreign key constraint. The class is still used by a device.
+        '500':
+          description: Database error
 
 
   /attachments/upload/{dev_id}:
@@ -445,6 +493,48 @@ paths:
               error:
                 type: "string"
                 example: "Failed to create directory or save file"
+
+  /attachments/list/{dev_id}:
+    get:
+      tags:
+        - Attachments
+      summary: "List attachments for device"
+      description: "Lists all attachments for device."
+      parameters:
+        - name: "dev_id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "List of attachments"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "Files retrieved successfully"
+              files:
+                type: "array"
+                items:
+                  type: "string"
+                  example: "/static/attachments/1/example.pdf"
+        404:
+          description: "Directory not found"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                example: "Directory not found"
+        500:
+          description: "Internal server error"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                example: "Failed to read directory"
 
   /auth/login:
     post:
@@ -609,6 +699,9 @@ definitions:
       user_email:
         type: string
         example: "email@email.com"
+      company:
+        type: string
+        example: "Oy Firma Ab"
       comment:
         type: string
         example: "Rikki"
@@ -624,6 +717,8 @@ definitions:
         format: date-time
         example: "2024-12-11 11:11:11"
       loc_name:
+        type: string
+      company:
         type: string
       comment:
         type: string
@@ -646,6 +741,9 @@ definitions:
       loc_name:
         type: string
         example: "Room 101"
+      company:
+        type: string
+        example: "Firma Oy"
       comment:
         type: string
         example: "Routine maintenance performed"
