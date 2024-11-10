@@ -1,7 +1,9 @@
 from flask import Blueprint, Response
-from backend.controllers.attachments_controller import (upload_files,
-                                                 list_files,
-                                                 remove_file)
+from backend.controllers.attachments_controller import (
+    upload_files,
+    list_files,
+    remove_file
+)
 
 
 attachments_api = Blueprint('attachments_api', __name__)
