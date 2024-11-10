@@ -1,6 +1,6 @@
 from datetime import timedelta
 from flask import jsonify, request, Response
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity
 from werkzeug.security import check_password_hash
 from backend.models.auth_model import get_admin_credentials
 from backend.utils.config import config
@@ -27,7 +27,6 @@ def admin_login() -> tuple[Response, int]:
         return jsonify({'error': 'Bad username or password'}), 401
 
 
-@jwt_required()
 def is_admin() -> tuple[Response, int]:
     request_username = get_jwt_identity()
 
