@@ -7,7 +7,6 @@ import Function_button from '../components/shared/function_button';
 import {useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import usePostData from '../components/shared/post_data';
-import { ConstructionOutlined } from '@mui/icons-material';
 const Login_view = () => {
 
   const navigate = useNavigate();
@@ -52,6 +51,12 @@ const Login_view = () => {
       setErrorMessage("Wrong username or password");
       setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       }
+    else if(loginResult){
+      localStorage.setItem("access_token", loginResult.access_token);
+      //console.log(loginResult.access_token);
+      //console.log(localStorage.getItem("access_token"));
+      navigate('/admin'); 
+    }
     })
 
 

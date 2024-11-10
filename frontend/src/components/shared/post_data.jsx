@@ -6,17 +6,20 @@ const usePostData = (endpoint) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const url = `${config.BACKEND_ADDR}/${endpoint}/`;
+  const url = `${config.BACKEND_ADDR}/${endpoint}`;
 
   const postData = async (data) => {
     setLoading(true);
     setError(null); 
+
+    const access_token = localStorage.getItem("access_token");
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          //...(access_token && { 'Authorization': `Bearer ${access_token}` }),
         },
         body: JSON.stringify(data),
       });
