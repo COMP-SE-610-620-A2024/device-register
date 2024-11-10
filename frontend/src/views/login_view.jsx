@@ -52,9 +52,7 @@ const Login_view = () => {
       setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       }
     else if(loginResult){
-      localStorage.setItem("access_token", loginResult.access_token);
-      //console.log(loginResult.access_token);
-      //console.log(localStorage.getItem("access_token"));
+      localStorage.setItem("access_token", loginResult.access_token); // eslint-disable-line no-undef
       navigate('/admin'); 
     }
     })

@@ -12,14 +12,14 @@ const usePostData = (endpoint) => {
     setLoading(true);
     setError(null); 
 
-    const access_token = localStorage.getItem("access_token");
+    const access_token = localStorage.getItem("access_token"); // eslint-disable-line no-undef
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          //...(access_token && { 'Authorization': `Bearer ${access_token}` }),
+          ...(access_token && { 'Authorization': `Bearer ${access_token}` }),
         },
         body: JSON.stringify(data),
       });
