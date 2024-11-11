@@ -19,8 +19,7 @@ function Event_view() {
   }
 
 
-  if (error || !auth || auth.msg != 'Authorized') { 
-    console.log('fetcdata:', error);
+  if (error || auth.msg != 'Authorized' ) { 
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
         <NavigationBar/>
