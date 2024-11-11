@@ -21,11 +21,10 @@ function Admin_view() {
 
 
   if (error || !auth || auth.msg != 'Authorized') { 
-    console.log('fetcdata:', error);
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
         <NavigationBar/>
-        <Typography sx={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)' }}>
+        <Typography sx={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)', mb: 2 }}>
           You must be logged in to view this content.
         </Typography>
         <Link_button href={`/login`} text= "Login"></Link_button>
