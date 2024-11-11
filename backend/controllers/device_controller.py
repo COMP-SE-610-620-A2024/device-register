@@ -5,6 +5,7 @@ from flask import jsonify, request, Response
 from backend.controllers.event_controller import create_event
 from backend.models.device_model import Device
 from backend.utils.qr_generator import generate_qr, remove_qr
+from backend.controllers.attachments_controller import remove_attachments
 
 
 def get_devices() -> tuple[Response, int]:
@@ -63,6 +64,7 @@ def create_devices() -> tuple[Response, int]:
             },
             'move_time': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
             'loc_name': location,
+            'company': '',
             'comment': ''
         }
         home_event_list.append(new_event_json)
@@ -135,6 +137,7 @@ def remove_devices() -> tuple[Response, int]:
     if database_response[0] == 200:
         for dev_id in device_id_list:
             remove_qr(dev_id)
+            remove_attachments(dev_id)
         return jsonify({'message': "Devices deleted successfully"}), 200
     elif database_response[0] == 404:
         return (jsonify({'error': f"Failed to delete devices. "
