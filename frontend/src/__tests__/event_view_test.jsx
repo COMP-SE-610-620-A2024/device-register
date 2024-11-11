@@ -30,7 +30,7 @@ describe('EventView Component', () => {
     });
 
     test('renders Navbar, header, and EventGrid correctly when authenticated', () => {
-        useFetchData.mockReturnValue({ auth: true, loading: false, error: null });
+        useFetchData.mockReturnValue({ auth: {"msg": "Authorized"}, loading: false, error: null });
 
         render(<EventView />);
 
@@ -40,7 +40,7 @@ describe('EventView Component', () => {
     });
 
     test('renders the header text with correct styles when authenticated', () => {
-        useFetchData.mockReturnValue({ auth: true, loading: false, error: null });
+        useFetchData.mockReturnValue({ auth: {"msg": "Authorized"}, loading: false, error: null });
 
         render(<EventView />);
 
