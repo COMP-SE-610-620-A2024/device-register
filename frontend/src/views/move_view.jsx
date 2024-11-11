@@ -18,7 +18,7 @@ const Move_view = () => {
   //sets to "" if local storage doesnt have them
   const company_field = localStorage.getItem("user_company") || ""; // eslint-disable-line no-undef
   const name_field = localStorage.getItem("user_name") || ""; // eslint-disable-line no-undef
-  const email_field = localStorage.getItem("user_email" || ""); // eslint-disable-line no-undef
+  const email_field = localStorage.getItem("user_email") || ""; // eslint-disable-line no-undef
 
 
   const {
