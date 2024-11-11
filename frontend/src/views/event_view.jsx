@@ -7,7 +7,6 @@ import useFetchData from '../components/shared/fetch_data';
 
 function Event_view() {
   const {data: auth, loading, error} = useFetchData('auth/admin');
-  console.log('auth:', auth);
   
   if (loading) {
     return (
