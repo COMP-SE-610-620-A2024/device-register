@@ -117,7 +117,4 @@ def remove_file(dev_id: int, file_name: str) -> tuple[Response, int]:
     except OSError as e:
         return jsonify({"error": "Failed to delete the file", "details": str(e)}), 500
 
-    file_url = f"/static/attachments/{dev_id}/{file_name}"
-
-    return (jsonify({"message": "File deleted successfully", "file": file_url}),
-            200)
+    return jsonify({"message": "File deleted successfully"}), 200
