@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from backend.setup.database_Init import db
 from flask_cors import CORS
 from backend.setup.swagger_setup import setup_swagger
@@ -28,6 +28,8 @@ def create_app(env_config_file: str = ".env.development") -> Flask:
     app.config['TESTING'] = config.TESTING
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY
+    app.config['JWT_HEADER_NAME'] = 'Authorization'
+    app.config['JWT_HEADER_TYPE'] = 'Bearer'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     setup_swagger(app)
     JWTManager(app)
@@ -59,6 +61,11 @@ def create_app(env_config_file: str = ".env.development") -> Flask:
     @app.route(f'{config.BACKEND_BASEPATH}/flask')
     def index() -> str:
         return "Hello from Flask with SQLAlchemy!"
+
+    @app.route('/headers')
+    def headers():
+        h = dict(request.headers)
+        return jsonify(h), 200
 
     return app
 

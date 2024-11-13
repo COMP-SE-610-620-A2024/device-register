@@ -1,5 +1,4 @@
 <IfModule mod_rewrite.c>
-    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
     RewriteEngine On
     RewriteBase /
 
