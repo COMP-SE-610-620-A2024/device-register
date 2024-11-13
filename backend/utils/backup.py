@@ -2,12 +2,26 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import os
 import shutil
 from datetime import datetime
+from threading import Lock
 
 from backend.utils.config import config
 
 
 class Backup:
+    _instance = None
+    _lock = Lock()
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super(Backup, cls).__new__(cls)
+                    cls._instance._initialized = False
+        return cls._instance
+
     def __init__(self, interval_seconds: int = None):
+        if self._initialized:
+            return
         if not interval_seconds:
             interval_seconds = config.BACKUP_INTERVAL_SECONDS
         self.db_path = os.path.join(config.PROJECT_ROOT, "instance", "database.db")
