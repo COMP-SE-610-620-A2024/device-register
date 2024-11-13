@@ -3,8 +3,14 @@ import os
 import pandas as pd
 import requests
 
+from backend.controllers.auth_controller import admin_login
+
 input_file = "test.csv"
 api_address = "http://localhost:5000/api/"
+admin_login = "admin"
+admin_password = "admin"
+
+auth_header = None
 this_dir = os.path.dirname(__file__)
 
 devices_df: pd.DataFrame
@@ -14,6 +20,16 @@ headers = {
     "accept": "application/json",
     "Content-Type": "application/json"
 }
+
+def login():
+    json = {
+        "username": admin_login,
+        "password": admin_password
+    }
+    res = requests.post(api_address+"auth/login", headers=headers, json=json)
+    if res.status_code == 200:
+        headers["Authorization"] = f"Bearer {res.json()['access_token']}"
+
 
 def load_input_file():
     df = pd.read_csv(os.path.join(this_dir, input_file),delimiter=";", index_col=0, keep_default_na=False)
@@ -49,6 +65,7 @@ def post_devices():
 
 
 if __name__ == '__main__':
+    login()
     devices_df = load_input_file()
     post_classes()
     class_id_map = read_class_ids()
