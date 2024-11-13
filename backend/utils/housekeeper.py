@@ -76,10 +76,8 @@ class Housekeeper:
         users_without_events = (
             db.session.query(User)
             .outerjoin(Event, User.user_id == Event.user_id)
-            .filter(
-                Event.user_id == None)  # Ensure only users without events are selected
-            .all()
-        )
+            .filter(Event.user_id.is_(None))
+            .all())
 
         for user in users_without_events:
             db.session.delete(user)
@@ -90,4 +88,3 @@ class Housekeeper:
         except Exception as e:
             db.session.rollback()
             print(f"Failed to clean up users without events: {e}")
-
