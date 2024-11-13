@@ -561,9 +561,6 @@ paths:
               message:
                 type: "string"
                 example: "File deleted successfully"
-              file:
-                type: "string"
-                example: "/static/attachments/{dev_id}/{file_name}"
         "404":
           description: "Directory or file not found"
           schema:
