@@ -3,8 +3,6 @@ import os
 import pandas as pd
 import requests
 
-from backend.controllers.auth_controller import admin_login
-
 input_file = "test.csv"
 api_address = "http://localhost:5000/api/"
 admin_login = "admin"
