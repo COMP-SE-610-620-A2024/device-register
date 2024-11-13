@@ -11,6 +11,7 @@ from backend.utils.backup import Backup
 from backend.utils.config import config
 
 load_dotenv()
+backup_instance = None
 
 
 @event.listens_for(Engine, "connect")
@@ -21,6 +22,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record) -> None:
 
 
 def create_app(env_config_file: str = ".env.development") -> Flask:
+
     config.load(env_config_file)
     app: Flask = Flask(__name__)
     CORS(app)
@@ -34,7 +36,10 @@ def create_app(env_config_file: str = ".env.development") -> Flask:
     setup_swagger(app)
     JWTManager(app)
     db.init_app(app)
-    Backup()
+    global backup_instance
+    if backup_instance is None:
+        backup_instance = Backup()
+
 
     from backend.api.device_api import device_api
     app.register_blueprint(device_api, url_prefix=f'{config.BACKEND_BASEPATH}/devices')
