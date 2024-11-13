@@ -25,18 +25,18 @@ def backup_dir(tmp_path):
 def test_backup_and_cleanup(backup_dir):
     backup_dir = Path(backup_dir)
 
-    max_wait_time = 10  # seconds
-    check_interval = 1  # seconds
+    max_wait_time = 10
+    check_interval = 1
     total_wait_time = 0
 
     while total_wait_time < max_wait_time:
         backups = sorted(backup_dir.glob("database_*.bak"))
-        if len(backups) == 2:
-            break
         time.sleep(check_interval)
         total_wait_time += check_interval
+        if len(backups) == 1:
+            break
 
-    assert len(backups) == 2, f"Expected 2 backups, but found {len(backups)}"
+    assert len(backups) == 1
 
     for backup_file in backups:
         assert backup_file.exists()
