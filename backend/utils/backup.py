@@ -19,11 +19,15 @@ class Backup:
                     cls._instance._initialized = False
         return cls._instance
 
-    def __init__(self, interval_seconds: int = None):
+    def __init__(self, interval_seconds: int = None, max_backups: int = None):
         if self._initialized:
             return
         if not interval_seconds:
             interval_seconds = config.BACKUP_INTERVAL_SECONDS
+        if not max_backups:
+            max_backups = config.BACKUP_MAX_NUMBER_OF_FILES
+        self.interval_seconds = interval_seconds
+        self.max_backups = max_backups
         self.db_path = os.path.join(config.PROJECT_ROOT, "instance", "database.db")
         self.backup_dir = os.path.join(config.PROJECT_ROOT, "instance", "backup")
         os.makedirs(self.backup_dir, exist_ok=True)
@@ -46,5 +50,5 @@ class Backup:
             (f for f in os.listdir(self.backup_dir) if f.startswith("database_")),
             key=lambda f: os.path.getmtime(os.path.join(self.backup_dir, f))
         )
-        for backup in backups[:-config.BACKUP_MAX_NUMBER_OF_FILES]:
+        for backup in backups[:-self.max_backups]:
             os.remove(os.path.join(self.backup_dir, backup))

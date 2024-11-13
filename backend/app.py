@@ -40,7 +40,6 @@ def create_app(env_config_file: str = ".env.development") -> Flask:
     if backup_instance is None:
         backup_instance = Backup()
 
-
     from backend.api.device_api import device_api
     app.register_blueprint(device_api, url_prefix=f'{config.BACKEND_BASEPATH}/devices')
 

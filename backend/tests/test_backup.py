@@ -3,13 +3,13 @@ import time
 from pathlib import Path
 
 import pytest
-from backend.app import create_app
+from backend.utils.backup import Backup
 from backend.utils.config import config
 
 
 @pytest.fixture
 def backup_dir(tmp_path):
-    create_app(env_config_file=".env.test")
+    Backup(interval_seconds=1, max_backups=2)
     backup_dir = Path(os.path.join(config.PROJECT_ROOT, "instance", "backup"))
     backup_dir.mkdir(parents=True, exist_ok=True)
     yield backup_dir
