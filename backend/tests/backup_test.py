@@ -11,7 +11,7 @@ from backend.utils.config import config
 
 @pytest.fixture
 def backup_dir(tmp_path):
-    app = create_app(env_config_file=".env.test")
+    create_app(env_config_file=".env.test")
     Backup(interval_seconds=1, max_backups=2)
     backup_dir = Path(os.path.join(config.PROJECT_ROOT, "instance", "backup"))
     backup_dir.mkdir(parents=True, exist_ok=True)
