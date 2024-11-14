@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { Typography,  } from '@mui/material';
 import NavigationBar from '../components/shared/navigation_bar';
 import Link_button from '../components/shared/link_button';
+import Function_button from '../components/shared/function_button';
 import useFetchData from '../components/shared/fetch_data';
 
 function Admin_view() {
@@ -45,7 +46,7 @@ function Admin_view() {
         </Typography>
         <Link_button href={`/`} text= "Devices"></Link_button>
         <Link_button href={`/events`} text= "Events"></Link_button>
-        <Link_button href={`/`} text= "Backups"></Link_button>
+        <Function_button  text= "Export CSV"></Function_button>
       </Box>
     </div>
   )
