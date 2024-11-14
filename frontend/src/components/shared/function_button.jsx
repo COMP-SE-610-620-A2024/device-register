@@ -5,7 +5,6 @@ const Function_button = ({
   text=' ',
   variant='contained',
   onClick,
-  type,
   size = 'medium',
   color,
   startIcon, //if icons are needed
