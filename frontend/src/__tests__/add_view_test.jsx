@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen} from '@testing-library/react';
 import Add_View from "../views/add_view";
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
