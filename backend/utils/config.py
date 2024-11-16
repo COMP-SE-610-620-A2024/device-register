@@ -64,9 +64,9 @@ class Config:
                                                         "14"))
 
         self.RATE_LIMIT_DEFAULT = os.getenv('RATE_LIMITER_DEFAULT',
-                                              "30 per minute")
+                                            "30 per minute")
         self.RATE_LIMIT_POSTING = os.getenv('RATE_LIMITER_POSTING',
-                                              "4 per minute")
+                                            "4 per minute")
 
         self.SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI',
                                                  'sqlite:///:memory:')
