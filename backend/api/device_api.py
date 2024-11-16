@@ -11,6 +11,7 @@ from backend.controllers.device_controller import (
     current_locations
 )
 from backend.utils.check_admin import it_is_admin
+from backend.utils.config import config
 
 device_api = Blueprint('device_api', __name__)
 
@@ -24,7 +25,7 @@ def list_devices() -> tuple[Response, int]:
 @device_api.route('/', methods=['POST'])
 @jwt_required(optional=True)
 #@limiter.limit("4 per minute", exempt_when=it_is_admin)
-@limiter.limit("4 per minute")
+@limiter.limit(config.RATE_LIMIT_POSTING)
 def add_devices() -> tuple[Response, int]:
     return create_devices()
 

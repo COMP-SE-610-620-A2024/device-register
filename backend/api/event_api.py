@@ -9,6 +9,7 @@ from backend.controllers.event_controller import (
     remove_event
 )
 from backend.utils.check_admin import it_is_admin
+from backend.utils.config import config
 
 event_api = Blueprint('event_api', __name__)
 
@@ -28,7 +29,7 @@ def event_by_id(event_id: int) -> tuple[Response, int]:
 @event_api.route('/', methods=['POST'])
 @jwt_required(optional=True)
 #@limiter.limit("4 per minute", exempt_when=it_is_admin)
-@limiter.limit("4 per minute")
+@limiter.limit(config.RATE_LIMIT_POSTING)
 def add_event() -> tuple[Response, int]:
     return create_event()
 
