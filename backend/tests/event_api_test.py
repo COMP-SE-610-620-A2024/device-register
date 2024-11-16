@@ -146,7 +146,10 @@ def test_get_event_by_id(client, auth_header):
     assert response_401.status_code == 401
 
 
-def test_create_event(client):
+def test_create_event(client, mocker):
+    mocker.patch('backend.app.it_is_admin',
+                 return_value=True)
+
     payload1 = {
         'dev_id': 1,
         'move_time': "2024-10-02 14:14:28",

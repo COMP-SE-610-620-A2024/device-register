@@ -72,8 +72,11 @@ def test_get_devices(client):
     assert data[0]['class_name'] == "class A"
 
 
-def test_post_devices(client, app):
+def test_post_devices(client, app, mocker):
     # Test the POST /api/devices/ endpoint.
+    mocker.patch('backend.app.it_is_admin',
+                 return_value=True)
+
     payload1 = [
         {
             "dev_name": "Device 1",
