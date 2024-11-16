@@ -76,6 +76,8 @@ def test_post_devices(client, app, mocker):
     # Test the POST /api/devices/ endpoint.
     mocker.patch('backend.app.it_is_admin',
                  return_value=True)
+    mocker.patch('backend.controllers.event_controller.it_is_admin',
+                 return_value=True)
 
     payload1 = [
         {
@@ -95,6 +97,11 @@ def test_post_devices(client, app, mocker):
             "dev_comments": ""
         }
     ]
+    response_401 = client.post('/api/devices/', json=payload1)
+    assert response_401.status_code == 401
+
+    mocker.patch('backend.controllers.device_controller.it_is_admin',
+                 return_value=True)
     response1 = client.post('/api/devices/', json=payload1)
     assert response1.status_code == 201
 

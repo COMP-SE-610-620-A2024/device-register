@@ -188,6 +188,12 @@ def test_create_event(client, mocker):
             }
         }
     ]
+    response401 = client.post('/api/events/', json=payload2)
+    assert response401.status_code == 401
+
+    mocker.patch('backend.controllers.event_controller.it_is_admin',
+                 return_value=True)
+
     response2 = client.post('/api/events/', json=payload2)
     assert response2.status_code == 201
 
