@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from backend.setup.database_Init import db
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, verify_jwt_in_request
 from flask_jwt_extended.exceptions import JWTExtendedException
@@ -13,8 +14,10 @@ from dotenv import load_dotenv
 from backend.utils.backup import Backup
 from backend.utils.check_admin import it_is_admin
 from backend.utils.config import config
+from backend.utils.housekeeper import Housekeeper
 
 load_dotenv()
+backup_instance = None
 
 
 @event.listens_for(Engine, "connect")
@@ -48,6 +51,7 @@ limiter = Limiter(
 
 
 def create_app(env_config_file: str = ".env.development") -> Flask:
+
     config.load(env_config_file)
     app: Flask = Flask(__name__)
     CORS(app)
@@ -55,11 +59,16 @@ def create_app(env_config_file: str = ".env.development") -> Flask:
     app.config['TESTING'] = config.TESTING
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY
+    app.config['JWT_HEADER_NAME'] = 'Authorization'
+    app.config['JWT_HEADER_TYPE'] = 'Bearer'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     setup_swagger(app)
     JWTManager(app)
     db.init_app(app)
-    Backup()
+    Housekeeper()
+    global backup_instance
+    if backup_instance is None:
+        backup_instance = Backup()
 
     limiter.init_app(app)
 
@@ -88,6 +97,11 @@ def create_app(env_config_file: str = ".env.development") -> Flask:
     @app.route(f'{config.BACKEND_BASEPATH}/flask')
     def index() -> str:
         return "Hello from Flask with SQLAlchemy!"
+
+    @app.route('/headers')
+    def headers():
+        h = dict(request.headers)
+        return jsonify(h), 200
 
     return app
 

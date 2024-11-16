@@ -1,7 +1,11 @@
 from flask import Blueprint, Response
 from flask_jwt_extended import jwt_required
 from backend.app import limiter
-from backend.controllers.attachments_controller import upload_files, list_files
+from backend.controllers.attachments_controller import (
+    upload_files,
+    list_files,
+    remove_file
+)
 from backend.utils.check_admin import it_is_admin
 from backend.utils.config import config
 
@@ -20,3 +24,8 @@ def send_files(dev_id: int) -> tuple[Response, int]:
 @jwt_required(optional=True)
 def get_files(dev_id: int) -> tuple[Response, int]:
     return list_files(dev_id)
+
+
+@attachments_api.route('/delete/<dev_id>/<file_name>', methods=['DELETE'])
+def delete_file(dev_id: int, file_name: str) -> tuple[Response, int]:
+    return remove_file(dev_id, file_name)
