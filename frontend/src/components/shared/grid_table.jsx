@@ -15,7 +15,7 @@ const Grid_table = forwardRef(({ rowData, columnDefs, onRowClicked, getRowStyle 
     exportCsv: () => {
       if (gridRef.current && gridRef.current.api) {
         const exportParams = {
-          columnSeparator: ';',
+          columnSeparator: ';', 
       };
         gridRef.current.api.exportDataAsCsv(exportParams);
 
@@ -65,6 +65,8 @@ const Grid_table = forwardRef(({ rowData, columnDefs, onRowClicked, getRowStyle 
     </Box>
   );
 });
+
+Grid_table.displayName = "Grid_table";
 
 Grid_table.propTypes = {
   rowData: PropTypes.array.isRequired,
