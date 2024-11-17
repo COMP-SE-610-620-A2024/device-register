@@ -39,7 +39,7 @@ class Backup:
             print(f"Error: No database found at {self.db_path}. Backup aborted.")
             return
 
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        timestamp = datetime.now().strftime("%Y-%m-%d")
         backup_db_path = os.path.join(self.backup_dir, f"database_{timestamp}.bak")
         shutil.copy2(self.db_path, backup_db_path)
         self.cleanup_old_backups()

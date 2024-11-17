@@ -19,6 +19,7 @@ with app.app_context():
     backup.start_scheduler()
 
     housekeeper = Housekeeper(
+        app=app,
         interval_seconds=config.CLEANUP_INTERVAL_SECONDS,
         days_to_keep=config.DAYS_TO_KEEP,
         min_event_count=config.MIN_EVENT_COUNT

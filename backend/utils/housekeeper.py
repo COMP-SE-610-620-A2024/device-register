@@ -3,7 +3,8 @@ from apscheduler.schedulers.base import STATE_STOPPED
 from datetime import datetime, timedelta
 from threading import Lock
 
-from flask import current_app
+from flask import Flask
+
 from backend.utils.config import config
 from backend.models.event_model import Event
 from backend.models.user_model import User
@@ -21,11 +22,13 @@ class Housekeeper:
                     cls._instance._initialized = False
         return cls._instance
 
-    def __init__(self, interval_seconds: int = None, days_to_keep: int = None,
+    def __init__(self, app: Flask, interval_seconds: int = None,
+                 days_to_keep: int = None,
                  min_event_count: int = None):
         if self._initialized:
             return
 
+        self.app = app
         self.interval_seconds = interval_seconds or config.CLEANUP_INTERVAL_SECONDS
         self.days_to_keep = days_to_keep or config.DAYS_TO_KEEP
         self.min_event_count = min_event_count or config.MIN_EVENT_COUNT
@@ -42,7 +45,7 @@ class Housekeeper:
 
     def _wrapped_cleanup_old_events(self):
         print("Attempting to clean up old events...")
-        with current_app.app_context():
+        with self.app.app_context():
             self.cleanup_old_events()
             print("Old events cleanup completed.")
 
