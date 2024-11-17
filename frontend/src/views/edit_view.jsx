@@ -104,7 +104,7 @@ const Edit_view = () => {
     );
   }
 
-  if (error || auth.msg != 'Authorized') { 
+  if (error || !auth || auth.msg != 'Authorized') { 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
         <NavigationBar/>
