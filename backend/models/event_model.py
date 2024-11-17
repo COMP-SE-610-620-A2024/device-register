@@ -2,8 +2,7 @@ from datetime import datetime
 
 from backend.setup.database_Init import db
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import selectinload, joinedload, validates, relationship
-
+from sqlalchemy.orm import selectinload, joinedload, validates
 
 
 class Event(db.Model):
@@ -29,8 +28,6 @@ class Event(db.Model):
     loc_name = db.Column(db.String, nullable=False)
     company = db.Column(db.String, nullable=False)
     comment = db.Column(db.String, nullable=False)
-
-
 
     def to_dict(self) -> dict[str, str]:
         return {

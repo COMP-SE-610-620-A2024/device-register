@@ -64,7 +64,8 @@ def test_create_event_failure(mock_db_session):
 
 def test_remove_event_success(mock_db_session, mocker):
     mock_event = mocker.Mock()
-    mocker.patch('backend.models.event_model.Event.get_event_by_id', return_value=mock_event)
+    mocker.patch('backend.models.event_model.Event.get_event_by_id',
+                 return_value=mock_event)
 
     result = Event.remove_event(1)
     assert result is True
@@ -104,7 +105,8 @@ def test_cleanup_events(mock_db_session, mocker):
     mock_query.filter_by.return_value.count.side_effect = [10, 3]
 
     mock_event = mocker.Mock()
-    mock_query.filter.return_value.order_by.return_value.limit.return_value = [mock_event]
+    mock_query.filter.return_value.order_by.return_value.limit\
+        .return_value = [mock_event]
 
     cutoff_date = datetime.now() - timedelta(days=30)
     Event.cleanup_events(cutoff_date, min_event_count=5)

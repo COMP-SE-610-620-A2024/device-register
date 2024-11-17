@@ -22,6 +22,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record) -> None:
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
+
 def rate_limit_key():
     try:
         verify_jwt_in_request(optional=True)

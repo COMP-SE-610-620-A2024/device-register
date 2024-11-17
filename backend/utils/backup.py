@@ -42,7 +42,8 @@ class Backup:
             raise
 
         self.scheduler = BackgroundScheduler()
-        self.scheduler.add_job(self.backup_db, 'interval', seconds=self.interval_seconds)
+        self.scheduler.add_job(self.backup_db, 'interval',
+                               seconds=self.interval_seconds)
         self.scheduler.start()
         self._initialized = True
         print("Backup system initialized and scheduler started.")

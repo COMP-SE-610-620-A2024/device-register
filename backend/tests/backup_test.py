@@ -3,7 +3,7 @@ import shutil
 from time import sleep
 
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from backend.utils.backup import Backup
 from datetime import datetime
 
@@ -28,7 +28,8 @@ def test_backup_initialization(mocker):
     assert backup.interval_seconds == 3600
     assert backup.max_backups == 5
     assert backup.scheduler.running
-    mock_makedirs.assert_called_once_with('/mock_project_root/instance/backup', exist_ok=True)
+    mock_makedirs.assert_called_once_with('/mock_project_root/instance/backup',
+                                          exist_ok=True)
 
     backup.stop_scheduler()
 
@@ -54,7 +55,8 @@ def test_backup_db_handles_missing_db(mocker, backup_instance):
 
     with patch('builtins.print') as mock_print:
         backup_instance.backup_db()
-        mock_print.assert_called_with(f"Error: No database found at {backup_instance.db_path}. Backup aborted.")
+        mock_print.assert_called_with(f"Error: No database found at "
+                                      f"{backup_instance.db_path}. Backup aborted.")
 
 
 def test_cleanup_old_backups(mocker, backup_instance):
@@ -66,8 +68,8 @@ def test_cleanup_old_backups(mocker, backup_instance):
     backup_instance.max_backups = 1
 
     backup_instance.cleanup_old_backups()
-    mock_remove.assert_called_once_with(os.path.join(mock_backup_dir, 'database_old.bak'))
-
+    mock_remove.assert_called_once_with(os.path.join(mock_backup_dir,
+                                                     'database_old.bak'))
 
 
 def test_backup_scheduler_stops_gracefully(backup_instance):

@@ -25,8 +25,10 @@ def test_housekeeper_initialization(housekeeper):
 
 
 def test_cleanup_old_events(mocker, housekeeper):
-    mock_cleanup_events = mocker.patch('backend.models.event_model.Event.cleanup_events')
-    mock_cleanup_users = mocker.patch('backend.models.user_model.User.cleanup_users_without_events')
+    mock_cleanup_events = mocker.patch(
+        'backend.models.event_model.Event.cleanup_events')
+    mock_cleanup_users = mocker.patch(
+        'backend.models.user_model.User.cleanup_users_without_events')
 
     housekeeper.cleanup_old_events()
 
@@ -38,13 +40,13 @@ def test_cleanup_old_events(mocker, housekeeper):
     mock_cleanup_users.assert_called_once()
 
 
-
 def test_scheduler_runs_cleanup(mocker, housekeeper):
-    mock_cleanup_events = mocker.patch('backend.models.event_model.Event.cleanup_events')
-    mock_cleanup_users = mocker.patch('backend.models.user_model.User.cleanup_users_without_events')
+    mock_cleanup_events = mocker.patch(
+        'backend.models.event_model.Event.cleanup_events')
+    mock_cleanup_users = mocker.patch(
+        'backend.models.user_model.User.cleanup_users_without_events')
 
     housekeeper.cleanup_old_events()
 
     assert mock_cleanup_events.call_count == 1
     assert mock_cleanup_users.call_count == 1
-

@@ -1,6 +1,8 @@
 from threading import Lock
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
+from flask import current_app
+
 from backend.utils.config import config
 from backend.models.event_model import Event
 from backend.models.user_model import User
@@ -24,24 +26,20 @@ class Housekeeper:
                  min_event_count: int = None):
         if self._initialized:
             return
-        if not interval_seconds:
-            interval_seconds = config.CLEANUP_INTERVAL_SECONDS
-        if not days_to_keep:
-            days_to_keep = config.DAYS_TO_KEEP
-        if not min_event_count:
-            min_event_count = config.MIN_EVENT_COUNT
 
-        self.interval_seconds = interval_seconds
-        self.days_to_keep = days_to_keep
-        self.min_event_count = min_event_count
+        self.interval_seconds = interval_seconds or config.CLEANUP_INTERVAL_SECONDS
+        self.days_to_keep = days_to_keep or config.DAYS_TO_KEEP
+        self.min_event_count = min_event_count or config.MIN_EVENT_COUNT
 
         self.scheduler = BackgroundScheduler()
         self.scheduler.add_job(self.cleanup_old_events, 'interval',
-                               seconds=interval_seconds)
+                               seconds=self.interval_seconds)
         self.scheduler.start()
         self._initialized = True
+        print("Housekeeper initialized and scheduler started.")
 
     def cleanup_old_events(self):
-        cutoff_date = datetime.now() - timedelta(days=self.days_to_keep)
-        Event.cleanup_events(cutoff_date, self.min_event_count)
-        User.cleanup_users_without_events()
+        with current_app.app_context():
+            cutoff_date = datetime.now() - timedelta(days=self.days_to_keep)
+            Event.cleanup_events(cutoff_date, self.min_event_count)
+            User.cleanup_users_without_events()
