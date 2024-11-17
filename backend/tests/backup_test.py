@@ -43,7 +43,7 @@ def test_backup_db_creates_backup(mocker, backup_instance):
 
     backup_instance.backup_db()
 
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d")
     expected_backup = os.path.join(mock_backup_dir, f"database_{timestamp}.bak")
     mock_copy2.assert_called_once_with(mock_db_path, expected_backup)
     mock_listdir.assert_called_once_with(mock_backup_dir)

@@ -1,11 +1,14 @@
 import pytest
 from datetime import datetime, timedelta
+
+from backend.app import create_app
 from backend.utils.config import config
 from backend.utils.housekeeper import Housekeeper
 
 
 @pytest.fixture
 def housekeeper():
+    app = create_app(".env-test")
     config.CLEANUP_INTERVAL_SECONDS = 10
     config.DAYS_TO_KEEP = 30
     config.MIN_EVENT_COUNT = 5
@@ -13,7 +16,8 @@ def housekeeper():
     housekeeper = Housekeeper(
         interval_seconds=config.CLEANUP_INTERVAL_SECONDS,
         days_to_keep=config.DAYS_TO_KEEP,
-        min_event_count=config.MIN_EVENT_COUNT
+        min_event_count=config.MIN_EVENT_COUNT,
+        app=app
     )
     housekeeper.start_scheduler()
     yield housekeeper
