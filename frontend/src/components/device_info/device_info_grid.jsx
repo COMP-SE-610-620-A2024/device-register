@@ -41,7 +41,6 @@ const Device_info_grid = ({ id }) => {
       
   };
 
-      //Row sizing
       const handleRowSizing = () => {
         if(!cellHeight) {        
             setWhiteSpace('normal')
