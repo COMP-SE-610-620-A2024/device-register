@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
 import useFetchData from '../shared/fetch_data';
+import Function_button from '../shared/function_button.jsx';
 
 const Event_grid = () => {
     const { data, loading, error } = useFetchData('events/');
@@ -43,17 +44,29 @@ const Event_grid = () => {
     };
 
     const columnDefs = [
-      { field: "move_time_iso", filter: "agDateColumnFilter", headerName: "Date/Time", flex: 2.0, minWidth: 150, // Enough for showing datetime
+      { field: "move_time_iso", filter: "agDateColumnFilter", headerName: "Date/Time", flex: 1.0, minWidth: 150, // Enough for showing datetime
             filterParams:filterParams, suppressHeaderFilterButton: false, sort: 'desc'
             , valueFormatter: (params) => params.data.move_time
       },
-      { field: "loc_name", filter: "agTextColumnFilter", headerName: "Location", flex: 2.0, minWidth: 130 }, // 14 characters
-      { field: "dev_id", filter: "agTextColumnFilter", headerName: "Device id", flex: 1, minWidth: 130},  // 14 characters
+      { field: "loc_name", filter: "agTextColumnFilter", headerName: "Location", flex: 1.2, minWidth: 130 }, // 14 characters
       { field: "user_name", filter: "agTextColumnFilter", headerName: "User name", flex: 1, minWidth: 150 },  // 15 characters
+      { field: "user_email", filter: "agTextColumnFilter", headerName: "Email", flex: 1, minWidth: 200 },
       { field: "company", filter: "agTextColumnFilter", headerName: "Company", flex: 1, minWidth: 150 },
       
       
     ];
+
+    //export csv functionality
+    const gridRef = useRef();
+
+    const exportClick = () => {
+        if (gridRef.current) {
+
+          gridRef.current.exportCsv();
+        } else {
+          console.error('Grid reference is not available');
+        }
+      };
 
     if (loading) {
         return (
@@ -73,12 +86,16 @@ const Event_grid = () => {
     }
 
     return (
+        <div>
+        <Function_button onClick={exportClick} size='small' text='Export csv'/>
         <GridTable 
             rowData={formattedData.length > 0 ? formattedData : []} 
             columnDefs={columnDefs}
             onRowClicked={onRowClicked}
             getRowStyle={getRowStyle}
+            ref={gridRef}
         />
+        </div>
     );
 };
 

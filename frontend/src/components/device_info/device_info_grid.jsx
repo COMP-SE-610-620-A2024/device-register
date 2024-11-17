@@ -1,23 +1,29 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
 import useFetchData from '../shared/fetch_data';
 import PropTypes from 'prop-types'
+import Function_button from '../shared/function_button.jsx';
 
 const Device_info_grid = ({ id }) => {
   const { data: events, loading, error } = useFetchData('devices/' + id + '/events');
 
-  const formattedEvents = events.map(event => ({
-    ...event,
-    // Format move_time to DD/MM/YYYY HH:MM:SS, parse forces javascript to treat time as UTC format
-    move_time: new Date(Date.parse(event.move_time + 'Z')).toLocaleString('en-GB', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', 
-        hour12: false, 
+  const formattedEvents = Array.isArray(events)
+  ? events.map(event => ({
+      ...event,
+      // Format move_time to DD/MM/YYYY HH:MM:SS, parse forces javascript to treat time as UTC format
+      move_time: new Date(Date.parse(event.move_time + 'Z')).toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
       }),
       // `move_time_iso` in ISO format for easier sorting/filtering
-    move_time_iso: new Date(Date.parse(event.move_time + 'Z')).toISOString()
-  }));
+      move_time_iso: new Date(Date.parse(event.move_time + 'Z')).toISOString(),
+    }))
+  : [];
 
   // Tells AG-Grid how to filter EU-formatted datetimes by date
   var filterParams = {
@@ -49,6 +55,18 @@ const Device_info_grid = ({ id }) => {
         },
   ];
 
+  //export csv functionality
+  const gridRef = useRef();
+
+    const exportClick = () => {
+        if (gridRef.current) {
+  
+          gridRef.current.exportCsv();
+        } else {
+          console.error('Grid reference is not available');
+        }
+      };
+
   if (loading) {
       return (
           <Typography sx={{ mt: 7, fontSize: 'clamp(1.5rem, 10vw, 2.4rem)' }}>
@@ -68,10 +86,14 @@ const Device_info_grid = ({ id }) => {
 
 
   return (
+    <div>
+      <Function_button size='small' onClick={exportClick} text='Export CSV'/>
       <GridTable 
           rowData={formattedEvents.length > 0 ? formattedEvents : []} 
           columnDefs={columnDefs}
+          ref={gridRef}
       />
+    </div>
   );
 };
 
