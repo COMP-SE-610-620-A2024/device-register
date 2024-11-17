@@ -9,7 +9,7 @@ export const isJwtValid = (token, del_invalid = false) => {
 
     const base64UrlHeader = parts[0];
     const base64Header = base64UrlHeader.replace(/-/g, '+').replace(/_/g, '/');
-    const header = JSON.parse(atob(base64Header));
+    const header = JSON.parse(atob(base64Header));  // eslint-disable-line no-undef
 
     if (!header.alg || header.alg !== 'HS256') {
       throw new Error("Invalid or unsupported algorithm in header");
@@ -17,7 +17,7 @@ export const isJwtValid = (token, del_invalid = false) => {
 
     const base64UrlPayload = parts[1];
     const base64Payload = base64UrlPayload.replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(atob(base64Payload));
+    const payload = JSON.parse(atob(base64Payload));  // eslint-disable-line no-undef
 
     const currentTime = Math.floor(Date.now() / 1000);
     if (!payload.exp) {

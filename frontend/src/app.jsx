@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const validateToken = () => {
-      isJwtValid(localStorage.getItem("access_token"), true);
+      isJwtValid(localStorage.getItem("access_token"), true);  // eslint-disable-line no-undef
       setValidated(true);
     };
     validateToken();
