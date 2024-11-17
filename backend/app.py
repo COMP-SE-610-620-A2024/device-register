@@ -42,10 +42,7 @@ def rate_limit_key():
 
 limiter = Limiter(
     key_func=rate_limit_key,
-    #get_remote_address,
-    #default_limits=["30 per minute"],
     default_limits=[config.RATE_LIMIT_DEFAULT],
-    #default_limits_exempt_when=it_is_admin,
     storage_uri="memory://"
 )
 

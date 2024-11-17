@@ -1,4 +1,4 @@
-from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity
 from werkzeug.security import generate_password_hash
 from backend.utils.config import config
 
@@ -13,7 +13,6 @@ def get_admin_credentials() -> tuple[str, str]:
 
 
 def it_is_admin():
-    #verify_jwt_in_request(optional=True)
     request_username = get_jwt_identity()
     admin_username = get_admin_credentials()[0]
 

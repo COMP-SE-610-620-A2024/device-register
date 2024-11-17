@@ -6,7 +6,6 @@ from backend.controllers.attachments_controller import (
     list_files,
     remove_file
 )
-from backend.utils.check_admin import it_is_admin
 from backend.utils.config import config
 
 attachments_api = Blueprint('attachments_api', __name__)
@@ -14,7 +13,6 @@ attachments_api = Blueprint('attachments_api', __name__)
 
 @attachments_api.route('/upload/<dev_id>', methods=['POST'])
 @jwt_required(optional=True)
-#@limiter.limit("4 per minute", exempt_when=it_is_admin)
 @limiter.limit(config.RATE_LIMIT_POSTING)
 def send_files(dev_id: int) -> tuple[Response, int]:
     return upload_files(dev_id)
