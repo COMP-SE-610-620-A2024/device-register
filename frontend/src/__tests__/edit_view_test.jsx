@@ -3,7 +3,6 @@ import { render, screen} from '@testing-library/react';
 import Edit_View from "../views/edit_view";
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
-import { SettingsBackupRestore } from '@mui/icons-material';
 
 jest.mock('../components/shared/navigation_bar', () => {
     const MockedNavigationBar = () => <div>Mocked NavigationBar</div>;
