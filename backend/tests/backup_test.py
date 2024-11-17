@@ -1,9 +1,7 @@
 import os
-from time import sleep
 from datetime import datetime
 from unittest.mock import patch
 import pytest
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from backend.utils.backup import Backup
@@ -26,7 +24,7 @@ def test_backup_initialization(mocker):
 
     assert backup.interval_seconds == 3600
     assert backup.max_backups == 5
-    assert isinstance(backup.scheduler, AsyncIOScheduler), \
+    assert isinstance(backup.scheduler, BackgroundScheduler), \
         "Scheduler is not properly initialized"
     mock_makedirs.assert_called_once_with('/mock_project_root/instance/backup',
                                           exist_ok=True)

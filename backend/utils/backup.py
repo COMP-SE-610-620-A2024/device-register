@@ -1,4 +1,3 @@
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.base import STATE_STOPPED
 import os
@@ -31,7 +30,7 @@ class Backup:
         self.backup_dir = os.path.join(config.PROJECT_ROOT, "instance", "backup")
 
         os.makedirs(self.backup_dir, exist_ok=True)
-        self.scheduler = AsyncIOScheduler()
+        self.scheduler = BackgroundScheduler()
         self._initialized = True
         print("Backup system initialized.")
 
