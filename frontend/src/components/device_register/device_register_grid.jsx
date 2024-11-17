@@ -99,8 +99,6 @@ const Device_register_grid = () => {
         );
     }
 
-    const test = "moi"
-
     return (
         <div>
         <Box sx={{
