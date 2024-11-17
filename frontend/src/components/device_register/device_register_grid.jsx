@@ -85,7 +85,6 @@ const Device_register_grid = () => {
             </Typography>
         );
     }
-    // style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }
     return (
         <div>
         <Function_button size='small' onClick={exportClick} text='Export CSV'/>    
