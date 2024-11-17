@@ -600,6 +600,11 @@ paths:
           in: "path"
           required: true
           type: "string"
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         "200":
           description: "File deleted successfully"

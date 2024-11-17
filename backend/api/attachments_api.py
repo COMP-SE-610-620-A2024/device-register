@@ -25,5 +25,6 @@ def get_files(dev_id: int) -> tuple[Response, int]:
 
 
 @attachments_api.route('/delete/<dev_id>/<file_name>', methods=['DELETE'])
+@jwt_required(optional=True)
 def delete_file(dev_id: int, file_name: str) -> tuple[Response, int]:
     return remove_file(dev_id, file_name)
