@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from backend.setup.database_Init import db
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, verify_jwt_in_request
 from flask_jwt_extended.exceptions import JWTExtendedException
