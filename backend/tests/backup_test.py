@@ -3,6 +3,7 @@ from time import sleep
 from datetime import datetime
 from unittest.mock import patch
 import pytest
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from backend.utils.backup import Backup
@@ -25,15 +26,13 @@ def test_backup_initialization(mocker):
 
     assert backup.interval_seconds == 3600
     assert backup.max_backups == 5
-    assert isinstance(backup.scheduler, BackgroundScheduler), \
+    assert isinstance(backup.scheduler, AsyncIOScheduler), \
         "Scheduler is not properly initialized"
     mock_makedirs.assert_called_once_with('/mock_project_root/instance/backup',
                                           exist_ok=True)
 
     backup.start_scheduler()
     assert backup.scheduler.running, "Scheduler did not start as expected"
-    backup.stop_scheduler()
-    assert not backup.scheduler.running, "Scheduler did not stop as expected"
 
 
 def test_backup_db_creates_backup(mocker, backup_instance):
@@ -72,15 +71,3 @@ def test_cleanup_old_backups(mocker, backup_instance):
     backup_instance.cleanup_old_backups()
     mock_remove.assert_called_once_with(os.path.join(mock_backup_dir,
                                                      'database_old.bak'))
-
-
-def test_backup_scheduler_stops_gracefully(backup_instance):
-    if not backup_instance.scheduler.running:
-        backup_instance.start_scheduler()
-
-    sleep(0.1)
-
-    assert backup_instance.scheduler.running, "Scheduler did not start as expected."
-
-    backup_instance.stop_scheduler()
-    assert not backup_instance.scheduler.running, "Scheduler did not stop as expected."

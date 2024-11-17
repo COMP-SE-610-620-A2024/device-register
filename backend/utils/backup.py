@@ -1,3 +1,4 @@
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.base import STATE_STOPPED
 import os
@@ -30,7 +31,7 @@ class Backup:
         self.backup_dir = os.path.join(config.PROJECT_ROOT, "instance", "backup")
 
         os.makedirs(self.backup_dir, exist_ok=True)
-        self.scheduler = BackgroundScheduler()
+        self.scheduler = AsyncIOScheduler()
         self._initialized = True
         print("Backup system initialized.")
 
@@ -53,13 +54,11 @@ class Backup:
             os.remove(os.path.join(self.backup_dir, backup))
 
     def start_scheduler(self):
-        """Start the scheduler if it's not already running."""
         if not self.scheduler.running:
             self.scheduler.start()
             print("Backup scheduler started.")
 
     def stop_scheduler(self):
-        """Stop the scheduler if it's running."""
         if self.scheduler.state != STATE_STOPPED:
             self.scheduler.shutdown(wait=False)
             print("Backup scheduler stopped.")

@@ -1,3 +1,4 @@
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.base import STATE_STOPPED
 from datetime import datetime, timedelta
@@ -35,7 +36,7 @@ class Housekeeper:
 
     def start_scheduler(self):
         if self.scheduler is None:
-            self.scheduler = BackgroundScheduler()
+            self.scheduler = AsyncIOScheduler()
             self.scheduler.add_job(self._wrapped_cleanup_old_events, 'interval',
                                    seconds=self.interval_seconds)
             self.scheduler.start()
