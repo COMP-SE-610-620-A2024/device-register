@@ -1,9 +1,9 @@
 from datetime import timedelta
 from flask import jsonify, request, Response
-from flask_jwt_extended import create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token
 from werkzeug.security import check_password_hash
-from backend.models.auth_model import get_admin_credentials
 from backend.utils.config import config
+from backend.utils.check_admin import it_is_admin, get_admin_credentials
 
 
 def admin_login() -> tuple[Response, int]:
@@ -28,11 +28,7 @@ def admin_login() -> tuple[Response, int]:
 
 
 def is_admin() -> tuple[Response, int]:
-    request_username = get_jwt_identity()
-
-    admin_username = get_admin_credentials()[0]
-
-    if request_username == admin_username:
+    if it_is_admin():
         return jsonify({'msg': 'Authorized'}), 200
     else:
         return jsonify({'error': 'Unauthorized'}), 403
