@@ -1,37 +1,39 @@
 import os
-import shutil
 from time import sleep
-
-import pytest
-from unittest.mock import patch
-from backend.utils.backup import Backup
 from datetime import datetime
+from unittest.mock import patch
+import pytest
+from apscheduler.schedulers.background import BackgroundScheduler
+
+from backend.utils.backup import Backup
 
 
 @pytest.fixture
 def backup_instance(mocker):
     mocker.patch('backend.utils.backup.config.PROJECT_ROOT', '/mock_project_root')
     backup = Backup(interval_seconds=3600, max_backups=5)
-
-    if not backup.scheduler.running:
-        backup.scheduler.start()
+    backup.start_scheduler()
     yield backup
-
     backup.stop_scheduler()
 
 
 def test_backup_initialization(mocker):
     mocker.patch('backend.utils.backup.config.PROJECT_ROOT', '/mock_project_root')
     mock_makedirs = mocker.patch('os.makedirs')
+
     backup = Backup(interval_seconds=3600, max_backups=5)
 
     assert backup.interval_seconds == 3600
     assert backup.max_backups == 5
-    assert backup.scheduler.running
+    assert isinstance(backup.scheduler, BackgroundScheduler), \
+        "Scheduler is not properly initialized"
     mock_makedirs.assert_called_once_with('/mock_project_root/instance/backup',
                                           exist_ok=True)
 
+    backup.start_scheduler()
+    assert backup.scheduler.running, "Scheduler did not start as expected"
     backup.stop_scheduler()
+    assert not backup.scheduler.running, "Scheduler did not stop as expected"
 
 
 def test_backup_db_creates_backup(mocker, backup_instance):
@@ -39,14 +41,14 @@ def test_backup_db_creates_backup(mocker, backup_instance):
     mock_backup_dir = '/mock_project_root/instance/backup'
 
     mocker.patch('os.path.exists', return_value=True)
-    mocker.patch('shutil.copy2')
+    mock_copy2 = mocker.patch('shutil.copy2')
     mock_listdir = mocker.patch('os.listdir', return_value=[])
 
     backup_instance.backup_db()
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     expected_backup = os.path.join(mock_backup_dir, f"database_{timestamp}.bak")
-    shutil.copy2.assert_called_once_with(mock_db_path, expected_backup)
+    mock_copy2.assert_called_once_with(mock_db_path, expected_backup)
     mock_listdir.assert_called_once_with(mock_backup_dir)
 
 
@@ -73,8 +75,12 @@ def test_cleanup_old_backups(mocker, backup_instance):
 
 
 def test_backup_scheduler_stops_gracefully(backup_instance):
+    if not backup_instance.scheduler.running:
+        backup_instance.start_scheduler()
+
     sleep(0.1)
-    assert backup_instance.scheduler.running
+
+    assert backup_instance.scheduler.running, "Scheduler did not start as expected."
 
     backup_instance.stop_scheduler()
-    assert not backup_instance.scheduler.running
+    assert not backup_instance.scheduler.running, "Scheduler did not stop as expected."

@@ -10,18 +10,21 @@ def housekeeper():
     config.DAYS_TO_KEEP = 30
     config.MIN_EVENT_COUNT = 5
 
-    return Housekeeper(
+    housekeeper = Housekeeper(
         interval_seconds=config.CLEANUP_INTERVAL_SECONDS,
         days_to_keep=config.DAYS_TO_KEEP,
         min_event_count=config.MIN_EVENT_COUNT
     )
+    housekeeper.start_scheduler()
+    yield housekeeper
+    housekeeper.stop_scheduler()
 
 
 def test_housekeeper_initialization(housekeeper):
     assert housekeeper.interval_seconds == config.CLEANUP_INTERVAL_SECONDS
     assert housekeeper.days_to_keep == config.DAYS_TO_KEEP
     assert housekeeper.min_event_count == config.MIN_EVENT_COUNT
-    assert housekeeper.scheduler.running
+    assert housekeeper.scheduler.running, "Scheduler is not running as expected."
 
 
 def test_cleanup_old_events(mocker, housekeeper):
