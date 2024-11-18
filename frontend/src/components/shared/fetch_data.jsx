@@ -18,7 +18,7 @@ const useFetchData = (endpoint, isBinary = false) => {
         const response = await fetch(url, { headers });
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch data: ${response.statusText}`);
+          throw new Error(`${response.statusText}`);
         }
 
         if (isBinary) {

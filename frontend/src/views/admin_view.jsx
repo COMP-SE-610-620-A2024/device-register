@@ -48,7 +48,7 @@ function Admin_view() {
         body: formData,
       });
       if (!response.ok) throw new Error(await response.text());
-      const res = await response.json()
+      const res = await response.json();
       alert(`Import successful: ${res.message}`);
     } catch (error) {
       alert(`Import failed: ${error.message}`);
@@ -57,6 +57,15 @@ function Admin_view() {
       event.target.value = '';
     }
   };
+
+  if (authLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Typography sx={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)' }}>Loading...</Typography>
+      </Box>
+    );
+  }
+
   if (authError || !auth || auth.msg !== 'Authorized') {
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center',
@@ -84,3 +93,4 @@ function Admin_view() {
 }
 
 export default Admin_view;
+
