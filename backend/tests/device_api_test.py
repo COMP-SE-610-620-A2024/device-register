@@ -444,3 +444,26 @@ def test_get_current_locations(client, app):
 
         response_404 = client.get('/api/devices/9999/current_locations/')
         assert response_404.status_code == 404
+
+
+def test_device_import_from_csv(client, mocker, auth_header):
+    # Test the GET /api/devices/import/ endpoint.
+    mocker.patch('backend.app.it_is_admin',
+                 return_value=True)
+    mocker.patch('backend.controllers.event_controller.it_is_admin',
+                 return_value=True)
+    mocker.patch('backend.controllers.device_controller.it_is_admin',
+                 return_value=True)
+
+    # TODO: Maybe add the test file into tests/static/
+    test_csv_path = os.path.join(
+        config.PROJECT_ROOT, 'deployment_confs', 'test.csv'
+    )
+
+    with open(test_csv_path, 'rb') as csv_file:
+        response = client.post('/api/devices/import/',
+                               headers=auth_header,
+                               data={'files': (csv_file, 'test.csv')})
+    assert response.status_code == 201
+
+    # TODO: More tests
