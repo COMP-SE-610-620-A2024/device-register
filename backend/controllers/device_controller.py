@@ -160,6 +160,9 @@ def current_locations() -> tuple[Response, int]:
 
 
 def handle_device_csv() -> tuple[Response, int]:
+    required_csv_headers = {'dev_name', 'dev_manufacturer', 'dev_model',
+                            'dev_class', 'dev_comments', 'dev_location'}
+
     if 'files' not in request.files:
         return jsonify({'error': "File part missing from the request"}), 400
 
@@ -177,8 +180,19 @@ def handle_device_csv() -> tuple[Response, int]:
 
     try:
         csv_data = csv_file.read().decode('utf-8')
+    except UnicodeDecodeError:
+        return jsonify({'error': 'File must be UTF-8 encoded.'}), 400
 
+    try:
         csv_reader = csv.DictReader(csv_data.splitlines(), delimiter=';')
+        actual_headers = set(csv_reader.fieldnames)
+        if actual_headers != required_csv_headers:
+            missing_headers = required_csv_headers - actual_headers
+            extra_headers = actual_headers - required_csv_headers
+            return jsonify({'error': f"CSV File missing headers: "
+                                     f"{missing_headers}. Extra headers: "
+                                     f"{extra_headers}"}), 400
+
         class_name_set = set()
         device_list = []
         for row in csv_reader:
