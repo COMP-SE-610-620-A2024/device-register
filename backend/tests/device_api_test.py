@@ -455,15 +455,37 @@ def test_device_import_from_csv(client, mocker, auth_header):
     mocker.patch('backend.controllers.device_controller.it_is_admin',
                  return_value=True)
 
-    # TODO: Maybe add the test file into tests/static/
     test_csv_path = os.path.join(
         config.PROJECT_ROOT, 'deployment_confs', 'test.csv'
     )
 
     with open(test_csv_path, 'rb') as csv_file:
-        response = client.post('/api/devices/import/',
-                               headers=auth_header,
-                               data={'files': (csv_file, 'test.csv')})
-    assert response.status_code == 201
+        response1 = client.post('/api/devices/import/',
+                                headers=auth_header,
+                                data={'files': (csv_file, 'test.csv')})
+    assert response1.status_code == 201
 
-    # TODO: More tests
+    test_jpg_path = os.path.join(
+        config.PROJECT_ROOT, 'backend', 'tests', 'static',
+        'attachments', 'test_files', 'cat.jpg'
+    )
+
+    with open(test_jpg_path, 'rb') as jpg_file:
+        response2 = client.post('/api/devices/import/',
+                                headers=auth_header,
+                                data={'files': (jpg_file, 'cat.jpg')})
+    assert response2.status_code == 400
+
+    malformed_csv_path = os.path.join(
+        config.PROJECT_ROOT, 'backend', 'tests', 'static',
+        'attachments', 'test_files', 'not_supported.csv'
+    )
+    with open(malformed_csv_path, 'rb') as bad_csv_file:
+        response3 = client.post('/api/devices/import/',
+                                headers=auth_header,
+                                data={'files': (bad_csv_file, 'not_supported.csv')})
+    assert response3.status_code == 400
+
+    response4 = client.post('/api/devices/import/',
+                            headers=auth_header)
+    assert response4.status_code == 400
