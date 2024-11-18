@@ -204,4 +204,10 @@ def handle_device_csv() -> tuple[Response, int]:
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-    return create_devices(device_list)
+    device_amount = len(device_list)
+    device_result = create_devices(device_list)
+    if device_result[1] == 201:
+        return jsonify({'message': f"{device_amount} device(s)"
+                                   f"imported successfully"}), 201
+    else:
+        return device_result
