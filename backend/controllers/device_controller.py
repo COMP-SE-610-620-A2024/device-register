@@ -227,6 +227,7 @@ def handle_device_csv() -> tuple[Response, int]:
     else:
         return device_result
 
+
 def export_device_csv() -> tuple[Response, int]:
     try:
         devices_with_locations = Device.get_devices_in_export_format()

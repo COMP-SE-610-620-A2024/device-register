@@ -223,4 +223,3 @@ class Device(db.Model):
         ]
 
         return devices_with_export_data
-

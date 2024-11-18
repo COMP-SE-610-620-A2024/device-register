@@ -67,6 +67,7 @@ def device_import_from_csv() -> tuple[Response, int]:
         return Response(), 200
     return handle_device_csv()
 
+
 @device_api.route('/export/', methods=['GET', 'OPTIONS'])
 @jwt_required()
 def device_export_csv() -> tuple[Response, int]:
