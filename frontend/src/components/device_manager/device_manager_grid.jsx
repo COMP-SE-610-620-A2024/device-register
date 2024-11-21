@@ -15,12 +15,11 @@ const Device_manager_grid = () => {
     const { deleteData } = useDelete();
     const navigate = useNavigate(); 
 
-    // Sync updatedDevices with devices fetched from the API
     useEffect(() => {
         if (devices) {
             setDevices(devices);
         }
-    }, [devices]); // Only re-run when 'devices' changes
+    }, [devices]); 
 
     // Row sizing
     const handleRowSizing = () => {
@@ -34,16 +33,13 @@ const Device_manager_grid = () => {
 
     const handleDelete = async (rowId) => {
         const id = [{ id: rowId }];
-        // Optimistic UI: immediately remove the item from the list
         setDevices((prevDevices) => prevDevices.filter(updatedDevice => updatedDevice.dev_id !== rowId));
 
         try {
             await deleteData('devices/', id);
         } catch (error) {
             console.error(`Failed to delete device with ID: ${rowId}`, error);
-            // Rollback the optimistic update if the delete fails
             setDevices((prevDevices) => [...prevDevices, devices.find(device => device.dev_id === rowId)]);
-            // Optionally, show an error message to the user
         }
     };
 
@@ -90,7 +86,6 @@ const Device_manager_grid = () => {
 
     const getRowStyle = () => ({ cursor: 'pointer' });
 
-    // Show loading message
     if (loading) {
         return (
             <Typography sx={{ mt: 7, fontSize: 'clamp(1.5rem, 10vw, 2.4rem)' }}>
@@ -99,7 +94,6 @@ const Device_manager_grid = () => {
         );
     }
 
-    // Show error message
     if (error) {
         return (
             <Typography sx={{ mt: 7, fontSize: 'clamp(1.5rem, 9vw, 2.4rem)', color: 'red' }}>
