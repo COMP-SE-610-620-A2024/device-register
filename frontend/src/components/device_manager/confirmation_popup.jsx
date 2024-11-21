@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -6,11 +7,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Function_button from '../shared/function_button';
 
-export default function ConfirmationPopup({ triggerButton, onConfirm }) {
+export default function ConfirmationPopup({ renderTrigger, onConfirm, dialogTitle, dialogText }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = (e) => {
-    e.stopPropagation(); // Prevent grid or parent events from interfering
+    e.stopPropagation();
     setOpen(true);
   };
 
@@ -25,40 +26,42 @@ export default function ConfirmationPopup({ triggerButton, onConfirm }) {
 
   return (
     <>
-      {React.cloneElement(triggerButton, { onClick: handleClickOpen })}
+      {renderTrigger({ onClick: handleClickOpen })}
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="confirm delete popup"
+        aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" sx={{ textAlign: 'center' }}>
-          Delete Item
+          {dialogTitle}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText 
-            id="alert-dialog-description" 
+          <DialogContentText
+            id="alert-dialog-description"
             sx={{ textAlign: 'center' }}
           >
-            Are you sure?
+            {dialogText}
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'center' }}>
-          <Function_button 
-            onClick={handleConfirm} 
-            autoFocus
-            size='medium'
-            text='Yes'
-          >
-          </Function_button>
           <Function_button
-            onClick={handleClose}
-            size='medium'
-            text='No'
-            >
-          </Function_button>
+            onClick={handleConfirm}
+            autoFocus
+            size="medium"
+            text="Yes"
+            color="error"
+          />
+          <Function_button onClick={handleClose} size="medium" text="No" />
         </DialogActions>
       </Dialog>
     </>
   );
 }
+
+ConfirmationPopup.propTypes = {
+  renderTrigger: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  dialogTitle: PropTypes.string.isRequired,
+  dialogText: PropTypes.string
+};
