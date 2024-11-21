@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
 import Function_button from '../shared/function_button.jsx';
+import ConfirmationPopup from './confirmation_popup.jsx';
 import useFetchData from '../shared/fetch_data';
 import useDelete from '../shared/delete_data.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -56,7 +57,16 @@ const Device_manager_grid = () => {
                 return (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Function_button text='Modify' onClick={() => handleModify(devId)}></Function_button>
-                        <Function_button text='Delete' color='error' onClick={() => handleDelete(devId)}></Function_button>
+                        <ConfirmationPopup
+                            triggerButton={
+                                <Function_button
+                                    text="Delete"
+                                    color="error"
+                                    onClick={(e) => e.stopPropagation()}
+                                />
+                            }
+                            onConfirm={() => handleDelete(devId)}
+                        />
                     </div>
                 );
             },
