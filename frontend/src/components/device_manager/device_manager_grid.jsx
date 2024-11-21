@@ -86,6 +86,7 @@ const Device_manager_grid = () => {
 
     const getRowStyle = () => ({ cursor: 'pointer' });
 
+    // Show loading message
     if (loading) {
         return (
             <Typography sx={{ mt: 7, fontSize: 'clamp(1.5rem, 10vw, 2.4rem)' }}>
@@ -94,6 +95,7 @@ const Device_manager_grid = () => {
         );
     }
 
+    // Show error message
     if (error) {
         return (
             <Typography sx={{ mt: 7, fontSize: 'clamp(1.5rem, 9vw, 2.4rem)', color: 'red' }}>
