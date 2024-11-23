@@ -183,7 +183,7 @@ def test_delete_file(client, app, auth_header, non_admin_header):
 
     # Valid delete request
     response_valid_delete = client.delete('/api/attachments/delete/1/cat.jpg',
-                                            headers=auth_header)
+                                          headers=auth_header)
     assert response_valid_delete.status_code == 200
     assert response_valid_delete.json['message'] == "File deleted successfully"
 
