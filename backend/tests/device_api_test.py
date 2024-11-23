@@ -70,7 +70,9 @@ def test_get_devices(client):
     assert data[0]['dev_name'] == "Device"
     assert data[0]['dev_manufacturer'] == "Manfact A"
     assert data[0]['dev_model'] == "Model S"
+    assert data[0]['dev_home'] == "Home"
     assert data[0]['class_name'] == "class A"
+    assert data[0]['dev_comments'] == "Location: Herwood xyz"
 
 
 def test_post_devices(client, app, mocker):
