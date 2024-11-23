@@ -662,7 +662,7 @@ paths:
         - in: header
           name: Authorization
           description: Bearer format
-          required: false
+          required: true
           type: string
       responses:
         "200":
@@ -673,6 +673,14 @@ paths:
               message:
                 type: "string"
                 example: "File deleted successfully"
+        "401":
+          description: "Unauthorized access, admin privileges required"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                example: "Unauthorized access"
         "404":
           description: "Directory or file not found"
           schema:
