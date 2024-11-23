@@ -28,6 +28,7 @@ def get_files_from_request():
 def is_admin_or_single_file(files: list) -> bool:
     return len(files) <= 1 or it_is_admin()
 
+
 def get_device_attachment_directory(dev_id: int) -> str:
     return os.path.join(
         config.PROJECT_ROOT, 'backend', 'static', 'attachments', str(dev_id)
