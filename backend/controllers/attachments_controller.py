@@ -164,6 +164,9 @@ def remove_attachments(dev_id: int):
 
 
 def remove_file(dev_id: int, file_name: str) -> tuple[Response, int]:
+    if not it_is_admin():
+        return jsonify({"error": "Unauthorized access"}), 401
+
     device_attachment_directory = get_device_attachment_directory(dev_id)
 
     if not os.path.exists(device_attachment_directory):
