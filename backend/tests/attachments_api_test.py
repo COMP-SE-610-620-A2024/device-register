@@ -36,7 +36,7 @@ def app():
 
     yield app
 
-    # Clean up / reset the database after each tests
+    # Clean up / reset the database after each test
     with app.app_context():
         db.session.remove()
         db.drop_all()
