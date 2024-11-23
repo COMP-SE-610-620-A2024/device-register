@@ -31,6 +31,7 @@ def app():
             dev_name="Device",
             dev_manufacturer="Manfact A",
             dev_model="Model S",
+            dev_home="Home",
             class_id=1,
             dev_comments="Location: Herwood xyz")
 
@@ -84,6 +85,7 @@ def test_post_devices(client, app, mocker):
             "dev_name": "Device 1",
             "dev_manufacturer": "Company A",
             "dev_model": "M1",
+            "dev_home": "Home",
             "class_id": 1,
             "dev_location": "Lab",
             "dev_comments": ""
@@ -92,6 +94,7 @@ def test_post_devices(client, app, mocker):
             "dev_name": "Device 2",
             "dev_manufacturer": "Company A",
             "dev_model": "M2",
+            "dev_home": "Home",
             "class_id": 1,
             "dev_location": "lab",
             "dev_comments": ""
@@ -119,11 +122,12 @@ def test_post_devices(client, app, mocker):
                 os.remove(qr_image_path)
 
     payload2 = {
-            "dev_name": "Device 3",
-            "dev_manufacturer": "Company A",
-            "dev_model": "M3",
-            "class_id": 1,
-            "dev_comments": ""
+        "dev_name": "Device 3",
+        "dev_manufacturer": "Company A",
+        "dev_model": "M3",
+        "dev_home": "Home",
+        "class_id": 1,
+        "dev_comments": ""
     }
     response_not_list = client.post('/api/devices/', json=payload2)
     assert response_not_list.status_code == 400
@@ -133,6 +137,7 @@ def test_post_devices(client, app, mocker):
             "dev_name": "Device 4",
             "dev_manufacturer": "Company A",
             "dev_model": "M4",
+            "dev_home": "Home",
             "class_id": 1,
             "dev_comments": ""
         },
@@ -140,6 +145,7 @@ def test_post_devices(client, app, mocker):
             "dev_name": "Device 5",
             "dev_manufacturer": "Company B",
             "dev_model": "M5",
+            "dev_home": "Home",
             "dev_comments": ""
         }
     ]
@@ -154,6 +160,7 @@ def test_post_devices(client, app, mocker):
             "dev_name": "Device 1",
             "dev_manufacturer": "Company A",
             "dev_model": "M1",
+            "dev_home": "Home",
             "class_id": 9999,
             "dev_location": "Lab",
             "dev_comments": ""
@@ -171,6 +178,7 @@ def test_post_devices(client, app, mocker):
         assert device_1.dev_name == "Device 1"
         assert device_1.dev_manufacturer == "Company A"
         assert device_1.dev_model == "M1"
+        assert device_1.dev_home == "Home"
         assert device_1.class_id == 1
         assert device_1.dev_comments == ""
 
@@ -178,6 +186,7 @@ def test_post_devices(client, app, mocker):
         assert device_2.dev_name == "Device 2"
         assert device_2.dev_manufacturer == "Company A"
         assert device_2.dev_model == "M2"
+        assert device_2.dev_home == "Home"
         assert device_2.class_id == 1
         assert device_2.dev_comments == ""
 
@@ -192,6 +201,7 @@ def test_get_device_by_id(client):
     assert data['dev_name'] == "Device"
     assert data['dev_manufacturer'] == "Manfact A"
     assert data['dev_model'] == "Model S"
+    assert data['dev_home'] == "Home"
     assert data['class_name'] == "class A"
     assert data['dev_comments'] == "Location: Herwood xyz"
 
@@ -205,6 +215,7 @@ def test_update_device_by_id(client, auth_header):
         "dev_name": "New device",
         "dev_manufacturer": "Toyota",
         "dev_model": "Corolla",
+        "dev_home": "New Home",
         "class_id": 1,
         "dev_comments": "Moved to Timbuktu"
     }
@@ -220,6 +231,7 @@ def test_update_device_by_id(client, auth_header):
     assert updated_device['dev_name'] == "New device"
     assert updated_device['dev_manufacturer'] == "Toyota"
     assert updated_device['dev_model'] == "Corolla"
+    assert updated_device['dev_home'] == "New Home"
     assert updated_device['class_id'] == 1
     assert updated_device['dev_comments'] == "Moved to Timbuktu"
 
@@ -233,6 +245,7 @@ def test_update_device_by_id(client, auth_header):
         "dev_name": "New device",
         "dev_manufacturer": "Toyota",
         "dev_model": "Corolla",
+        "dev_home": "Home",
         "class_id": 9999,
         "dev_comments": "Moved to Timbuktu"
     }
@@ -320,6 +333,7 @@ def test_remove_devices(client, app, auth_header):
             dev_name="Device 1",
             dev_manufacturer="Manfact A",
             dev_model="Model S",
+            dev_home="Home",
             class_id=1,
             dev_comments="Location: Herwood xyz",
         )
@@ -327,6 +341,7 @@ def test_remove_devices(client, app, auth_header):
             dev_name="Device 2",
             dev_manufacturer="Manfact A",
             dev_model="Model T",
+            dev_home="Home",
             class_id=1,
             dev_comments="Location: Herwood xyz",
         )
@@ -384,6 +399,7 @@ def test_get_current_locations(client, app):
             dev_name="Unique Device 1",
             dev_manufacturer="Unique Manufacturer 1",
             dev_model="Unique Model 1",
+            dev_home="Home",
             class_id=1,
             dev_comments="Location: Unique Location 1"
         )
@@ -394,6 +410,7 @@ def test_get_current_locations(client, app):
             dev_name="Unique Device 2",
             dev_manufacturer="Unique Manufacturer 2",
             dev_model="Unique Model 2",
+            dev_home="Home",
             class_id=1,
             dev_comments="Location: Unique Location 2"
         )
@@ -432,6 +449,7 @@ def test_get_current_locations(client, app):
         assert data[1]['dev_name'] == test_device1.dev_name
         assert data[1]['dev_model'] == test_device1.dev_model
         assert data[1]['dev_manufacturer'] == test_device1.dev_manufacturer
+        assert data[1]['dev_home'] == test_device1.dev_home
         assert data[1]['class_name'] == "class A"
         assert data[1]['loc_name'] == "Location 1"
 
@@ -439,6 +457,7 @@ def test_get_current_locations(client, app):
         assert data[2]['dev_name'] == test_device2.dev_name
         assert data[2]['dev_model'] == test_device2.dev_model
         assert data[2]['dev_manufacturer'] == test_device2.dev_manufacturer
+        assert data[2]['dev_home'] == test_device2.dev_home
         assert data[1]['class_name'] == "class A"
         assert data[2]['loc_name'] == "Location 2"
 
