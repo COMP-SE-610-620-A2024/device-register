@@ -70,19 +70,11 @@ def test_upload_files(client, app):
                                           data={'files': (file, 'cat.jpg')})
     assert response_valid_file.status_code == 200
 
-    # Uploading an unsupported file type (CSV)
-    with open(os.path.join(test_file_directory, 'not_supported.csv'), 'rb') as file:
-        response_invalid_file_type = client.post(
-            'api/attachments/upload/1',
-            data={'files': (file, 'not_supported.csv')}
-        )
-    assert response_invalid_file_type.status_code == 400
-
     # Sending a request with no files
     response_no_files = client.post('api/attachments/upload/1', data={})
     assert response_no_files.status_code == 400
 
-    # Uploading a file that exceeds the size limit (over 30MB PDF)
+    # Uploading a file that exceeds the size limit
     over_30_pdf_path = os.path.join(test_file_directory, 'over_30.pdf')
 
     # Ensure the file is over 30MB
@@ -92,7 +84,8 @@ def test_upload_files(client, app):
             data={'files': (file, 'over_30.pdf')}
         )
     assert response_large_pdf.status_code == 400
-    assert response_large_pdf.json['error'] == "File 'over_30.pdf' exceeds the maximum allowed size"
+    assert (response_large_pdf.json['error'] ==
+            "File 'over_30.pdf' exceeds the maximum allowed size")
 
     # Clean up the uploaded files
     if os.path.exists(device_attachment_directory):

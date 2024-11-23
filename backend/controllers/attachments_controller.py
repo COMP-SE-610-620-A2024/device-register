@@ -7,7 +7,7 @@ from backend.utils.config import config
 from typing import Union
 
 
-allowed_mime_types = {'application/pdf', 'image/png', 'image/jpeg'}
+allowed_mime_types = {'application/pdf', 'image/png', 'image/jpeg', 'application/csv'}
 
 
 def allowed_mime_type(file):
@@ -28,12 +28,17 @@ def get_files_from_request():
 def is_admin_or_single_file(files: list) -> bool:
     return len(files) <= 1 or it_is_admin()
 
+def get_device_attachment_directory(dev_id: int) -> str:
+    return os.path.join(
+        config.PROJECT_ROOT, 'backend', 'static', 'attachments', str(dev_id)
+    )
+
 
 def create_attachment_directory(dev_id: int) -> Union[str, None]:
-    directory = os.path.join(config.PROJECT_ROOT, 'backend', 'static', 'attachments', str(dev_id))
+    device_attachment_directory = get_device_attachment_directory(dev_id)
     try:
-        os.makedirs(directory, exist_ok=True)
-        return directory
+        os.makedirs(device_attachment_directory, exist_ok=True)
+        return device_attachment_directory
     except OSError:
         return None
 
@@ -61,6 +66,13 @@ def save_file(file, directory: str) -> Union[str, None]:
         return None
 
 
+def get_current_file_count(dev_id: int) -> int:
+    device_attachment_directory = get_device_attachment_directory(dev_id)
+    if os.path.exists(device_attachment_directory):
+        return len(os.listdir(device_attachment_directory))
+    return 0
+
+
 def upload_files(dev_id: int) -> tuple[Response, int]:
     if not is_device_valid(dev_id):
         return jsonify({"error": "Device not found"}), 404
@@ -69,8 +81,14 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
     if not files:
         return jsonify({"error": "No files uploaded"}), 400
 
+    current_file_count = get_current_file_count(dev_id)
+    if current_file_count + len(files) > 4:
+        return jsonify({"error": "Device can only have a maximum of 4 files"}), 400
+
     if not is_admin_or_single_file(files):
-        return jsonify({"error": "Only admin allowed to add multiple attachments in one request"}), 401
+        return jsonify(
+            {"error": "Only admin allowed to add multiple attachments in one request"}
+        ), 401
 
     device_attachment_directory = create_attachment_directory(dev_id)
     if not device_attachment_directory:
@@ -79,18 +97,26 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
     saved_files = []
     for file in files:
         if not is_file_size_valid(file):
-            return jsonify({"error": f"File '{file.filename}' exceeds the maximum allowed size"}), 400
+            return jsonify(
+                {"error": f"File '{file.filename}' exceeds the maximum allowed size"}
+            ), 400
 
         if not allowed_mime_type(file):
-            return jsonify({"error": f"File '{file.filename}' type not allowed"}), 400
+            return jsonify(
+                {"error": f"File '{file.filename}' type not allowed"}
+            ), 400
 
         saved_filename = save_file(file, device_attachment_directory)
         if not saved_filename:
-            return jsonify({"error": f"File '{file.filename}' already exists or failed to save"}), 400
+            return jsonify(
+                {"error": f"File '{file.filename}' already exists or failed to save"}
+            ), 400
 
         saved_files.append(saved_filename)
 
-    return jsonify({"message": "Files uploaded successfully", "files": saved_files}), 200
+    return jsonify({
+        "message": "Files uploaded successfully", "files": saved_files
+    }), 200
 
 
 def get_all_files_in_directory(directory_path: str) -> list[str]:
@@ -107,8 +133,7 @@ def get_all_files_in_directory(directory_path: str) -> list[str]:
 
 
 def list_files(dev_id: int) -> tuple[Response, int]:
-    device_attachment_directory = os.path.join(config.PROJECT_ROOT, 'backend',
-                                               'static', 'attachments', str(dev_id))
+    device_attachment_directory = get_device_attachment_directory(dev_id)
 
     if not os.path.exists(device_attachment_directory):
         return jsonify({"error": "Directory not found"}), 404
@@ -126,8 +151,7 @@ def list_files(dev_id: int) -> tuple[Response, int]:
 
 
 def remove_attachments(dev_id: int):
-    device_attachment_directory = os.path.join(config.PROJECT_ROOT, 'backend',
-                                               'static', 'attachments', str(dev_id))
+    device_attachment_directory = get_device_attachment_directory(dev_id)
 
     if os.path.exists(device_attachment_directory):
         for filename in os.listdir(device_attachment_directory):
@@ -140,8 +164,7 @@ def remove_attachments(dev_id: int):
 
 
 def remove_file(dev_id: int, file_name: str) -> tuple[Response, int]:
-    device_attachment_directory = os.path.join(config.PROJECT_ROOT, 'backend',
-                                               'static', 'attachments', str(dev_id))
+    device_attachment_directory = get_device_attachment_directory(dev_id)
 
     if not os.path.exists(device_attachment_directory):
         return jsonify({"error": "Directory not found"}), 404
