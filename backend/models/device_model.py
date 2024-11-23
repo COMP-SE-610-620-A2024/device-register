@@ -219,9 +219,9 @@ class Device(db.Model):
                 "dev_name": device.dev_name,
                 "dev_model": device.dev_model,
                 "dev_manufacturer": device.dev_manufacturer,
-                "dev_comments": device.dev_comments,
                 "dev_home": device.dev_home,
                 "dev_class": class_name,
+                "dev_comments": device.dev_comments,
                 "dev_location": loc_name,
             }
             for device, class_name, loc_name, move_time in results
