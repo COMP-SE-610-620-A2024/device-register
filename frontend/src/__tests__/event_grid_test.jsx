@@ -35,12 +35,13 @@ describe('DeviceRegisterGrid Component', () => {
         useFetchData.mockReturnValue({
             data: [
                 { 
-                    dev_id: 1, 
+                    user_email: 'test@example.com',
                     user_name: '020202', 
                     move_time: moveTime,
                     move_time_iso: moveTime,
                     loc_name: 'Test Laboratory', 
-                    company: "Apple"
+                    company: "Apple",
+                    dev_name: "test device"
                 },
             ],
             loading: false,
@@ -56,13 +57,21 @@ describe('DeviceRegisterGrid Component', () => {
         // Verify datetime with UTC.
         expect(screen.getByText('04/12/2024, 23:59')).toBeInTheDocument();
         expect(screen.getByText('Test Laboratory')).toBeInTheDocument();
+        expect(screen.getByText('test@example.com')).toBeInTheDocument();
+        expect(screen.getByText('test device')).toBeInTheDocument();
     
         // Verify headers
-        expect(screen.getByText('Device id')).toBeInTheDocument();
+        expect(screen.getByText('Email')).toBeInTheDocument();
         expect(screen.getByText('User name')).toBeInTheDocument();
         expect(screen.getByText('Date/Time')).toBeInTheDocument();
         expect(screen.getByText('Location')).toBeInTheDocument();
         expect(screen.getByText('Company')).toBeInTheDocument();
+        expect(screen.getByText('Device')).toBeInTheDocument();
+        //Buttons
+        const exportButton = screen.getByText('Export CSV');
+        const expandButton = screen.getByText('Expand rows');
+        expect(exportButton).toBeInTheDocument();
+        expect(expandButton).toBeInTheDocument();
     });
     
     

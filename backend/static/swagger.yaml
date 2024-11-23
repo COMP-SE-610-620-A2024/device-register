@@ -24,6 +24,12 @@ paths:
       tags:
         - Devices
       summary: Get all devices
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         '200':
           description: A list of devices
@@ -36,6 +42,11 @@ paths:
         - Devices
       summary: Add new devices
       parameters:
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
         - in: body
           name: body
           required: true
@@ -106,6 +117,11 @@ paths:
           in: path
           required: true
           type: integer
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         '200':
           description: A single device
@@ -129,7 +145,25 @@ paths:
         name: body
         required: true
         schema:
-            $ref: '#/definitions/NewDevice'
+          type: array
+          items:
+            type: object
+            properties:
+              class_id:
+                type: integer
+                example: 1
+              dev_comments:
+                type: string
+                example: "Some comments"
+              dev_name:
+                type: string
+                example: "Device 1"
+              dev_manufacturer:
+                type: string
+                example: "Company 1"
+              dev_model:
+                type: string
+                example: "Model 1"
       responses:
           '200':
             description: Device updated
@@ -152,6 +186,11 @@ paths:
           in: path
           required: true
           type: integer
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         '200':
           description: A list of events
@@ -167,6 +206,12 @@ paths:
       tags:
         - Devices
       summary: Get current locations of all devices
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         '200':
           description: List of devices with current locations
@@ -199,6 +244,47 @@ paths:
                   example: "Säädin"
         '500':
           description: Database error
+
+  /devices/import:
+    post:
+      tags:
+        - Devices
+      summary: "Create devices by uploading a CSV"
+      description: |
+        Allows creating devices by uploading a CSV file that contains device info separated by semicolon.
+        CSV header (first line) should be:
+        dev_name;dev_manufacturer;dev_model;dev_class;dev_comments;dev_location
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: "files"
+          in: "formData"
+          description: "CSV to be uploaded"
+          required: true
+          type: "file"
+      consumes:
+        - "multipart/form-data"
+      responses:
+        201:
+          description: Devices created
+        400:
+          description: Bad request - no csv file or wrong format
+        500:
+          description: Internal server error
+
+  /devices/export:
+    get:
+      tags:
+        - Devices
+      summary: "Export devices in csv format compatible with import"
+      description: |
+        Exports database devices in csv format:
+        dev_name;dev_manufacturer;dev_model;dev_class;dev_comments;dev_location
+      security:
+        - bearerAuth: [ ]
+      responses:
+        500:
+          description: Internal server error
 
 
   /users/:
@@ -273,6 +359,11 @@ paths:
         - Events
       summary: Add new events
       parameters:
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
         - in: body
           name: body
           required: true
@@ -379,6 +470,12 @@ paths:
       tags:
         - Classes
       summary: Get all classes
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         '200':
           description: List of classes
@@ -447,6 +544,11 @@ paths:
           in: "path"
           required: true
           type: "integer"
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
         - name: "files"
           in: "formData"
           description: "File(s) to be uploaded"
@@ -505,6 +607,11 @@ paths:
           in: "path"
           required: true
           type: "integer"
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         200:
           description: "List of attachments"
@@ -552,6 +659,11 @@ paths:
           in: "path"
           required: true
           type: "string"
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
       responses:
         "200":
           description: "File deleted successfully"
@@ -590,6 +702,11 @@ paths:
       consumes:
         - application/json
       parameters:
+        - in: header
+          name: Authorization
+          description: Bearer format
+          required: false
+          type: string
         - in: body
           name: credentials
           description: "Admin login credentials"
