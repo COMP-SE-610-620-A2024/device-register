@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Function_button from '../shared/Function_button';
+import Function_button from '../shared/function_button';
 
 const ConfirmationPopup = forwardRef(({ renderTrigger, onConfirm, dialogTitle, dialogText }, ref) => {
   const [open, setOpen] = useState(false);
