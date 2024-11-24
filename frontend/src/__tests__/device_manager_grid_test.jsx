@@ -62,9 +62,12 @@ describe('Device_manager_grid Component', () => {
         expect(screen.getByText('Kamera')).toBeInTheDocument();
         // Headers
         expect(screen.getByText('Device')).toBeInTheDocument();
-        expect(screen.getByText('Actions')).toBeInTheDocument();
         expect(screen.getByText('Manufacturer')).toBeInTheDocument();
         expect(screen.getByText('Model')).toBeInTheDocument();
         expect(screen.getByText('Class')).toBeInTheDocument();
+        //Button
+        const expandButton = screen.getByText('Expand rows');
+        expect(expandButton).toBeInTheDocument();
+
     });
 });

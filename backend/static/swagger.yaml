@@ -60,12 +60,14 @@ paths:
                 class_id: 1
                 dev_manufacturer: "Company 1"
                 dev_comments: "Some comments"
+                dev_home: "Some home"
                 dev_location: "Room 101"
               - dev_name: "Device 2"
                 dev_model: "Model 2"
                 class_id: 1
                 dev_manufacturer: "Company 2"
                 dev_comments: "Some comments"
+                dev_home: "Some home"
                 dev_location: "Room 102"
       responses:
         '201':
@@ -145,7 +147,28 @@ paths:
         name: body
         required: true
         schema:
-            $ref: '#/definitions/NewDevice'
+          type: array
+          items:
+            type: object
+            properties:
+              class_id:
+                type: integer
+                example: 1
+              dev_comments:
+                type: string
+                example: "Some comments"
+              dev_home:
+                type: string
+                example: "Some specific place"
+              dev_name:
+                type: string
+                example: "Device 1"
+              dev_manufacturer:
+                type: string
+                example: "Company 1"
+              dev_model:
+                type: string
+                example: "Model 1"
       responses:
           '200':
             description: Device updated
@@ -226,6 +249,47 @@ paths:
                   example: "Säädin"
         '500':
           description: Database error
+
+  /devices/import:
+    post:
+      tags:
+        - Devices
+      summary: "Create devices by uploading a CSV"
+      description: |
+        Allows creating devices by uploading a CSV file that contains device info separated by semicolon.
+        CSV header (first line) should be:
+        dev_name;dev_manufacturer;dev_model;dev_home;dev_class;dev_comments;dev_location
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: "files"
+          in: "formData"
+          description: "CSV to be uploaded"
+          required: true
+          type: "file"
+      consumes:
+        - "multipart/form-data"
+      responses:
+        201:
+          description: Devices created
+        400:
+          description: Bad request - no csv file or wrong format
+        500:
+          description: Internal server error
+
+  /devices/export:
+    get:
+      tags:
+        - Devices
+      summary: "Export devices in csv format compatible with import"
+      description: |
+        Exports database devices in csv format:
+        dev_name;dev_manufacturer;dev_model;dev_home;dev_class;dev_comments;dev_location
+      security:
+        - bearerAuth: [ ]
+      responses:
+        500:
+          description: Internal server error
 
 
   /users/:
@@ -724,6 +788,8 @@ definitions:
         type: string
       dev_model:
         type: string
+      dev_home:
+        type: string
       class_name:
         type: string
       dev_comments:
@@ -733,6 +799,7 @@ definitions:
         dev_name: "Hienosäädin"
         dev_manufacturer: "TAMK"
         dev_model: "Mahtava malli"
+        dev_home: "Laitteen koti"
         class_name: "Säädin"
         dev_comments: "Tosi hyvä laite"
 
@@ -745,6 +812,8 @@ definitions:
         type: string
       dev_model:
         type: string
+      dev_home:
+        type: string
       class_id:
         type: integer
       dev_comments:
@@ -755,6 +824,7 @@ definitions:
       dev_name: "Hienosäädin"
       dev_manufacturer: "TAMK"
       dev_model: "Mahtava malli"
+      dev_home: "Laitteen koti"
       class_id: 1
       dev_comments: "Tosi hyvä laite"
       dev_location: "Room 101"

@@ -44,9 +44,14 @@ function Device_manager_view() {
         <Typography sx={{ fontSize: 'clamp(2.4rem, 3vw, 1.8rem)', mt: 8 }}>
           Device manager
         </Typography>
-
+        <Box sx={{ 
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 2
+        }}>
         <Link_button href={`/add`} text= "Add a device"></Link_button>
-
+        </Box>
         <Device_manager_grid />
         
       </Box>

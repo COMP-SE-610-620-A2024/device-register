@@ -8,7 +8,8 @@ from backend.controllers.device_controller import (
     remove_devices,
     update_device,
     get_events_by_device_id,
-    current_locations
+    current_locations,
+    handle_device_csv, export_device_csv
 )
 from backend.utils.config import config
 
@@ -57,3 +58,19 @@ def device_events_by_id(dev_id: int) -> tuple[Response, int]:
 @jwt_required(optional=True)
 def get_all_devices_current_location() -> tuple[Response, int]:
     return current_locations()
+
+
+@device_api.route('/import/', methods=['POST', 'OPTIONS'])
+@jwt_required()
+def device_import_from_csv() -> tuple[Response, int]:
+    if request.method == 'OPTIONS':
+        return Response(), 200
+    return handle_device_csv()
+
+
+@device_api.route('/export/', methods=['GET', 'OPTIONS'])
+@jwt_required()
+def device_export_csv() -> tuple[Response, int]:
+    if request.method == 'OPTIONS':
+        return Response(), 200
+    return export_device_csv()

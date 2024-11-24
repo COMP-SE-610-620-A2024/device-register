@@ -33,6 +33,7 @@ const Edit_view = () => {
   });
 
 
+
   
   
   useEffect(() => {
@@ -40,6 +41,7 @@ const Edit_view = () => {
         const matchedClass = deviceClasses.find(
           (deviceClass) => deviceClass.class_name === device.class_name
         );
+
       setDeviceData({
         class_id: matchedClass ? matchedClass.class_id : '',
         dev_comments: device.dev_comments || '', 
@@ -61,6 +63,7 @@ const Edit_view = () => {
 
   const onSubmit = async(e) => {
     e.preventDefault()
+
     const { dev_name, dev_manufacturer, dev_model, class_id } = deviceData;
     // Check for empty fields
     if (!dev_name || !dev_manufacturer || !dev_model  || !class_id) {
