@@ -8,14 +8,14 @@ import { useParams } from 'react-router-dom';
 import useFetchData from '../components/shared/fetch_data';
 import { config } from '../utils/config';
 import Attachment_box from '../components/device_info/attachment_box';
+import SignoutButton from '../components/shared/sign_out_button';
+
 
 const Device_info_view = () => {
   const { id } = useParams();
-
+  const { data: auth, loading: authloading, error: authError} = useFetchData('auth/admin');
   const { data: device, error } = useFetchData('devices/' + id);
   const { data: locations} = useFetchData('devices/current_locations/');
-
-  
 
   const devName = String(device.dev_name);
   const devClass = String(device.class_name);
@@ -49,7 +49,7 @@ const Device_info_view = () => {
       gap: 2
   }}>
         <NavigationBar/>
-
+        {!authloading && auth && !authError && <SignoutButton auth={auth} />}
         <Device_description devName={devName} devLocation={devLoc} devClass={devClass}
          devModel={devModel} devManufacturer={devManufacturer} devComments={devComments} error={error}/>
         
