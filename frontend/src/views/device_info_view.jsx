@@ -7,6 +7,7 @@ import Link_button from '../components/shared/link_button';
 import { useParams } from 'react-router-dom';
 import useFetchData from '../components/shared/fetch_data';
 import { config } from '../utils/config';
+import Attachment_box from '../components/device_info/attachment_box';
 
 const Device_info_view = () => {
   const { id } = useParams();
@@ -61,9 +62,12 @@ const Device_info_view = () => {
 
           <Link_button href={`${config.BACKEND_ADDR}/static/qr/${id}.png`} text= "Get QR"></Link_button>
 
+          
+
 
 
         </Box>
+        <Attachment_box id= { id } ></Attachment_box>
         
 
         <Device_Info_Grid id = { id }/>

@@ -1,55 +1,14 @@
-<<<<<<< HEAD
-import React from 'react';
-import GridTable from '../shared/grid_table.jsx';
-import Typography from '@mui/material/Typography';
-import Function_button from '../shared/function_button.jsx';
-=======
 import React, { useState, useEffect, useRef } from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
 import Function_button from '../shared/function_button.jsx';
 import ConfirmationPopup from './confirmation_popup.jsx';
->>>>>>> origin/main
 import useFetchData from '../shared/fetch_data';
 import useDelete from '../shared/delete_data.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const Device_manager_grid = () => {
     const { data: devices, loading, error } = useFetchData('devices/');
-<<<<<<< HEAD
-    const { deleteData} = useDelete();
-    const navigate = useNavigate(); 
-
-
-
-    const handleModify = (rowId) => {
-        navigate('/devices/' + rowId + '/edit');
-;
-    };
-    
-    const handleDelete = async(rowId) => {
-        
-        const id = [{ id: rowId }];
-        
-        try {
-            await deleteData('devices/', id);
-            navigate('/admin');
-        } catch (error) {
-            console.error(`Failed to delete device with ID: ${rowId}`, error);
-        }
-        
-    };
-    
-
-    const columnDefs = [
-        
-        { field: "dev_name", filter: "agTextColumnFilter", headerName: "Device", flex: 2,  minWidth: 120, autoHeight: true,
-            cellStyle: { whiteSpace: 'normal', wordWrap: 'break-word',  lineHeight: 1.2,  paddingTop: '13px', } // text wrapping
-            }, // Important, 34 characters
-        {
-            headerName: "Actions",
-            field: "actions",
-=======
     const [updatedDevices, setDevices] = useState([]);
     const { deleteData } = useDelete();
     const navigate = useNavigate();
@@ -116,32 +75,10 @@ const Device_manager_grid = () => {
             field: 'dev_name',
             headerName: 'Device',
             flex: 3,
->>>>>>> origin/main
             minWidth: 200,
             cellRenderer: (params) => {
                 const devId = params.data.dev_id;
                 return (
-<<<<<<< HEAD
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Function_button text='Modify' onClick={() => handleModify(devId)}></Function_button>
-                        <Function_button text='Delete' color='error' onClick={() => handleDelete(devId)}></Function_button>
-                    </div>
-                );
-            },
-            cellStyle: { display: 'flex', justifyContent: 'space-between', paddingTop: '13px' },
-        },
-        { field: "dev_manufacturer", filter: "agTextColumnFilter", headerName: "Manufacturer", flex: 0.5, minWidth: 120, autoHeight: true,
-             cellStyle: { whiteSpace: 'normal', wordWrap: 'break-word',  lineHeight: 1.2,  paddingTop: '13px', } // text wrapping
-            }, // Enough for 9999 devices
-        { field: "dev_model", filter: "agTextColumnFilter", headerName: "Model", flex: 1.4, minWidth: 100, autoHeight: true,
-            cellStyle: { whiteSpace: 'normal', wordWrap: 'break-word',  lineHeight: 1.2,  paddingTop: '13px', } // text wrapping
-        }, // Not as important, 14 characters
-        { field: "class_name", filter: "agTextColumnFilter", headerName: "Class", flex: 2, minWidth: 120, autoHeight: true,
-            cellStyle: { whiteSpace: 'normal', wordWrap: 'break-word',  lineHeight: 1.2,  paddingTop: '13px', } // text wrapping
-            },
-    ];
-
-=======
                     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                         <div style={{ fontWeight: 'bold', flexGrow: 1 }}>
                             {params.value}
@@ -209,7 +146,6 @@ const Device_manager_grid = () => {
         cursor: 'pointer',
     });
 
->>>>>>> origin/main
     if (loading) {
         return (
             <Typography sx={{ mt: 7, fontSize: 'clamp(1.5rem, 10vw, 2.4rem)' }}>
@@ -228,17 +164,6 @@ const Device_manager_grid = () => {
     }
 
     return (
-<<<<<<< HEAD
-        <GridTable 
-            rowData={devices} 
-            columnDefs={columnDefs}
-            /*getRowStyle={getRowStyle}*/
-        />
-    );
-};
-
-export default Device_manager_grid;
-=======
         <div>
             <Function_button
                 size="small"
@@ -257,4 +182,3 @@ export default Device_manager_grid;
 };
 
 export default Device_manager_grid;
->>>>>>> origin/main
