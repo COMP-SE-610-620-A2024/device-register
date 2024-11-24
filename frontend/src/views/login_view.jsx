@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { Typography, TextField } from '@mui/material';
 import NavigationBar from '../components/shared/navigation_bar';
 import Form_container from '../components/shared/form_container';
-import Function_button from '../components/shared/Function_button';
+import Function_button from '../components/shared/function_button';
 import {useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import usePostData from '../components/shared/post_data';

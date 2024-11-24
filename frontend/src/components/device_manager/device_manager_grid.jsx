@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import GridTable from '../shared/grid_table.jsx';
 import Typography from '@mui/material/Typography';
-import Function_button from '../shared/Function_button.jsx';
+import Function_button from '../shared/function_button.jsx';
 import ConfirmationPopup from './confirmation_popup.jsx';
 import useFetchData from '../shared/fetch_data';
 import useDelete from '../shared/delete_data.jsx';

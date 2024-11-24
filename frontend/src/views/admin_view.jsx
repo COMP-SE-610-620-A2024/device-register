@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import NavigationBar from '../components/shared/navigation_bar';
 import Link_button from '../components/shared/link_button';
-import Function_button from '../components/shared/Function_button';
+import Function_button from '../components/shared/function_button';
 import { config } from '../utils/config';
 import useFetchData from "../components/shared/fetch_data";
 import SignoutButton from '../components/shared/sign_out_button';

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Function_button from "./Function_button";
+import Function_button from "./function_button";
 
 const SignoutButton = ({ auth }) => {
 
