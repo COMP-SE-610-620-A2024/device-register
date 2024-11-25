@@ -7,8 +7,9 @@ import Link_button from '../components/shared/link_button';
 import { useParams } from 'react-router-dom';
 import useFetchData from '../components/shared/fetch_data';
 import { config } from '../utils/config';
-import SignoutButton from '../components/shared/sign_out_button';
 import Attachment_box from '../components/device_info/attachment_box';
+import SignoutButton from '../components/shared/sign_out_button';
+
 
 const Device_info_view = () => {
   const { id } = useParams();
