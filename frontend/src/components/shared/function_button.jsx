@@ -33,7 +33,7 @@ const Function_button = ({
 Function_button.propTypes = {
   text: PropTypes.string.isRequired, //mandatory
   onClick: PropTypes.func,
-  type: PropTypes.oneOf(["input"]),
+  type: PropTypes.oneOf(["submit", "reset", "button"]),
   variant: PropTypes.oneOf(["text", "outlined", "contained"]),
   disabled: PropTypes.bool,
   size: PropTypes.oneOf(["small", "medium", "large"]),
