@@ -84,7 +84,11 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
 
     current_file_count = get_current_file_count(dev_id)
     if current_file_count + len(files) > config.MAX_ATTACHMENT_COUNT:
-        return jsonify({"error": f"Device can only have a maximum of {config.MAX_ATTACHMENT_COUNT} files"}), 400
+        return jsonify(
+            {
+                "error": f"Device can only have a maximum of {config.MAX_ATTACHMENT_COUNT} files"
+            }
+        ), 400
 
     if not is_admin_or_single_file(files):
         return jsonify(
