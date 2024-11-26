@@ -8,11 +8,13 @@ import Link_button from '../components/shared/link_button';
 import {useParams, useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useFetchData from '../components/shared/fetch_data';
+import SignoutButton from '../components/shared/sign_out_button';
 import usePatch from '../components/shared/patch_data';
+
 const Edit_view = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const {data: auth, error} = useFetchData('auth/admin');
+  const {data: auth, loading: authLoading, error: error} = useFetchData('auth/admin');
   const { data: deviceClasses} = useFetchData('classes/');
   const { data: device, loading} = useFetchData('devices/'+id);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -94,7 +96,7 @@ const Edit_view = () => {
   if (error || !auth || auth.msg != 'Authorized') { 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
-        <NavigationBar/>
+        <NavigationBar auth={auth} />
         <Typography sx={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)', mb: 2 }}>
           You must be logged in to view this content.
         </Typography>
@@ -116,7 +118,8 @@ const Edit_view = () => {
         textWrap: 'nowrap',
         gap: 2
     }}>
-          <NavigationBar/>
+          <NavigationBar auth={auth} />
+          {!authLoading && auth && !error && <SignoutButton auth={auth} />}
           <Typography sx={{
             fontSize: 'clamp(1.5rem, 5vw, 2.4rem)', 
             textAlign: 'center',
