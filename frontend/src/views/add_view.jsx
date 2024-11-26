@@ -90,9 +90,8 @@ const Add_view = () => {
         throw new Error(errorResponse.error || `HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
+      //const result = await response.json();
     } catch (err) {
-      setUploadError(err.message || 'Unknown error occurred');
       console.log(err.message);
     }
   };
