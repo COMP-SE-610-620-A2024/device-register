@@ -55,8 +55,6 @@ const Add_view = () => {
     
     //need to wrap as a list
     const deviceList = [deviceData];
-    //TODO: remove when not needed
-    console.log("Sending data:", deviceList);
      
     postDevData(deviceList);
   };
@@ -118,7 +116,6 @@ const Add_view = () => {
         formData.append('files', selectedFile, selectedFile.name);
       
         await postFormData(`attachments/upload/${newDeviceId}`, formData);
-        console.log("File uploaded successfully.");
 
       } catch (error) {
         console.log(error.message);
