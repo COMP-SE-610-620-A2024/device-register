@@ -90,6 +90,14 @@ def test_upload_files(client, app):
     response_no_files = client.post('api/attachments/upload/1', data={})
     assert response_no_files.status_code == 400
 
+    # Uploading an unsupported file type (bin)
+    with open(os.path.join(test_file_directory, 'not_supported.bin'), 'rb') as file:
+        response_invalid_file_type = client.post(
+            'api/attachments/upload/1',
+            data={'files': (file, 'not_supported.bin')}
+        )
+    assert response_invalid_file_type.status_code == 400
+
     # Uploading a file that exceeds the size limit
     over_30_pdf_path = os.path.join(test_file_directory, 'over_30.pdf')
 

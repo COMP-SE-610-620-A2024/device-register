@@ -36,6 +36,7 @@ class Config:
 
     # File related here
     ATTACHMENT_MAX_SIZE_MB: int = None
+    MAX_ATTACHMENT_COUNT: int = None
 
     # dbconfig
     SQLALCHEMY_DATABASE_URI: str = None
@@ -82,6 +83,7 @@ class Config:
         self.MIN_EVENT_COUNT = int(os.getenv('MIN_EVENT_COUNT', "5"))
 
         self.ATTACHMENT_MAX_SIZE_MB = int(os.getenv('ATTACHMENT_MAX_SIZE_MB', "30"))
+        self.MAX_ATTACHMENT_COUNT = int(os.getenv('MAX_ATTACHMENT_COUNT', "4"))
 
         self.SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI',
                                                  'sqlite:///:memory:')

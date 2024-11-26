@@ -653,6 +653,8 @@ paths:
     delete:
       summary: "Delete a specific attachment file for a device"
       description: "Deletes attachment from specified device."
+      security:
+        - bearerAuth: [ ]
       tags:
         - "Attachments"
       parameters:
@@ -664,11 +666,6 @@ paths:
           in: "path"
           required: true
           type: "string"
-        - in: header
-          name: Authorization
-          description: Bearer format
-          required: true
-          type: string
       responses:
         "200":
           description: "File deleted successfully"

@@ -7,7 +7,7 @@ from backend.utils.config import config
 from typing import Union
 
 
-allowed_mime_types = {'application/pdf', 'image/png', 'image/jpeg', 'application/csv'}
+allowed_mime_types = {'application/pdf', 'image/png', 'image/jpeg', 'text/csv'}
 
 
 def allowed_mime_type(file):
@@ -83,8 +83,8 @@ def upload_files(dev_id: int) -> tuple[Response, int]:
         return jsonify({"error": "No files uploaded"}), 400
 
     current_file_count = get_current_file_count(dev_id)
-    if current_file_count + len(files) > 4:
-        return jsonify({"error": "Device can only have a maximum of 4 files"}), 400
+    if current_file_count + len(files) > config.MAX_ATTACHMENT_COUNT:
+        return jsonify({"error": f"Device can only have a maximum of {config.MAX_ATTACHMENT_COUNT} files"}), 400
 
     if not is_admin_or_single_file(files):
         return jsonify(
