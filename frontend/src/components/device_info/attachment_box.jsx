@@ -8,7 +8,7 @@ import useDelete from '../shared/delete_data';
 import ConfirmationPopup from '../device_manager/confirmation_popup';
 
 
-const Attachment_box = ({ id }) => {
+const Attachment_box = ({ id, modify }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadResult, setUploadResult] = useState(null);
   const [uploadError, setUploadError] = useState(null);
@@ -94,7 +94,10 @@ const Attachment_box = ({ id }) => {
             {fileName}
           </a>
         </Typography>
-        <ConfirmationPopup
+
+        {!modify && (<Box sx={{mt: 1}}></Box>)}
+
+        {modify &&(<ConfirmationPopup
                                     renderTrigger={() => (
                                     <Function_button
                                         text="Delete"
@@ -110,7 +113,7 @@ const Attachment_box = ({ id }) => {
                                 dialogTitle="Delete Attachment"
                                 dialogText="Are you sure you want to delete this attachment?"
                                 ref={popupRef} // Attach the ref to the popup
-                            />
+                            />)}
       </Card>
       );
     });
@@ -144,7 +147,7 @@ const Attachment_box = ({ id }) => {
           </Card>
         )}
 
-        <Box sx ={{ mt: 2}}>
+        {modify && (<Box sx ={{ mt: 2}}>
         <input type="file" onChange={handleFileChange}
           disabled={attachments && attachments.files && attachments.files.length >= 4} // Disable if 4 or more files
          />
@@ -158,7 +161,7 @@ const Attachment_box = ({ id }) => {
           sx={{ mt: 2 }}
         >
         </Function_button>
-        </Box>
+        </Box>)}
 
         {uploadError && (
           <Typography color="error" variant="body2" sx={{ mt: 2 }}>
@@ -172,6 +175,7 @@ const Attachment_box = ({ id }) => {
 
 Attachment_box.propTypes = {
   id: PropTypes.string.isRequired,
+  modify: PropTypes.bool.isRequired,
 };
 
 export default Attachment_box;

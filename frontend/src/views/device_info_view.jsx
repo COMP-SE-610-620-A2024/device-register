@@ -22,6 +22,7 @@ const Device_info_view = () => {
   const devComments = String(device.dev_comments);
   const devManufacturer = String(device.dev_manufacturer);
   const devModel = String(device.dev_model);
+  const devHome = String(device.dev_home);
   const devLoc = String(getLocName(locations, id));
 
   function getLocName(loc, id) {
@@ -51,7 +52,7 @@ const Device_info_view = () => {
         <NavigationBar auth={auth} />
         {!authloading && auth && !authError && <SignoutButton auth={auth} />}
         <Device_description devName={devName} devLocation={devLoc} devClass={devClass}
-         devModel={devModel} devManufacturer={devManufacturer} devComments={devComments} error={error}/>
+         devModel={devModel} devManufacturer={devManufacturer} devComments={devComments} devHome={devHome} error={error}/>
         
         <Box sx={{
           display: 'flex',
@@ -67,7 +68,7 @@ const Device_info_view = () => {
 
 
         </Box>
-        <Attachment_box id= { id } ></Attachment_box>
+        <Attachment_box id= { id } modify = {false}></Attachment_box>
         
 
         <Device_Info_Grid id = { id }/>
