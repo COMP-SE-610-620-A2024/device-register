@@ -29,6 +29,7 @@ MarkupSafe==3.0.2
 mccabe==0.7.0
 mdurl==0.1.2
 mistune==3.0.2
+mod_wsgi==4.7.1
 numpy==2.0.2
 ordered-set==4.1.0
 packaging==24.1
