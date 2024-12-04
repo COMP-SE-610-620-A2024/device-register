@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Attachment_box from "../components/device_info/attachment_box";
-import Function_button from '../components/shared/function_button';
 import '@testing-library/jest-dom';
 
 
