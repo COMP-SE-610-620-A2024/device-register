@@ -89,43 +89,54 @@ const Attachment_box = ({ id, modify }) => {
       const fileName = file.split('/').pop();
       
       return (
-        <Card key={index} sx={{ mb:-2 }}>
-  <CardContent
-    sx={{
-      gap:'5px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between', 
-    }}
-  >
-    <Typography>
-      <a href={`${config.BACKEND_ADDR}${file}`} target="_blank" rel="noopener noreferrer">
-        {fileName}
-      </a>
-    </Typography>
+        <Card key={index} sx={{ mb: -2 }}>
+        <CardContent
+          sx={{
+            gap: '7px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '90%'
+          }}
+        >
 
-    {modify && (
-      <ConfirmationPopup
-        renderTrigger={() => (
-          <Function_button
-            text=""
-            color="error"
-            startIcon={<DeleteIcon aria-label="Delete"  sx={{ ml: 1.2 }}/>} 
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              popupRef.current.openPopup();
-            }}
-          />
-        )}
-        onConfirm={() => handleDelete(fileName)}
-        dialogTitle="Delete Attachment"
-        dialogText="Are you sure you want to delete this attachment?"
-        ref={popupRef} // Attach the ref to the popup
-      />
-    )}
-  </CardContent>
-</Card>
+            <Typography
+              sx={{
+                maxWidth: '240px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              <a
+                href={`${config.BACKEND_ADDR}${file}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {fileName}
+              </a>
+            </Typography>
+
+          {modify && (
+            <ConfirmationPopup
+              renderTrigger={() => (
+                <Function_button
+                  text=""
+                  color="error"
+                  startIcon={<DeleteIcon aria-label="Delete" sx={{ ml: 1.2}} />}
+                  size="small"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    popupRef.current.openPopup();
+                  }}
+                />
+              )}
+              onConfirm={() => handleDelete(fileName)}
+              dialogTitle="Delete Attachment"
+              dialogText="Are you sure you want to delete this attachment?"
+              ref={popupRef} // Attach the ref to the popup
+            />
+          )}
+        </CardContent>
+      </Card>
 
       );
     });
