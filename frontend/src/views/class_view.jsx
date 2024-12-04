@@ -20,7 +20,7 @@ const Class_view = () => {
 
   const {
     postData: postAddData,
-  } = usePostData('classes/');
+  } = usePostData('classes/', "Adding class");
   
   const [classData, setClassData] = useState({
     class_name: '',
@@ -64,7 +64,7 @@ const Class_view = () => {
             await deleteData(`classes/${class_id}`);    
             window.location.reload();
         }
-    
+   
     } catch (err) {
       const errorMsg = err?.message || "Are there still devices with this class?.";
       setErrorMessage(errorMsg);
