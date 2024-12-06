@@ -40,33 +40,33 @@ describe('Grid Utils', () => {
     const { comparator } = dateFilterParams;
 
     it('compares dates correctly', () => {
-      const filterLocalDateAtMidnight = new Date(2024, 11, 1); // Dec 1, 2024
+      const filterLocalDateAtMidnight = new Date(2024, 11, 1); 
       const cellValue = '01/12/2024';
 
       const result = comparator(filterLocalDateAtMidnight, cellValue);
-      expect(result).toBe(0); // Equal dates
+      expect(result).toBe(0); 
     });
 
     it('returns -1 for earlier dates', () => {
-      const filterLocalDateAtMidnight = new Date(2024, 11, 2); // Dec 2, 2024
+      const filterLocalDateAtMidnight = new Date(2024, 11, 2);
       const cellValue = '01/12/2024';
 
       const result = comparator(filterLocalDateAtMidnight, cellValue);
-      expect(result).toBe(-1); // cellValue is earlier
+      expect(result).toBe(-1); 
     });
 
     it('returns 1 for later dates', () => {
-      const filterLocalDateAtMidnight = new Date(2024, 11, 1); // Dec 1, 2024
+      const filterLocalDateAtMidnight = new Date(2024, 11, 1);
       const cellValue = '02/12/2024';
 
       const result = comparator(filterLocalDateAtMidnight, cellValue);
-      expect(result).toBe(1); // cellValue is later
+      expect(result).toBe(1);
     });
 
     it('returns -1 for invalid or empty cellValue', () => {
-      const filterLocalDateAtMidnight = new Date(2024, 11, 1); // Dec 1, 2024
+      const filterLocalDateAtMidnight = new Date(2024, 11, 1); 
       const result = comparator(filterLocalDateAtMidnight, null);
-      expect(result).toBe(-1); // Invalid value
+      expect(result).toBe(-1); 
     });
   });
 
@@ -76,7 +76,7 @@ describe('Grid Utils', () => {
       const valueB = '02/12/2024, 10:15';
   
       const result = dateTimeComparator(valueA, valueB);
-      expect(result).toBeLessThan(0); // valueA is earlier than valueB
+      expect(result).toBeLessThan(0);
     });
   
     it('returns 0 when datetime strings are equal (ignoring seconds)', () => {
@@ -84,7 +84,7 @@ describe('Grid Utils', () => {
       const valueB = '01/12/2024, 15:30';
   
       const result = dateTimeComparator(valueA, valueB);
-      expect(result).toBe(0); // Both are equal
+      expect(result).toBe(0);
     });
   
     it('compares two datetime strings correctly when the first is later', () => {
@@ -92,15 +92,15 @@ describe('Grid Utils', () => {
       const valueB = '01/12/2024, 15:30';
   
       const result = dateTimeComparator(valueA, valueB);
-      expect(result).toBeGreaterThan(0); // valueA is later than valueB
+      expect(result).toBeGreaterThan(0);
     });
   
     it('handles missing time by defaulting to midnight (00:00)', () => {
-      const valueA = '01/12/2024'; // No time provided, defaults to 00:00
+      const valueA = '01/12/2024'; 
       const valueB = '01/12/2024, 15:30';
   
       const result = dateTimeComparator(valueA, valueB);
-      expect(result).toBeLessThan(0); // valueA (midnight) is earlier than valueB
+      expect(result).toBeLessThan(0); 
     });
   });
   

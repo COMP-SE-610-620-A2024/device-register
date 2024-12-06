@@ -42,17 +42,15 @@ export const dateTimeComparator = (valueA, valueB) => {
   const parseDateTime = (value) => {
     const [datePart, timePart] = value.split(', ');
     const [day, month, year] = datePart.split('/').map(Number);
-    const [hour, minute] = (timePart || '00:00').split(':').map(Number); // Parse only hours and minutes
-    return new Date(year, month - 1, day, hour, minute, 0); // Default seconds to 0
+    const [hour, minute] = (timePart || '00:00').split(':').map(Number); 
+    return new Date(year, month - 1, day, hour, minute, 0); 
   };
 
   const dateA = parseDateTime(valueA);
   const dateB = parseDateTime(valueB);
 
-  return dateA - dateB; // Compare as numbers (milliseconds)
+  return dateA - dateB; 
 };
-
-
 
 export const getRowStyle = () => {
   return { cursor: 'pointer' };
