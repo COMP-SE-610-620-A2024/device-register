@@ -5,6 +5,7 @@ import Function_button from '../shared/function_button.jsx';
 import ConfirmationPopup from './confirmation_popup.jsx';
 import useFetchData from '../shared/fetch_data';
 import useDelete from '../shared/delete_data.jsx';
+import { getRowStyle } from '../../utils/grid_utils.jsx';
 
 const Device_manager_grid = () => {
     const { data: devices, loading, error } = useFetchData('devices/');
@@ -77,33 +78,31 @@ const Device_manager_grid = () => {
             cellRenderer: (params) => {
                 const devId = params.data.dev_id;
                 return (
-                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        <div style={{ fontWeight: 'bold', flexGrow: 1 }}>
-                            {params.value}
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}> 
+                        <div style={{ fontWeight: 'bold', flexGrow: 1 }}> 
+                            {params.value} 
                         </div>
-                        {params.data.isExpanded && (
+                        {params.data.isExpanded && ( // Show buttons if row is expanded
                             <div
                             style={{
                                 gap: '7px',
                                 marginBottom: '7px',
                                 display: 'flex',
                             }}>
-                            <Function_button text="Modify" 
-                                onClick={() => handleModify(devId)} />
-                                <ConfirmationPopup
-                                    renderTrigger={() => (
-                                    <Function_button
-                                        text="Delete"
-                                        color="error"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            popupRef.current.openPopup(); 
-                                        }}
-                                    />
-                                    )}
+                            <Function_button text="Modify" onClick={() => handleModify(devId)} />
+                            <ConfirmationPopup renderTrigger={() => (
+                                <Function_button
+                                    text="Delete"
+                                    color="error"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        popupRef.current.openPopup(); 
+                                    }}
+                                />
+                            )}
                                 onConfirm={() => handleDelete(devId)}
                                 dialogTitle="Delete Device"
-                                dialogText="Are you sure you want to delete this device?"
+                                dialogText="Are you sure you want to delete this device?" 
                                 ref={popupRef} // Attach the ref to the popup
                             />
                             </div>
@@ -139,10 +138,6 @@ const Device_manager_grid = () => {
     ];
 
     const getRowHeight = (params) => (params.data.isExpanded ? 100 : 60);
-
-    const getRowStyle = () => ({
-        cursor: 'pointer',
-    });
 
     if (loading) {
         return (
