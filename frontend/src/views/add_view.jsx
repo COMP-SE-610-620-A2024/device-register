@@ -14,7 +14,7 @@ import { config } from '../utils/config';
 const Add_view = () => {
   const navigate = useNavigate(); 
   const { data: deviceClasses, loading} = useFetchData('classes/');
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage/*, setErrorMessage*/] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   
   const {

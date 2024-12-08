@@ -18,7 +18,7 @@ const Edit_view = () => {
   const { data: auth, error} = useFetchData('auth/admin');
   const { data: deviceClasses} = useFetchData('classes/');
   const { data: device, loading} = useFetchData('devices/'+id);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage/*, setErrorMessage*/] = useState(null);
   const { patchData } = usePatch();
 
   
