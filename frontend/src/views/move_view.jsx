@@ -14,7 +14,7 @@ const Move_view = () => {
   const { id } = useParams();
   const navigate = useNavigate(); 
   const { data: device, loading, error } = useFetchData('devices/' + id);
-  const [errorMessage/*, setErrorMessage*/] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   
   //sets to "" if local storage doesnt have them
@@ -61,9 +61,10 @@ const Move_view = () => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    const { loc_name, company, user } = deviceMoveData;
+    const { user } = deviceMoveData;
+    /*const { loc_name, company, user } = deviceMoveData;
     // Check for empty fields
-    /*if (!loc_name || !user.user_name || !user.user_email || !company) {
+    if (!loc_name || !user.user_name || !user.user_email || !company) {
       setErrorMessage("Please fill out all required fields.");
       setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       return;
