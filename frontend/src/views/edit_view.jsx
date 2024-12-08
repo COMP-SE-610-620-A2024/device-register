@@ -31,6 +31,7 @@ const Edit_view = () => {
     class_id: '',
     dev_comments: '',
     dev_manufacturer: '',
+    dev_home: '',
     dev_model: '',
     dev_name: '',
   });
@@ -49,6 +50,7 @@ const Edit_view = () => {
         class_id: matchedClass ? matchedClass.class_id : '',
         dev_comments: device.dev_comments || '', 
         dev_manufacturer: device.dev_manufacturer || '',
+        dev_home: device.dev_home || '',
         dev_model: device.dev_model || '',
         dev_name: device.dev_name || '',
       });
@@ -195,6 +197,18 @@ const Edit_view = () => {
                         ))}
                     </Select>
             </FormControl>
+
+            <TextField
+              label="Home"
+              name="dev_home"
+              value={deviceData.dev_home}
+              onChange={handleChange}
+              slotProps={{
+                htmlInput: {
+                  maxLength: 100,  // Set max length for the input field
+                },
+              }}
+            />
 
 
             <TextField
