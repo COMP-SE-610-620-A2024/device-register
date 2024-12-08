@@ -199,7 +199,7 @@ const Edit_view = () => {
             </FormControl>
 
             <TextField
-              label="Home"
+              label="Home Location"
               name="dev_home"
               value={deviceData.dev_home}
               onChange={handleChange}

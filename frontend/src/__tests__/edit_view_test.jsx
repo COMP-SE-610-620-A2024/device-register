@@ -62,6 +62,7 @@ describe('Edit_view Component', () => {
         class_name: 'Class A',
         dev_comments: 'Test Comment',
         dev_manufacturer: 'Manufacturer',
+        dev_home: "Place",
         dev_model: 'Model 1',
         dev_name: 'Device 1',
       };
@@ -87,6 +88,7 @@ describe('Edit_view Component', () => {
     expect(screen.getByLabelText(/Device name/i)).toHaveValue('Device 1');
     expect(screen.getByDisplayValue('Model 1')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Manufacturer')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Place')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Test Comment')).toBeInTheDocument();
 
     expect(screen.getByText('Edit Device')).toBeInTheDocument();
@@ -103,6 +105,7 @@ describe('Edit_view Component', () => {
         class_name: 'Class A',
         dev_comments: 'Test Comment',
         dev_manufacturer: 'Manufacturer',
+        dev_home: "Place",
         dev_model: 'Model 1',
         dev_name: 'Device 1',
       };
@@ -138,6 +141,10 @@ describe('Edit_view Component', () => {
       target: { value: 'Updated Manufacturer' },
     });
 
+    fireEvent.change(screen.getByLabelText(/Home Location/i), {
+      target: { value: 'New Place' },
+    });
+
     fireEvent.mouseDown(screen.getByLabelText(/Device Class/i));
     fireEvent.click(screen.getByText(/Class B/));
 
@@ -150,6 +157,7 @@ describe('Edit_view Component', () => {
           class_id: 2,
           dev_comments: 'Test Comment',
           dev_manufacturer: 'Updated Manufacturer',
+          dev_home: "New Place",
           dev_model: 'Updated Model',
           dev_name: 'Updated Device',
         },
