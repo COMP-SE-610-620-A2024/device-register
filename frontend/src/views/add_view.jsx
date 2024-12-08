@@ -44,13 +44,13 @@ const Add_view = () => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    const { dev_name, dev_manufacturer, dev_model, class_id } = deviceData;
+    /*const { dev_name, dev_manufacturer, dev_model, class_id } = deviceData;
     // Check for empty fields
     if (!dev_name || !dev_manufacturer || !dev_model || !class_id) {
       setErrorMessage("Please fill out all required fields.");
       setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       return;
-    }
+    }*/
     
     //need to wrap as a list
     const deviceList = [deviceData];

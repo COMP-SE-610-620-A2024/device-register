@@ -64,12 +64,12 @@ const ClassView = () => {
 
   const onAddSubmit = async (e) => {
     e.preventDefault();
-    const { class_name } = classData;
+   /* const { class_name } = classData;
     if (!class_name) {
       setErrorMessage("Please fill out all required fields.");
       setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       return;
-    }
+    }*/
     try {
       await postAddData(classData);
       window.location.reload();

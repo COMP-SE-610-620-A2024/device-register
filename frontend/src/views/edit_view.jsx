@@ -15,7 +15,7 @@ import usePatch from '../components/shared/patch_data';
 const Edit_view = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const {data: auth, error: error} = useFetchData('auth/admin');
+  const { data: auth, error} = useFetchData('auth/admin');
   const { data: deviceClasses} = useFetchData('classes/');
   const { data: device, loading} = useFetchData('devices/'+id);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -67,20 +67,20 @@ const Edit_view = () => {
   const onSubmit = async(e) => {
     e.preventDefault()
 
-    const { dev_name, dev_manufacturer, dev_model, class_id } = deviceData;
+   /* const { dev_name, dev_manufacturer, dev_model, class_id } = deviceData;
     // Check for empty fields
     if (!dev_name || !dev_manufacturer || !dev_model  || !class_id) {
       setErrorMessage("Please fill out all required fields.");
       setTimeout(() => setErrorMessage(null), 5000); // eslint-disable-line no-undef
       return;
-    }
+    }*/
     
-        try {
-            await patchData('devices/'+id, deviceData, "Editing device");
-            navigate('/admin/manager');
-        } catch (error) {
-            console.error(`Failed to patch`, error);
-        }
+    try {
+      await patchData('devices/'+id, deviceData, "Editing device");
+      navigate('/admin/manager');
+    } catch (error) {
+      console.error(`Failed to patch`, error);
+    }
   };
   
 
